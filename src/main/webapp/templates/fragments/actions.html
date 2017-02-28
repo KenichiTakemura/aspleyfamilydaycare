@@ -1,0 +1,16 @@
+<html>
+<h1 class="cover-heading">Control your device!</h1>
+<div class="card text-xs-center" th:each="a : ${actions}">
+	<h3 class="card-title" th:text="'ACTION : ' + ${a.action}"></h3>
+	<p class="card-text" th:text="'KEY : ' + ${a.key}"></p>
+	<button href="#" th:id="'trigger-' + ${a.action}"
+		th:attr="data-action=${a.action}, data-key=${a.key}"
+		class="btn btn-primary">Trigger!</button>
+	<p style="display: none" th:id="'trigger-progress-' + ${a.action}">
+		<i class="fa fa-cog fa-spin fa-3x fa-fw" aria-hidden="true"></i>
+	</p>
+	<p th:id="'trigger-response-' + ${a.action}"></p>
+</div>
+
+</html>
+
