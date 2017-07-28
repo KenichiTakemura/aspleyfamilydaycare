@@ -2,6 +2,8 @@ package com.ktiteng.entity;
 
 import java.time.LocalDate;
 
+import com.ktiteng.util.Utils;
+
 public class Child extends BaseEntity {
 
 	/**
@@ -9,7 +11,7 @@ public class Child extends BaseEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private long childId;
+	private String parentId;
 	private String firstName;
 	private String lastName;
 	private LocalDate startDate;
@@ -17,12 +19,16 @@ public class Child extends BaseEntity {
 	private TimeCard timeCard;
 	private Payment payment;
 
-	public long getChildId() {
-		return childId;
+	public Child() {
+		setId(Utils.getId());
 	}
 
-	public void setChildId(long childId) {
-		this.childId = childId;
+	public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
 	}
 
 	public String getFirstName() {

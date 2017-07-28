@@ -8,19 +8,14 @@ public class Parent extends BaseEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String parentId;
 	private String firstName;
 	private String lastName;
 	private String phoneNumber;
 	private String emailAddress;
 	private BankDetail bankDetail;
 
-	Parent() {
-		parentId = Utils.getId();
-	}
-	
-	public String getParentId() {
-		return parentId;
+	public Parent() {
+		setId(Utils.getId());
 	}
 
 	public String getFirstName() {
