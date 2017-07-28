@@ -22,7 +22,7 @@ public class GmailSender {
 
 		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("kenkenpa.kenichi@gmail.com", "sarang1107");
+				return new PasswordAuthentication("username", "password");
 			}
 		});
 
