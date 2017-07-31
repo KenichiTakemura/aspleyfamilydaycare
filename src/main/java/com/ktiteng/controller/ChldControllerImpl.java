@@ -3,7 +3,10 @@ package com.ktiteng.controller;
 import java.io.IOException;
 
 import com.ktiteng.entity.Child;
+import com.ktiteng.entity.InitialPayment;
 import com.ktiteng.entity.Parent;
+import com.ktiteng.entity.Payment;
+import com.ktiteng.entity.manager.EntityManager;
 import com.ktiteng.util.Validator;
 
 public class ChldControllerImpl extends BaseController implements ChildController {
@@ -19,8 +22,13 @@ public class ChldControllerImpl extends BaseController implements ChildControlle
 		if (p.getEmailAddress() == null) {
 			throw new IOException("Email is invalid");
 		}
-		save(p);
-		return p;
+		return updateParent(p);
+	}
+
+	@Override
+	public Parent updateParent(Parent parent) throws IOException {
+		save(parent);
+		return parent;
 	}
 
 	@Override
@@ -33,8 +41,37 @@ public class ChldControllerImpl extends BaseController implements ChildControlle
 			c.setLastName(lastName);
 		}
 		c.setParentId(parent.getId());
-		save(c);
-		return c;
+		return updateChild(c);
+	}
+
+	@Override
+	public Child updateChild(Child child) throws IOException {
+		save(child);
+		return child;
+	}
+
+	@Override
+	public Payment findPayment(Child child) throws IOException {
+		Payment p = (Payment) EntityManager.getInstance().find(Payment.class, child.getId());
+		return p != null ? p : new Payment();
+	}
+
+	@Override
+	public Payment updatePayment(Payment payment) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Parent findParent(String id) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Child findChild(String id) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
