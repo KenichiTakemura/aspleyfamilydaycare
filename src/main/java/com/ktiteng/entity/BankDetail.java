@@ -14,23 +14,26 @@ public class BankDetail extends BaseEntity {
 		return bsb;
 	}
 
-	public void setBsb(String bsb) {
+	public BankDetail setBsb(String bsb) {
 		this.bsb = bsb;
+		return this;
 	}
 
 	public String getAccount() {
 		return account;
 	}
 
-	public void setAccount(String account) {
+	public BankDetail setAccount(String account) {
 		this.account = account;
+		return this;
 	}
 
 	public String getAccountName() {
 		return accountName;
 	}
 
-	public void setAccountName(String accountName) {
+	public BankDetail setAccountName(String accountName) {
 		this.accountName = accountName;
+		return this;
 	}
 }

@@ -16,8 +16,6 @@ public class Child extends BaseEntity {
 	private String lastName;
 	private LocalDate startDate;
 	private LocalDate lastDate;
-	private TimeCard timeCard;
-	private Payment payment;
 
 	public Child() {
 		setId(Utils.getId());
@@ -51,6 +49,10 @@ public class Child extends BaseEntity {
 		return startDate;
 	}
 
+	public void setStartDate(String startDate) {
+		this.startDate = LocalDate.parse(startDate);
+	}
+
 	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
@@ -59,24 +61,12 @@ public class Child extends BaseEntity {
 		return lastDate;
 	}
 
+	public void setLastDate(String lastDate) {
+		this.lastDate = LocalDate.parse(lastDate);
+	}
+
 	public void setLastDate(LocalDate lastDate) {
 		this.lastDate = lastDate;
-	}
-
-	public TimeCard getTimeCard() {
-		return timeCard;
-	}
-
-	public void setTimeCard(TimeCard timeCard) {
-		this.timeCard = timeCard;
-	}
-
-	public Payment getPayment() {
-		return payment;
-	}
-
-	public void setPayment(Payment payment) {
-		this.payment = payment;
 	}
 
 }
