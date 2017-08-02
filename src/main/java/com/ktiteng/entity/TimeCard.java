@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import com.ktiteng.util.Utils;
+
 public class TimeCard extends BaseEntity {
 
 	/**
@@ -15,6 +17,10 @@ public class TimeCard extends BaseEntity {
 	private LocalTime startTime;
 	private LocalTime endTime;
 	private List<TimeCardEntry> timeCard;
+
+	public TimeCard() {
+		setId(Utils.getId());
+	}
 
 	public String getChildId() {
 		return childId;

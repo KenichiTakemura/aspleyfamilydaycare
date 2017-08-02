@@ -19,40 +19,46 @@ public class InitialPayment extends BaseEntity {
 		return deposit;
 	}
 
-	public void setDeposit(double deposit) {
+	public InitialPayment setDeposit(double deposit) {
 		this.deposit = deposit;
+		return this;
 	}
 
 	public double getResigtrationFee() {
 		return resigtrationFee;
 	}
 
-	public void setResigtrationFee(double resigtrationFee) {
+	public InitialPayment setResigtrationFee(double resigtrationFee) {
 		this.resigtrationFee = resigtrationFee;
+		return this;
 	}
 
 	public LocalDate getDepositPaidOn() {
 		return depositPaidOn;
 	}
 
-	public void setDepositPaidOn(String depositPaidOn) {
+	public InitialPayment setDepositPaidOn(String depositPaidOn) {
 		this.depositPaidOn = LocalDate.parse(depositPaidOn);
+		return this;
 	}
 
-	public void setDepositPaidOn(LocalDate depositPaidOn) {
+	public InitialPayment setDepositPaidOn(LocalDate depositPaidOn) {
 		this.depositPaidOn = depositPaidOn;
+		return this;
 	}
 
 	public LocalDate getResigtrationFeePaidOn() {
 		return resigtrationFeePaidOn;
 	}
 
-	public void setResigtrationFeePaidOn(String resigtrationFeePaidOn) {
+	public InitialPayment setResigtrationFeePaidOn(String resigtrationFeePaidOn) {
 		this.resigtrationFeePaidOn = LocalDate.parse(resigtrationFeePaidOn);
+		return this;
 	}
 
-	public void setResigtrationFeePaidOn(LocalDate resigtrationFeePaidOn) {
+	public InitialPayment setResigtrationFeePaidOn(LocalDate resigtrationFeePaidOn) {
 		this.resigtrationFeePaidOn = resigtrationFeePaidOn;
+		return this;
 	}
 
 }

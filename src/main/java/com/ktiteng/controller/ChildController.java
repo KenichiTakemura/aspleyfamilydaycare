@@ -6,6 +6,7 @@ import com.ktiteng.entity.Child;
 import com.ktiteng.entity.InitialPayment;
 import com.ktiteng.entity.Parent;
 import com.ktiteng.entity.Payment;
+import com.ktiteng.entity.PaymentSchedule;
 
 public interface ChildController {
 
@@ -23,5 +24,7 @@ public interface ChildController {
 
 	Payment findPayment(Child child) throws IOException;
 
-	Payment updatePayment(Payment payment) throws IOException;
+	Payment updateInitialPayment(Child child, Payment payment, InitialPayment initialPayment) throws IOException;
+
+	Payment updatePaymentSchedule(Child child, Payment payment, PaymentSchedule paymentSchedule) throws IOException;
 }

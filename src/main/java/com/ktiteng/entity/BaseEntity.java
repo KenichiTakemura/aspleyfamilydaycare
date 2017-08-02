@@ -1,6 +1,7 @@
 package com.ktiteng.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 public abstract class BaseEntity implements Serializable {
 
@@ -20,5 +21,9 @@ public abstract class BaseEntity implements Serializable {
 
 	protected void setId(String id) {
 		this.id = id;
+	}
+	
+	protected LocalDate toDate(String date) {
+		return LocalDate.parse(date);
 	}
 }

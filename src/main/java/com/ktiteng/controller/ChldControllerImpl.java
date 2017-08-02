@@ -6,6 +6,7 @@ import com.ktiteng.entity.Child;
 import com.ktiteng.entity.InitialPayment;
 import com.ktiteng.entity.Parent;
 import com.ktiteng.entity.Payment;
+import com.ktiteng.entity.PaymentSchedule;
 import com.ktiteng.entity.manager.EntityManager;
 import com.ktiteng.util.Validator;
 
@@ -57,21 +58,29 @@ public class ChldControllerImpl extends BaseController implements ChildControlle
 	}
 
 	@Override
-	public Payment updatePayment(Payment payment) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+	public Payment updateInitialPayment(Child child, Payment payment, InitialPayment initialPayment) throws IOException {
+		payment.setChildId(child.getId());
+		payment.setInitialPayment(initialPayment);
+		save(payment);
+		return payment;
 	}
 
 	@Override
 	public Parent findParent(String id) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		return (Parent) EntityManager.getInstance().find(Parent.class, id);
 	}
 
 	@Override
 	public Child findChild(String id) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		return (Child) EntityManager.getInstance().find(Parent.class, id);
+	}
+
+	@Override
+	public Payment updatePaymentSchedule(Child child, Payment payment, PaymentSchedule paymentSchedule) throws IOException {
+		payment.setChildId(child.getId());
+		payment.addPaymentSchedule(paymentSchedule);
+		save(payment);
+		return payment;
 	}
 
 }

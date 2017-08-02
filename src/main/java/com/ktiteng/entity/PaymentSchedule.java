@@ -22,64 +22,72 @@ public class PaymentSchedule extends BaseEntity {
 		return amountInvoiced;
 	}
 
-	public void setAmountInvoiced(double amountInvoiced) {
+	public PaymentSchedule setAmountInvoiced(double amountInvoiced) {
 		this.amountInvoiced = amountInvoiced;
+		return this;
 	}
 
 	public double getAmountReceived() {
 		return amountReceived;
 	}
 
-	public void setAmountReceived(double amountReceived) {
+	public PaymentSchedule setAmountReceived(double amountReceived) {
 		this.amountReceived = amountReceived;
+		return this;
 	}
 
 	public LocalDate getBillingStartDate() {
 		return billingStartDate;
 	}
 
-	public void setBillingStartDate(LocalDate billingStartDate) {
+	public PaymentSchedule setBillingStartDate(LocalDate billingStartDate) {
 		this.billingStartDate = billingStartDate;
+		return this;
 	}
 
 	public LocalDate getBillingEndDate() {
 		return billingEndDate;
 	}
 
-	public void setBillingEndDate(LocalDate billingEndDate) {
+	public PaymentSchedule setBillingEndDate(LocalDate billingEndDate) {
 		this.billingEndDate = billingEndDate;
+		return this;
 	}
 
 	public LocalDate getDateReceived() {
 		return dateReceived;
 	}
 
-	public void setDateReceived(LocalDate dateReceived) {
+	public PaymentSchedule setDateReceived(LocalDate dateReceived) {
 		this.dateReceived = dateReceived;
+		return this;
 	}
 
 	public boolean isCompleted() {
 		return completed;
 	}
 
-	public void setCompleted(boolean completed) {
+	public PaymentSchedule setCompleted(boolean completed) {
 		this.completed = completed;
+		return this;
 	}
 
 	public boolean isReceiptIssued() {
 		return receiptIssued;
 	}
 
-	public void setReceiptIssued(boolean receiptIssued) {
+	public PaymentSchedule setReceiptIssued(boolean receiptIssued) {
 		this.receiptIssued = receiptIssued;
+		return this;
 	}
 
 	public Receipt getReceipt() {
 		return receipt;
 	}
 
-	public void setReceipt(Receipt receipt) {
+	public PaymentSchedule setReceipt(Receipt receipt) {
 		this.receipt = receipt;
+		return this;
 	}
 
 }

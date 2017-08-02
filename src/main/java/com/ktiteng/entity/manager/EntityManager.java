@@ -62,7 +62,13 @@ public class EntityManager {
 	}
 
 	public BaseEntity find(Class<?> entityClass, String id) {
-		if (entityClass.isAssignableFrom(Payment.class)) {
+		if (entityClass.isAssignableFrom(Parent.class)) {
+			Optional<Parent> parent = parents.stream().filter(p -> p.getId().equals(id)).findFirst();
+			return parent.isPresent() ? parent.get() : null;
+		} else if (entityClass.isAssignableFrom(Child.class)) {
+			Optional<Child> child = children.stream().filter(p -> p.getId().equals(id)).findFirst();
+			return child.isPresent() ? child.get() : null;
+		} else if (entityClass.isAssignableFrom(Payment.class)) {
 			Optional<Payment> payment = payments.stream().filter(p -> p.getChildId().equals(id)).findFirst();
 			return payment.isPresent() ? payment.get() : null;
 		}
