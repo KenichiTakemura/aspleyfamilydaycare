@@ -62,6 +62,42 @@
 			<version>1.0.3.Final</version>
 			<type>pom</type>
 		</dependency>
+
+		<!-- http://memorynotfound.com/java-se-unit-testing-cdi-junit-jboss-weld-se/ -->
+		<!-- api -->
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- logging -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		<!-- testing -->
+		<dependency>
+			<groupId>org.jboss.arquillian.container</groupId>
+			<artifactId>container-se-managed</artifactId>
+			<version>1.0.1.Final</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.jboss.arquillian.junit/arquillian-junit-container -->
+		<dependency>
+			<groupId>org.jboss.arquillian.junit</groupId>
+			<artifactId>arquillian-junit-container</artifactId>
+			<version>1.1.13.Final</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>afdc</finalName>

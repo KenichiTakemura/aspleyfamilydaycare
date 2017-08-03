@@ -8,10 +8,21 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javax.inject.Inject;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.ktiteng.cdi.Log;
 import com.ktiteng.entity.BankDetail;
 import com.ktiteng.entity.Child;
 import com.ktiteng.entity.InitialPayment;
@@ -19,18 +30,28 @@ import com.ktiteng.entity.Parent;
 import com.ktiteng.entity.Payment;
 import com.ktiteng.entity.PaymentSchedule;
 
+@RunWith(Arquillian.class)
 public class ChildControllerTest {
 
 	private Path path = Paths.get(System.getProperty("user.home"), ".afdc", "data");
+
+	@Inject
 	ChildController cc;
-	
+
+	@Deployment
+	public static JavaArchive createDeployment() {
+		return ShrinkWrap.create(JavaArchive.class).addClass(Log.class)
+				.addClass(ChildController.class)
+				.addClass(FileUtils.class)
+				.addAsManifestResource(EmptyAsset.INSTANCE,"beans.xml");
+	}
+
 	@Before
 	public void before() throws IOException {
 		FileUtils.deleteDirectory(path.toFile());
 		path.toFile().mkdirs();
-		cc = new ChldControllerImpl();
 	}
-	
+
 	@Test
 	public void add() throws IOException {
 		Parent p1 = cc.addParent("pfirst1", "plast1", "0433654800", "test1@gmail.com");
@@ -46,9 +67,9 @@ public class ChildControllerTest {
 		cc.updateChild(c1);
 		assertTrue(Paths.get(path.toString(), "child-" + c1.getId() + ".json").toFile().exists());
 	}
-	
+
 	@Test
-	public void payment()  throws IOException {
+	public void payment() throws IOException {
 		Parent p1 = cc.addParent("pfirst1", "plast1", "0433654800", "test1@gmail.com");
 		Child c1 = cc.addChild("cfirst1", "clast1", p1);
 		Payment payment = cc.findPayment(c1);

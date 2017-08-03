@@ -6,6 +6,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+
+import com.ktiteng.cdi.Log;
 import com.ktiteng.entity.BaseEntity;
 import com.ktiteng.entity.Child;
 import com.ktiteng.entity.Parent;
@@ -14,10 +19,13 @@ import com.ktiteng.entity.TimeCard;
 
 public class EntityManager {
 
+	@Inject @Log
+	private Logger log;
+
 	private final static String parent = "parent";
 	private final static String child = "child-";
 	private final static String payment = "payment-";
-	private final static String timecard= "timecard-";
+	private final static String timecard = "timecard-";
 
 	private static EntityManager instance;
 	private PersistenceManager pm;
@@ -32,6 +40,8 @@ public class EntityManager {
 		children = new ArrayList<>();
 		payments = new ArrayList<>();
 		timecards = new ArrayList<>();
+		log.info("produced.");
+
 	}
 
 	public static EntityManager getInstance() {
@@ -61,19 +71,19 @@ public class EntityManager {
 		}
 	}
 
-	public BaseEntity find(Class<?> entityClass, String id) {
+	public BaseEntity find(Class<?> entityClass, String... ids) {
 		if (entityClass.isAssignableFrom(Parent.class)) {
-			Optional<Parent> parent = parents.stream().filter(p -> p.getId().equals(id)).findFirst();
+			Optional<Parent> parent = parents.stream().filter(p -> p.getId().equals(ids[0])).findFirst();
 			return parent.isPresent() ? parent.get() : null;
 		} else if (entityClass.isAssignableFrom(Child.class)) {
-			Optional<Child> child = children.stream().filter(p -> p.getId().equals(id)).findFirst();
+			Optional<Child> child = children.stream().filter(p -> p.getId().equals(ids[0])).findFirst();
 			return child.isPresent() ? child.get() : null;
 		} else if (entityClass.isAssignableFrom(Payment.class)) {
-			Optional<Payment> payment = payments.stream().filter(p -> p.getChildId().equals(id)).findFirst();
+			Optional<Payment> payment = payments.stream().filter(p -> p.getChildId().equals(ids[0])).findFirst();
 			return payment.isPresent() ? payment.get() : null;
 		}
 		return null;
-		
+
 	}
 
 }

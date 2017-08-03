@@ -27,4 +27,6 @@ public interface ChildController {
 	Payment updateInitialPayment(Child child, Payment payment, InitialPayment initialPayment) throws IOException;
 
 	Payment updatePaymentSchedule(Child child, Payment payment, PaymentSchedule paymentSchedule) throws IOException;
+
+	void issueReceipt(String childId, String paymentScheduleId) throws IOException;
 }

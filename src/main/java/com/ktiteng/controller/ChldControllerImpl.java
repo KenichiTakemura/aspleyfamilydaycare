@@ -83,4 +83,15 @@ public class ChldControllerImpl extends BaseController implements ChildControlle
 		return payment;
 	}
 
+	@Override
+	public void issueReceipt(String childId, String paymentScheduleId) throws IOException {
+		Child child = findChild(childId);
+		PaymentSchedule paymentSchedule = findPaymentSchedule(childId, paymentScheduleId);
+		
+	}
+
+	// Private Area
+	private PaymentSchedule findPaymentSchedule(String childId, String paymentScheduleId) throws IOException {
+		return (PaymentSchedule) EntityManager.getInstance().find(PaymentSchedule.class, childId, paymentScheduleId);
+	}
 }
