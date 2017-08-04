@@ -9,20 +9,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javax.inject.Inject;
+
+import org.apache.commons.io.FileUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.ktiteng.cdi.Log;
 import com.ktiteng.entity.BankDetail;
 import com.ktiteng.entity.Child;
 import com.ktiteng.entity.InitialPayment;
@@ -35,16 +32,14 @@ public class ChildControllerTest {
 
 	private Path path = Paths.get(System.getProperty("user.home"), ".afdc", "data");
 
-	@Inject
-	ChildController cc;
-
 	@Deployment
 	public static JavaArchive createDeployment() {
-		return ShrinkWrap.create(JavaArchive.class).addClass(Log.class)
-				.addClass(ChildController.class)
-				.addClass(FileUtils.class)
-				.addAsManifestResource(EmptyAsset.INSTANCE,"beans.xml");
+		return ShrinkWrap.create(JavaArchive.class).addPackages(true, "com.ktiteng")
+				.addPackages(true, "org.apache.commons.io").addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
 	}
+
+	@Inject
+	ChildController cc;
 
 	@Before
 	public void before() throws IOException {

@@ -2,11 +2,14 @@ package com.ktiteng.entity.manager;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Default;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import org.slf4j.Logger;
 
@@ -17,9 +20,11 @@ import com.ktiteng.entity.Parent;
 import com.ktiteng.entity.Payment;
 import com.ktiteng.entity.TimeCard;
 
+@Singleton
 public class EntityManager {
 
-	@Inject @Log
+	@Inject
+	@Log
 	private Logger log;
 
 	private final static String parent = "parent";
@@ -27,28 +32,20 @@ public class EntityManager {
 	private final static String payment = "payment-";
 	private final static String timecard = "timecard-";
 
-	private static EntityManager instance;
 	private PersistenceManager pm;
 	List<Parent> parents;
 	List<Child> children;
 	List<Payment> payments;
 	List<TimeCard> timecards;
 
-	private EntityManager() {
+	@PostConstruct
+	public void init() {
 		pm = PersistenceManager.getInstance();
 		parents = new ArrayList<>();
 		children = new ArrayList<>();
 		payments = new ArrayList<>();
 		timecards = new ArrayList<>();
-		log.info("produced.");
-
-	}
-
-	public static EntityManager getInstance() {
-		if (instance == null) {
-			instance = new EntityManager();
-		}
-		return instance;
+		log.info("produced.");		
 	}
 
 	public void save(BaseEntity entity) throws IOException {

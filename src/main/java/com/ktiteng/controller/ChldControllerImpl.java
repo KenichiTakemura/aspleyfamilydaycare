@@ -2,15 +2,32 @@ package com.ktiteng.controller;
 
 import java.io.IOException;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Default;
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+
+import com.ktiteng.cdi.Log;
 import com.ktiteng.entity.Child;
 import com.ktiteng.entity.InitialPayment;
 import com.ktiteng.entity.Parent;
 import com.ktiteng.entity.Payment;
 import com.ktiteng.entity.PaymentSchedule;
-import com.ktiteng.entity.manager.EntityManager;
 import com.ktiteng.util.Validator;
 
+@Default
+@ApplicationScoped
 public class ChldControllerImpl extends BaseController implements ChildController {
+
+	@Inject @Log
+	private Logger log;
+
+	@PostConstruct
+	public void init() {
+		log.info("produced");
+	}
 
 	@Override
 	public Parent addParent(String firstName, String lastName, String phoneNumber, String emailAddress)
@@ -53,12 +70,13 @@ public class ChldControllerImpl extends BaseController implements ChildControlle
 
 	@Override
 	public Payment findPayment(Child child) throws IOException {
-		Payment p = (Payment) EntityManager.getInstance().find(Payment.class, child.getId());
+		Payment p = (Payment) em.find(Payment.class, child.getId());
 		return p != null ? p : new Payment();
 	}
 
 	@Override
-	public Payment updateInitialPayment(Child child, Payment payment, InitialPayment initialPayment) throws IOException {
+	public Payment updateInitialPayment(Child child, Payment payment, InitialPayment initialPayment)
+			throws IOException {
 		payment.setChildId(child.getId());
 		payment.setInitialPayment(initialPayment);
 		save(payment);
@@ -67,16 +85,17 @@ public class ChldControllerImpl extends BaseController implements ChildControlle
 
 	@Override
 	public Parent findParent(String id) throws IOException {
-		return (Parent) EntityManager.getInstance().find(Parent.class, id);
+		return (Parent) em.find(Parent.class, id);
 	}
 
 	@Override
 	public Child findChild(String id) throws IOException {
-		return (Child) EntityManager.getInstance().find(Parent.class, id);
+		return (Child) em.find(Parent.class, id);
 	}
 
 	@Override
-	public Payment updatePaymentSchedule(Child child, Payment payment, PaymentSchedule paymentSchedule) throws IOException {
+	public Payment updatePaymentSchedule(Child child, Payment payment, PaymentSchedule paymentSchedule)
+			throws IOException {
 		payment.setChildId(child.getId());
 		payment.addPaymentSchedule(paymentSchedule);
 		save(payment);
@@ -87,11 +106,11 @@ public class ChldControllerImpl extends BaseController implements ChildControlle
 	public void issueReceipt(String childId, String paymentScheduleId) throws IOException {
 		Child child = findChild(childId);
 		PaymentSchedule paymentSchedule = findPaymentSchedule(childId, paymentScheduleId);
-		
+
 	}
 
 	// Private Area
 	private PaymentSchedule findPaymentSchedule(String childId, String paymentScheduleId) throws IOException {
-		return (PaymentSchedule) EntityManager.getInstance().find(PaymentSchedule.class, childId, paymentScheduleId);
+		return (PaymentSchedule) em.find(PaymentSchedule.class, childId, paymentScheduleId);
 	}
 }
