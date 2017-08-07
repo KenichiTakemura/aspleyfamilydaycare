@@ -3,6 +3,7 @@ package com.ktiteng.controller;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -11,38 +12,31 @@ import java.nio.file.Paths;
 import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
+import com.ktiteng.arquillian.ArquillianUnitTest;
 import com.ktiteng.entity.BankDetail;
 import com.ktiteng.entity.Child;
 import com.ktiteng.entity.InitialPayment;
 import com.ktiteng.entity.Parent;
 import com.ktiteng.entity.Payment;
 import com.ktiteng.entity.PaymentSchedule;
+import com.ktiteng.entity.manager.PersistenceManager;
 
-@RunWith(Arquillian.class)
-public class ChildControllerTest {
+public class ChildControllerTest extends ArquillianUnitTest {
 
 	private Path path = Paths.get(System.getProperty("user.home"), ".afdc", "data");
 
-	@Deployment
-	public static JavaArchive createDeployment() {
-		return ShrinkWrap.create(JavaArchive.class).addPackages(true, "com.ktiteng")
-				.addPackages(true, "org.apache.commons.io").addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-	}
+	@Inject
+	PersistenceManager pm;
 
 	@Inject
 	ChildController cc;
 
 	@Before
 	public void before() throws IOException {
+		pm.setPath(path);
 		FileUtils.deleteDirectory(path.toFile());
 		path.toFile().mkdirs();
 	}
@@ -61,6 +55,15 @@ public class ChildControllerTest {
 		c1.setStartDate("2017-06-12");
 		cc.updateChild(c1);
 		assertTrue(Paths.get(path.toString(), "child-" + c1.getId() + ".json").toFile().exists());
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void badEmail() {
+		try {
+			cc.addParent("pfirst3", "plast3", "0433654800", "test1.gmail.com");
+		} catch(IOException ioe) {
+			fail();
+		}
 	}
 
 	@Test

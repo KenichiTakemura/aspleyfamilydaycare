@@ -9,6 +9,7 @@ import com.ktiteng.entity.Payment;
 import com.ktiteng.entity.PaymentSchedule;
 
 public interface ChildController {
+	Parent addParent(String firstName, String lastName) throws IOException;
 
 	Parent addParent(String firstName, String lastName, String phoneNumber, String emailAddress) throws IOException;
 

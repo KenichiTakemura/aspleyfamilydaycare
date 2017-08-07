@@ -6,28 +6,39 @@ import java.io.Writer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import org.slf4j.Logger;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ktiteng.entity.BaseEntity;
+import com.ktiteng.cdi.Log;
 
+@Singleton
 public class PersistenceManager {
 
-	private static PersistenceManager instance;
+	@Inject
+	@Log
+	private Logger log;
+
 	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	private static final String ext = "json";
 	private static final String join = ".";
 
-	private static final Path path = Paths.get(System.getProperty("user.home"), ".afdc", "data");
+	private Path path;
 
-	private PersistenceManager() {
+	@PostConstruct
+	public void init() {
+		path = Paths.get(System.getProperty("user.home"), ".afdc", "master");
+		path.toFile().mkdirs();
+		log.info("produced.");
 	}
 
-	public static PersistenceManager getInstance() {
-		if (instance == null) {
-			path.toFile().mkdirs();
-			instance = new PersistenceManager();
-		}
-		return instance;
+	public void setPath(Path path) {
+		this.path = path;
+		log.info("path changed to {}.", path);
 	}
 
 	private String getFilePath(String fileName) {

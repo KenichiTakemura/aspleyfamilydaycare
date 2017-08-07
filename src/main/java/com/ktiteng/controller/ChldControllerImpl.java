@@ -21,7 +21,8 @@ import com.ktiteng.util.Validator;
 @ApplicationScoped
 public class ChldControllerImpl extends BaseController implements ChildController {
 
-	@Inject @Log
+	@Inject
+	@Log
 	private Logger log;
 
 	@PostConstruct
@@ -30,21 +31,28 @@ public class ChldControllerImpl extends BaseController implements ChildControlle
 	}
 
 	@Override
+	public Parent addParent(String firstName, String lastName) throws IOException {
+		return addParent(firstName, lastName, null, null);
+	}
+
+	@Override
 	public Parent addParent(String firstName, String lastName, String phoneNumber, String emailAddress)
 			throws IOException {
 		Parent p = new Parent();
 		p.setFirstName(firstName);
 		p.setLastName(lastName);
-		p.setPhoneNumber(phoneNumber);
-		p.setEmailAddress(Validator.isValidEmailAddress(emailAddress));
-		if (p.getEmailAddress() == null) {
-			throw new IOException("Email is invalid");
+		if (phoneNumber != null) {
+			p.setPhoneNumber(phoneNumber);
+		}
+		if (emailAddress != null) {
+			p.setEmailAddress(emailAddress);
 		}
 		return updateParent(p);
 	}
 
 	@Override
 	public Parent updateParent(Parent parent) throws IOException {
+		validate(parent);
 		save(parent);
 		return parent;
 	}
@@ -112,5 +120,15 @@ public class ChldControllerImpl extends BaseController implements ChildControlle
 	// Private Area
 	private PaymentSchedule findPaymentSchedule(String childId, String paymentScheduleId) throws IOException {
 		return (PaymentSchedule) em.find(PaymentSchedule.class, childId, paymentScheduleId);
+	}
+
+	private void validate(Parent parent) throws IllegalArgumentException {
+		if (parent.getEmailAddress() != null) {
+			if (Validator.isValidEmailAddress(parent.getEmailAddress()) == null) {
+				log.warn("Email is invalid {}", parent.getEmailAddress());
+				throw new IllegalArgumentException("Email is invalid");
+			}
+			log.debug("Email is valid {}", parent.getEmailAddress());
+		}
 	}
 }

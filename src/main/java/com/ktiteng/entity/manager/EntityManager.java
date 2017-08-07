@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -26,13 +24,15 @@ public class EntityManager {
 	@Inject
 	@Log
 	private Logger log;
+	
+	@Inject
+	PersistenceManager pm;
 
 	private final static String parent = "parent";
 	private final static String child = "child-";
 	private final static String payment = "payment-";
 	private final static String timecard = "timecard-";
 
-	private PersistenceManager pm;
 	List<Parent> parents;
 	List<Child> children;
 	List<Payment> payments;
@@ -40,12 +40,11 @@ public class EntityManager {
 
 	@PostConstruct
 	public void init() {
-		pm = PersistenceManager.getInstance();
 		parents = new ArrayList<>();
 		children = new ArrayList<>();
 		payments = new ArrayList<>();
 		timecards = new ArrayList<>();
-		log.info("produced.");		
+		log.info("produced.");
 	}
 
 	public void save(BaseEntity entity) throws IOException {
