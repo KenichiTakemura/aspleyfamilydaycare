@@ -17,9 +17,7 @@ import com.ktiteng.fop.PdfGenerator;
 @ApplicationScoped
 public class PaymentControllerBean extends BaseController implements PaymentController {
 
-	@Inject
-	private PdfGenerator pdfGen;
-	
+
 	@Override
 	public Payment findPayment(Child child) throws IOException {
 		Payment p = (Payment) em.find(Payment.class, child.getId());
