@@ -13,6 +13,7 @@ public class Payment extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 	private String childId;
 	private InitialPayment initialPayment;
+	private double balanceDue;
 	private List<PaymentSchedule> paymentSchedule;
 
 	public Payment() {
@@ -52,6 +53,14 @@ public class Payment extends BaseEntity {
 		}
 		this.paymentSchedule.add(paymentSchedule);
 		return paymentSchedule;
+	}
+
+	public double getBalanceDue() {
+		return balanceDue;
+	}
+
+	public void setBalanceDue(double balanceDue) {
+		this.balanceDue = balanceDue;
 	}
 
 }

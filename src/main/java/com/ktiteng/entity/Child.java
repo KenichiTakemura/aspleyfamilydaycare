@@ -14,6 +14,7 @@ public class Child extends BaseEntity {
 	private String parentId;
 	private String firstName;
 	private String lastName;
+	private String childNumber;
 	private LocalDate startDate;
 	private LocalDate lastDate;
 
@@ -69,4 +70,15 @@ public class Child extends BaseEntity {
 		this.lastDate = lastDate;
 	}
 
+	public String getName() {
+		return this.firstName + " " + this.lastName;
+	}
+
+	public String getChildNumber() {
+		return childNumber;
+	}
+
+	public void setChildNumber(String childNumber) {
+		this.childNumber = childNumber;
+	}
 }

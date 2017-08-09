@@ -8,6 +8,7 @@ public class PaymentSchedule extends BaseEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private double balanceDue;
 	private double amountInvoiced;
 	private double amountReceived;
 	private LocalDate billingStartDate;
@@ -39,7 +40,7 @@ public class PaymentSchedule extends BaseEntity {
 	public LocalDate getBillingStartDate() {
 		return billingStartDate;
 	}
-
+	
 	public PaymentSchedule setBillingStartDate(LocalDate billingStartDate) {
 		this.billingStartDate = billingStartDate;
 		return this;
@@ -56,15 +57,6 @@ public class PaymentSchedule extends BaseEntity {
 
 	public LocalDate getDateReceived() {
 		return dateReceived;
-	}
-
-	public String getDateReceivedAsString() {
-		return toDateStr(dateReceived);
-	}
-
-	public PaymentSchedule setDateReceived(String dateReceived) {
-		this.dateReceived = toDate(dateReceived);
-		return this;
 	}
 
 	public PaymentSchedule setDateReceived(LocalDate dateReceived) {
@@ -96,6 +88,16 @@ public class PaymentSchedule extends BaseEntity {
 
 	public PaymentSchedule setReceipt(Receipt receipt) {
 		this.receipt = receipt;
+		return this;
+	}
+
+	public double getBalanceDue() {
+		return balanceDue;
+	}
+
+
+	public PaymentSchedule setBalanceDue(double balanceDue) {
+		this.balanceDue = balanceDue;
 		return this;
 	}
 

@@ -1,5 +1,7 @@
 package com.ktiteng.fop;
 
+import static com.ktiteng.util.Utils.toS;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,6 +31,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 import com.ktiteng.cdi.Log;
+import com.ktiteng.entity.Child;
 import com.ktiteng.entity.PaymentSchedule;
 import com.ktiteng.entity.Receipt;
 
@@ -41,7 +44,7 @@ public class PdfGeneratorBean implements PdfGenerator {
 	protected Logger log;
 
 	@Override
-	public Receipt generateReceipt(PaymentSchedule paymentSchedule) throws IOException {
+	public Receipt generateReceipt(Child child, PaymentSchedule paymentSchedule) throws IOException {
 		Receipt receipt = paymentSchedule.getReceipt();
 		FopFactory fopFactory = null;
 		OutputStream out;
@@ -56,7 +59,7 @@ public class PdfGeneratorBean implements PdfGenerator {
 			TransformerFactory factory = TransformerFactory.newInstance();
 			Source xslt = new StreamSource(this.getClass().getResourceAsStream("/fop/receipt.xsl"));
 			Transformer transformer = factory.newTransformer(xslt);
-			Source src = new DOMSource(convertToDocument(paymentSchedule));
+			Source src = new DOMSource(convertToDocument(child, paymentSchedule));
 			Result res = new SAXResult(fop.getDefaultHandler());
 			transformer.transform(src, res);
 
@@ -68,10 +71,10 @@ public class PdfGeneratorBean implements PdfGenerator {
 		return null;
 	}
 
-	Document convertToDocument(PaymentSchedule paymentSchedule) throws Exception {
+	Document convertToDocument(Child child, PaymentSchedule paymentSchedule) throws Exception {
 		Document foDoc = null;
-		Element root = null, ele = null;
-
+		Element root = null;
+		Receipt receipt = paymentSchedule.getReceipt();
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
 		DocumentBuilder db = dbf.newDocumentBuilder();
@@ -80,28 +83,23 @@ public class PdfGeneratorBean implements PdfGenerator {
 		root = foDoc.createElement("root");
 		foDoc.appendChild(root);
 
-		ele = foDoc.createElement("date");
-		ele.setTextContent(paymentSchedule.getDateReceivedAsString());
-		root.appendChild(ele);
-		ele = foDoc.createElement("receiptNumber");
-		ele.setTextContent(paymentSchedule.getDateReceivedAsString());
+		addElement(root, "date", toS(paymentSchedule.getDateReceived()));
+		addElement(root, "receiptNumber", receipt.getTaxInvoiceId());
+		addElement(root, "childName", child.getName());
+		addElement(root, "childNumber", child.getChildNumber());
+		addElement(root, "weekStart", toS(paymentSchedule.getBillingStartDate()));
+		addElement(root, "weekEnd", toS(paymentSchedule.getBillingEndDate()));
+		addElement(root, "accountAmount", toS(paymentSchedule.getAmountInvoiced()));
+		addElement(root, "thisPayment", toS(paymentSchedule.getAmountReceived()));
+		addElement(root, "balanceDue", toS(paymentSchedule.getBalanceDue()));
+		
 		return foDoc;
 	}
 
-	/**
-	 * Adds an element to the DOM.
-	 * 
-	 * @param parent
-	 *            parent node to attach the new element to
-	 * @param newNodeName
-	 *            name of the new node
-	 * @param textVal
-	 *            content of the element
-	 */
-	protected static void addElement(Node parent, String newNodeName, String textVal) {
+	private void addElement(Node parent, String newNodeName, String textVal) {
 		if (textVal == null) {
 			return;
-		} // use only with text nodes
+		}
 		Element newElement = parent.getOwnerDocument().createElement(newNodeName);
 		Text elementText = parent.getOwnerDocument().createTextNode(textVal);
 		newElement.appendChild(elementText);

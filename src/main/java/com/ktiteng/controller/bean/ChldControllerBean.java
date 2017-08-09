@@ -48,7 +48,7 @@ public class ChldControllerBean extends BaseController implements ChildControlle
 	}
 
 	@Override
-	public Child addChild(String firstName, String lastName, Parent parent) throws IOException {
+	public Child addChild(String firstName, String lastName, String childNumber, Parent parent) throws IOException {
 		Child c = new Child();
 		c.setFirstName(firstName);
 		if (lastName == null) {
@@ -56,6 +56,7 @@ public class ChldControllerBean extends BaseController implements ChildControlle
 		} else {
 			c.setLastName(lastName);
 		}
+		c.setChildNumber(childNumber);
 		c.setParentId(parent.getId());
 		return updateChild(c);
 	}

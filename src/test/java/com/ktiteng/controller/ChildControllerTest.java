@@ -30,18 +30,18 @@ public class ChildControllerTest extends ArquillianUnitTest {
 		assertTrue(Paths.get(getPathStr(), "parent.json").toFile().exists());
 		p1.setBankDetail(new BankDetail().setAccount("pfirst1"));
 		p1 = cc.updateParent(p1);
-		Child c1 = cc.addChild("cfirst1", "clast1", p1);
-		cc.addChild("cfirst2", "clast2", p2);
+		Child c1 = cc.addChild("cfirst1", "clast1", "Q00085", p1);
+		cc.addChild("cfirst2", "clast2", "Q00085", p2);
 		c1.setStartDate("2017-06-12");
 		cc.updateChild(c1);
 		assertTrue(Paths.get(getPathStr(), "child-" + c1.getId() + ".json").toFile().exists());
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void badEmail() {
 		try {
 			cc.addParent("pfirst3", "plast3", "0433654800", "test1.gmail.com");
-		} catch(IOException ioe) {
+		} catch (IOException ioe) {
 			fail();
 		}
 	}

@@ -60,7 +60,7 @@ public class PersistenceManager {
 			Object data = gson.fromJson(reader, entityType);
 			return data;
 		} catch (Exception e) {
-			log.warn("Cannot load.", e);
+			log.warn("Cannot load. {}", e.getMessage());
 		} finally {
 			if (in != null) {
 				try {

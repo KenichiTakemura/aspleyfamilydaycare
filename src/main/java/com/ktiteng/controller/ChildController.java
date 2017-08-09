@@ -13,7 +13,7 @@ public interface ChildController {
 
 	Parent updateParent(Parent parent) throws IOException;
 
-	Child addChild(String firstName, String lastName, Parent parent) throws IOException;
+	Child addChild(String firstName, String lastName, String childNumber, Parent parent) throws IOException;
 
 	Child updateChild(Child child) throws IOException;
 

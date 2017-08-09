@@ -14,6 +14,7 @@ public class InitTest extends ArquillianUnitTest {
 	@Inject
 	ChildController cc;
 
+	// Channy: kattio85@hotmail.com
 	@Test
 	public void addParent() throws IOException {
 		cc.addParent("Jihyun", "Broadhurst");
