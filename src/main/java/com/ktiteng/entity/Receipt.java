@@ -1,30 +1,23 @@
 package com.ktiteng.entity;
 
-import java.time.LocalDate;
-
-public class Receipt extends BaseEntity {
+public class Receipt extends TaxInvoice {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private String taxInvoiceId;
 
-	private LocalDate generatedAt;
-	private String receiptLocation;
+	public Receipt() {
 
-	public LocalDate getGeneratedAt() {
-		return generatedAt;
 	}
 
-	public void setGeneratedAt(LocalDate generatedAt) {
-		this.generatedAt = generatedAt;
+	public String getTaxInvoiceId() {
+		return taxInvoiceId;
 	}
 
-	public String getReceiptLocation() {
-		return receiptLocation;
-	}
-
-	public void setReceiptLocation(String receiptLocation) {
-		this.receiptLocation = receiptLocation;
+	public Receipt setTaxInvoiceId(String taxInvoiceId) {
+		this.taxInvoiceId = taxInvoiceId;
+		return this;
 	}
 }

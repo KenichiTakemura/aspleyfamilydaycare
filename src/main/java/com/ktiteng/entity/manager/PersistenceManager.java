@@ -1,8 +1,11 @@
 package com.ktiteng.entity.manager;
 
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.Writer;
+import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -14,6 +17,7 @@ import org.slf4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import com.ktiteng.cdi.Log;
 
 @Singleton
@@ -23,7 +27,10 @@ public class PersistenceManager {
 	@Log
 	private Logger log;
 
-	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	private static final Gson gson = new GsonBuilder()
+			.excludeFieldsWithoutExposeAnnotation()
+			.setPrettyPrinting()
+			.create();
 	private static final String ext = "json";
 	private static final String join = ".";
 
@@ -45,8 +52,29 @@ public class PersistenceManager {
 		return Paths.get(path.toString(), fileName).toString();
 	}
 
-	protected void persist(Object entity, String fileName) throws IOException {
-		try (Writer writer = new FileWriter(getFilePath(String.join(join, fileName, ext)))) {
+	protected Object load(Type entityType, String filename) {
+		Reader in = null;
+		try {
+			in = new FileReader(String.join(join, filename, ext));
+			JsonReader reader = new JsonReader(in);
+			Object data = gson.fromJson(reader, entityType);
+			return data;
+		} catch (Exception e) {
+			log.warn("Cannot load.", e);
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					log.warn("Cannot close the reader.", e);
+				}
+			}
+		}
+		return null;
+	}
+
+	protected void persist(Object entity, String filename) throws IOException {
+		try (Writer writer = new FileWriter(getFilePath(String.join(join, filename, ext)))) {
 			gson.toJson(entity, writer);
 		}
 	}

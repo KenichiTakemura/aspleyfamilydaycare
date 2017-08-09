@@ -58,6 +58,15 @@ public class PaymentSchedule extends BaseEntity {
 		return dateReceived;
 	}
 
+	public String getDateReceivedAsString() {
+		return toDateStr(dateReceived);
+	}
+
+	public PaymentSchedule setDateReceived(String dateReceived) {
+		this.dateReceived = toDate(dateReceived);
+		return this;
+	}
+
 	public PaymentSchedule setDateReceived(LocalDate dateReceived) {
 		this.dateReceived = dateReceived;
 		return this;

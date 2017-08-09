@@ -40,9 +40,6 @@ public class PdfGeneratorBean implements PdfGenerator {
 	@Log
 	protected Logger log;
 
-	/** xsl-fo namespace URI */
-	protected static String foNS = "http://www.w3.org/1999/XSL/Format";
-
 	@Override
 	public Receipt generateReceipt(PaymentSchedule paymentSchedule) throws IOException {
 		Receipt receipt = paymentSchedule.getReceipt();
@@ -50,7 +47,7 @@ public class PdfGeneratorBean implements PdfGenerator {
 		OutputStream out;
 		try {
 			fopFactory = FopFactory.newInstance(this.getClass().getResource("/fop/fop.xconf").toURI());
-			out = new BufferedOutputStream(new FileOutputStream(new File(receipt.getReceiptLocation())));
+			out = new BufferedOutputStream(new FileOutputStream(new File(receipt.getLocation())));
 		} catch (Exception e) {
 			throw new IOException(e);
 		}
@@ -73,36 +70,21 @@ public class PdfGeneratorBean implements PdfGenerator {
 
 	Document convertToDocument(PaymentSchedule paymentSchedule) throws Exception {
 		Document foDoc = null;
-		Element root = null, ele1 = null, ele2 = null, ele3 = null;
+		Element root = null, ele = null;
 
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
 		DocumentBuilder db = dbf.newDocumentBuilder();
 		foDoc = db.newDocument();
 
-		root = foDoc.createElementNS(foNS, "fo:root");
+		root = foDoc.createElement("root");
 		foDoc.appendChild(root);
 
-		ele1 = foDoc.createElementNS(foNS, "fo:layout-master-set");
-		root.appendChild(ele1);
-		ele2 = foDoc.createElementNS(foNS, "fo:simple-page-master");
-		ele1.appendChild(ele2);
-		ele2.setAttributeNS(null, "master-name", "letter");
-		ele2.setAttributeNS(null, "page-height", "11in");
-		ele2.setAttributeNS(null, "page-width", "8.5in");
-		ele2.setAttributeNS(null, "margin-top", "1in");
-		ele2.setAttributeNS(null, "margin-bottom", "1in");
-		ele2.setAttributeNS(null, "margin-left", "1in");
-		ele2.setAttributeNS(null, "margin-right", "1in");
-		ele3 = foDoc.createElementNS(foNS, "fo:region-body");
-		ele2.appendChild(ele3);
-		ele1 = foDoc.createElementNS(foNS, "fo:page-sequence");
-		root.appendChild(ele1);
-		ele1.setAttributeNS(null, "master-reference", "letter");
-		ele2 = foDoc.createElementNS(foNS, "fo:flow");
-		ele1.appendChild(ele2);
-		ele2.setAttributeNS(null, "flow-name", "xsl-region-body");
-		addElement(ele2, "fo:block", "Hello World!");
+		ele = foDoc.createElement("date");
+		ele.setTextContent(paymentSchedule.getDateReceivedAsString());
+		root.appendChild(ele);
+		ele = foDoc.createElement("receiptNumber");
+		ele.setTextContent(paymentSchedule.getDateReceivedAsString());
 		return foDoc;
 	}
 
@@ -120,7 +102,7 @@ public class PdfGeneratorBean implements PdfGenerator {
 		if (textVal == null) {
 			return;
 		} // use only with text nodes
-		Element newElement = parent.getOwnerDocument().createElementNS(foNS, newNodeName);
+		Element newElement = parent.getOwnerDocument().createElement(newNodeName);
 		Text elementText = parent.getOwnerDocument().createTextNode(textVal);
 		newElement.appendChild(elementText);
 		parent.appendChild(newElement);

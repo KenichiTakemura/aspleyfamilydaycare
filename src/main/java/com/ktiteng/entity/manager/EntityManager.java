@@ -16,6 +16,7 @@ import com.ktiteng.entity.BaseEntity;
 import com.ktiteng.entity.Child;
 import com.ktiteng.entity.Parent;
 import com.ktiteng.entity.Payment;
+import com.ktiteng.entity.TaxInvoiceSeeder;
 import com.ktiteng.entity.TimeCard;
 
 @Singleton
@@ -32,19 +33,29 @@ public class EntityManager {
 	private final static String child = "child-";
 	private final static String payment = "payment-";
 	private final static String timecard = "timecard-";
+	private final static String taxinvoiceseeder = "taxinvoiceseeder";
 
 	List<Parent> parents;
 	List<Child> children;
 	List<Payment> payments;
 	List<TimeCard> timecards;
+	TaxInvoiceSeeder taxInvoiceSeeder;
 
 	@PostConstruct
 	public void init() {
+		onLoad();
 		parents = new ArrayList<>();
 		children = new ArrayList<>();
 		payments = new ArrayList<>();
 		timecards = new ArrayList<>();
+		if (taxInvoiceSeeder == null) {
+			taxInvoiceSeeder = new TaxInvoiceSeeder();
+		}
 		log.info("produced.");
+	}
+	
+	void onLoad() {
+		taxInvoiceSeeder = (TaxInvoiceSeeder) pm.load(TaxInvoiceSeeder.class, taxinvoiceseeder);
 	}
 
 	public void save(BaseEntity entity) throws IOException {
@@ -67,6 +78,13 @@ public class EntityManager {
 		}
 	}
 
+	public BaseEntity get(Class<?> entityClass) {
+		if (entityClass.isAssignableFrom(TaxInvoiceSeeder.class)) {
+			return taxInvoiceSeeder;
+		}
+		return null;
+	}
+	
 	public BaseEntity find(Class<?> entityClass, String... ids) {
 		if (entityClass.isAssignableFrom(Parent.class)) {
 			Optional<Parent> parent = parents.stream().filter(p -> p.getId().equals(ids[0])).findFirst();
@@ -79,7 +97,6 @@ public class EntityManager {
 			return payment.isPresent() ? payment.get() : null;
 		}
 		return null;
-
 	}
 
 }
