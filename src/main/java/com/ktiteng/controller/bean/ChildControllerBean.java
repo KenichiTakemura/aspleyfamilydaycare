@@ -12,8 +12,7 @@ import com.ktiteng.entity.Parent;
 
 @Default
 @ApplicationScoped
-public class ChldControllerBean extends BaseController implements ChildController {
-
+public class ChildControllerBean extends BaseController implements ChildController {
 
 	@PostConstruct
 	public void init() {

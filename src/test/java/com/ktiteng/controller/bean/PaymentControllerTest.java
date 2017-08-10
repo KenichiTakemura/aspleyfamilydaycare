@@ -31,10 +31,9 @@ public class PaymentControllerTest extends ArquillianUnitTest {
 	public void payment() throws IOException {
 		Parent p1 = cc.addParent("pfirst1", "plast1", "0433654800", "test1@gmail.com");
 		Child c1 = cc.addChild("cfirst1", "clast1", "Q00085", p1);
-		Payment payment = pc.findPayment(c1);
-		assertNotNull(payment.getId());
-		pc.updateInitialPayment(c1, payment, new InitialPayment().setDeposit(150.00));
-		pc.updatePaymentSchedule(c1, payment, new PaymentSchedule());
+		assertNotNull(pc.findPayment(c1));
+		Payment payment = pc.updateInitialPayment(c1, new InitialPayment().setDeposit(150.00));
+		pc.updatePaymentSchedule(c1, new PaymentSchedule());
 		assertTrue(Paths.get(getPathStr(), "payment-" + payment.getId() + ".json").toFile().exists());
 	}
 }

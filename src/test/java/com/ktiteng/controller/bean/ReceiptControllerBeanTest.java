@@ -5,28 +5,30 @@ import static com.ktiteng.util.Utils.toDate;
 import javax.inject.Inject;
 
 import org.junit.Test;
+import org.slf4j.Logger;
 import org.w3c.dom.Document;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
 
-import com.ktiteng.arquillian.ArquillianUnitTest;
+import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.ChildController;
-import com.ktiteng.controller.PdfGenerator;
 import com.ktiteng.entity.Child;
 import com.ktiteng.entity.Parent;
 import com.ktiteng.entity.PaymentSchedule;
 import com.ktiteng.entity.Receipt;
 import com.ktiteng.entity.TaxInvoiceSeeder;
 
-public class PdfGeneratorBeanTest extends ArquillianUnitTest {
-
+public class ReceiptControllerBeanTest {
 	@Inject
-	PdfGenerator pdfGen;
+	@Log
+	protected Logger log;
 	@Inject
 	TaxInvoiceSeeder tcs;
 	@Inject
 	ChildController cc;
 
 	@Test
-	public void generate() throws Exception {
+	public void convertToDocument() throws Exception {
 		ReceiptControllerBean bean = new ReceiptControllerBean();
 		Parent p1 = cc.addParent("Mother", "Youn", "0433654800", "test1@gmail.com");
 		Child c1 = cc.addChild("Channy", "Youn", "Q00085", p1);
@@ -36,8 +38,10 @@ public class PdfGeneratorBeanTest extends ArquillianUnitTest {
 
 		Receipt r = new Receipt().setTaxInvoiceId(tcs.nextVal());
 		ps.setReceipt(r);
-		Document source = bean.convertToDocument(c1, ps);
-		pdfGen.generateReceipt(source, getPathStr() + "/test.pdf");
+		Document root = bean.convertToDocument(c1, ps);
+		DOMImplementationLS domImplLS = (DOMImplementationLS) root.getImplementation();
+		LSSerializer serializer = domImplLS.createLSSerializer();
+		String str = serializer.writeToString(root);
+		log.debug("{}", str);
 	}
-
 }

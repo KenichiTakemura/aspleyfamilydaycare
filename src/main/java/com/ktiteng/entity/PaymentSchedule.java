@@ -9,6 +9,7 @@ public class PaymentSchedule extends BaseEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 	private double balanceDue;
+	private double currentBalance;
 	private double amountInvoiced;
 	private double amountReceived;
 	private LocalDate billingStartDate;
@@ -98,6 +99,15 @@ public class PaymentSchedule extends BaseEntity {
 
 	public PaymentSchedule setBalanceDue(double balanceDue) {
 		this.balanceDue = balanceDue;
+		return this;
+	}
+
+	public double getCurrentBalance() {
+		return currentBalance;
+	}
+
+	public PaymentSchedule setCurrentBalance(double currentBalance) {
+		this.currentBalance = currentBalance;
 		return this;
 	}
 

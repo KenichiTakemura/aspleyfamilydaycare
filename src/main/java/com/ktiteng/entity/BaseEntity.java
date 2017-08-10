@@ -1,7 +1,6 @@
 package com.ktiteng.entity;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 public abstract class BaseEntity implements Serializable {
 

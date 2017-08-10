@@ -38,9 +38,15 @@ public class ArquillianUnitTest {
 
 	@Before
 	public void before() throws IOException {
-		pm.setPath(path);
-		FileUtils.deleteDirectory(path.toFile());
-		path.toFile().mkdirs();
+		pm.setPath(getPath());
+		if (getDeletePath()) {
+			FileUtils.deleteDirectory(path.toFile());
+			path.toFile().mkdirs();
+		}
+	}
+
+	protected boolean getDeletePath() {
+		return true;
 	}
 
 	protected Path getPath() {

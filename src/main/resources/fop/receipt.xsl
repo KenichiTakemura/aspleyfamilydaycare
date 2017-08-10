@@ -209,10 +209,10 @@
 										<fo:block text-align="end"></fo:block>
 									</fo:table-cell>
 									<fo:table-cell padding="1mm">
-										<fo:block text-align="start">Account Amount</fo:block>
+										<fo:block text-align="start">Current Balance</fo:block>
 									</fo:table-cell>
 									<fo:table-cell padding="1mm">
-										<fo:block text-align="right">$<xsl:value-of select="root/accountAmount" /></fo:block>
+										<fo:block text-align="right">$<xsl:value-of select="root/currentBalance" /></fo:block>
 									</fo:table-cell>
 
 								</fo:table-row>

@@ -1,5 +1,6 @@
 package com.ktiteng.entity.manager;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -27,9 +28,7 @@ public class PersistenceManager {
 	@Log
 	private Logger log;
 
-	private static final Gson gson = new GsonBuilder()
-			.excludeFieldsWithoutExposeAnnotation()
-			.setPrettyPrinting()
+	private static final Gson gson = new GsonBuilder().setPrettyPrinting()
 			.create();
 	private static final String ext = "json";
 	private static final String join = ".";
@@ -48,6 +47,10 @@ public class PersistenceManager {
 		log.info("path changed to {}.", path);
 	}
 
+	public Path getPath() {
+		return path;
+	}
+
 	private String getFilePath(String fileName) {
 		return Paths.get(path.toString(), fileName).toString();
 	}
@@ -55,7 +58,7 @@ public class PersistenceManager {
 	protected Object load(Type entityType, String filename) {
 		Reader in = null;
 		try {
-			in = new FileReader(String.join(join, filename, ext));
+			in = new FileReader(new File(getPath().toString(), String.join(join, filename, ext)));
 			JsonReader reader = new JsonReader(in);
 			Object data = gson.fromJson(reader, entityType);
 			return data;
@@ -73,7 +76,7 @@ public class PersistenceManager {
 		return null;
 	}
 
-	protected void persist(Object entity, String filename) throws IOException {
+	protected void persist(Object entity, Type entityType, String filename) throws IOException {
 		try (Writer writer = new FileWriter(getFilePath(String.join(join, filename, ext)))) {
 			gson.toJson(entity, writer);
 		}

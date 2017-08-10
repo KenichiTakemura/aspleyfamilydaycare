@@ -1,7 +1,6 @@
 package com.ktiteng.entity;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class InitialPayment extends BaseEntity {
 
@@ -11,9 +10,9 @@ public class InitialPayment extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	private double deposit;
-	private double resigtrationFee;
+	private double enrollmentFee;
 	private LocalDate depositPaidOn;
-	private LocalDate resigtrationFeePaidOn;
+	private LocalDate enrollmentFeePaidOn;
 
 	public double getDeposit() {
 		return deposit;
@@ -21,15 +20,6 @@ public class InitialPayment extends BaseEntity {
 
 	public InitialPayment setDeposit(double deposit) {
 		this.deposit = deposit;
-		return this;
-	}
-
-	public double getResigtrationFee() {
-		return resigtrationFee;
-	}
-
-	public InitialPayment setResigtrationFee(double resigtrationFee) {
-		this.resigtrationFee = resigtrationFee;
 		return this;
 	}
 
@@ -47,17 +37,26 @@ public class InitialPayment extends BaseEntity {
 		return this;
 	}
 
-	public LocalDate getResigtrationFeePaidOn() {
-		return resigtrationFeePaidOn;
+	public LocalDate getEnrollmentFeePaidOn() {
+		return enrollmentFeePaidOn;
 	}
 
-	public InitialPayment setResigtrationFeePaidOn(String resigtrationFeePaidOn) {
-		this.resigtrationFeePaidOn = LocalDate.parse(resigtrationFeePaidOn);
+	public InitialPayment setEnrollmentFeePaidOn(String enrollmentFeePaidOn) {
+		this.enrollmentFeePaidOn = LocalDate.parse(enrollmentFeePaidOn);
 		return this;
 	}
 
-	public InitialPayment setResigtrationFeePaidOn(LocalDate resigtrationFeePaidOn) {
-		this.resigtrationFeePaidOn = resigtrationFeePaidOn;
+	public InitialPayment setEnrollmentFeePaidOn(LocalDate resigtrationFeePaidOn) {
+		this.enrollmentFeePaidOn = resigtrationFeePaidOn;
+		return this;
+	}
+
+	public double getEnrollmentFee() {
+		return enrollmentFee;
+	}
+
+	public InitialPayment setEnrollmentFee(double enrollmentFee) {
+		this.enrollmentFee = enrollmentFee;
 		return this;
 	}
 

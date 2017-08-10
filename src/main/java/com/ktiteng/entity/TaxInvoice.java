@@ -13,7 +13,6 @@ public class TaxInvoice extends BaseEntity {
 	private String location;
 	
 	public TaxInvoice() {
-		
 	}
 
 	public LocalDate getGeneratedAt() {
