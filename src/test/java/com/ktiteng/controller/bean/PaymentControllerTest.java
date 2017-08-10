@@ -1,4 +1,4 @@
-package com.ktiteng.controller;
+package com.ktiteng.controller.bean;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -11,6 +11,8 @@ import javax.inject.Inject;
 import org.junit.Test;
 
 import com.ktiteng.arquillian.ArquillianUnitTest;
+import com.ktiteng.controller.ChildController;
+import com.ktiteng.controller.PaymentController;
 import com.ktiteng.entity.Child;
 import com.ktiteng.entity.InitialPayment;
 import com.ktiteng.entity.Parent;

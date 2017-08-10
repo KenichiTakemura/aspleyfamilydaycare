@@ -1,4 +1,4 @@
-package com.ktiteng.fop;
+package com.ktiteng.controller.bean;
 
 import static com.ktiteng.util.Utils.toS;
 
@@ -31,6 +31,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 import com.ktiteng.cdi.Log;
+import com.ktiteng.controller.PdfGenerator;
 import com.ktiteng.entity.Child;
 import com.ktiteng.entity.PaymentSchedule;
 import com.ktiteng.entity.Receipt;
@@ -90,8 +91,10 @@ public class PdfGeneratorBean implements PdfGenerator {
 		addElement(root, "weekStart", toS(paymentSchedule.getBillingStartDate()));
 		addElement(root, "weekEnd", toS(paymentSchedule.getBillingEndDate()));
 		addElement(root, "accountAmount", toS(paymentSchedule.getAmountInvoiced()));
-		addElement(root, "thisPayment", toS(paymentSchedule.getAmountReceived()));
-		addElement(root, "balanceDue", toS(paymentSchedule.getBalanceDue()));
+		addElement(root, "accountPaid", toS(paymentSchedule.getAmountReceived()));
+		String balanceDue = Double.compare(paymentSchedule.getBalanceDue(), 0.0) > 0 ?
+				toS(paymentSchedule.getBalanceDue()) + "CR" : toS(paymentSchedule.getBalanceDue());
+		addElement(root, "balanceDue", balanceDue);
 		
 		return foDoc;
 	}

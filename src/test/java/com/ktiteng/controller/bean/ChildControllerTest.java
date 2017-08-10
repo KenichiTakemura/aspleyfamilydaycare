@@ -1,4 +1,4 @@
-package com.ktiteng.controller;
+package com.ktiteng.controller.bean;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import org.junit.Test;
 
 import com.ktiteng.arquillian.ArquillianUnitTest;
+import com.ktiteng.controller.ChildController;
 import com.ktiteng.entity.BankDetail;
 import com.ktiteng.entity.Child;
 import com.ktiteng.entity.Parent;

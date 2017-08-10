@@ -7,11 +7,11 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
 import com.ktiteng.controller.PaymentController;
+import com.ktiteng.controller.PdfGenerator;
 import com.ktiteng.entity.Child;
 import com.ktiteng.entity.InitialPayment;
 import com.ktiteng.entity.Payment;
 import com.ktiteng.entity.PaymentSchedule;
-import com.ktiteng.fop.PdfGenerator;
 
 @Default
 @ApplicationScoped

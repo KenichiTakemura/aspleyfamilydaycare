@@ -28,23 +28,23 @@
 							<fo:external-graphic src="./images/logo.jpg" />
 						</fo:block>
 						<fo:block text-align="start" line-height="18pt"
-							font-family="sans-serif" font-size="14pt">
+							font-family="sans-serif" font-size="13pt">
 							KA Family Day Care
 						</fo:block>
 						<fo:block text-align="start" line-height="18pt"
-							font-family="sans-serif" font-size="14pt">
+							font-family="sans-serif" font-size="13pt">
 							26 Toorak Place
 						</fo:block>
 						<fo:block text-align="start" line-height="18pt"
-							font-family="sans-serif" font-size="14pt">
+							font-family="sans-serif" font-size="13pt">
 							Runcorn QLD 4113
 						</fo:block>
 						<fo:block text-align="start" line-height="18pt"
-							font-family="sans-serif" font-size="14pt">
+							font-family="sans-serif" font-size="13pt">
 							Ph: (07) 3108 0348
 						</fo:block>
 						<fo:block text-align="start" line-height="18pt"
-							font-family="sans-serif" font-size="14pt">
+							font-family="sans-serif" font-size="13pt">
 							Email: kafdc.qad@gmail.com
 						</fo:block>
 					</fo:block-container>
@@ -140,10 +140,10 @@
 										<fo:block text-align="end"></fo:block>
 									</fo:table-cell>
 									<fo:table-cell padding="1mm">
-										<fo:block text-align="start">TOTAL</fo:block>
+										<fo:block text-align="start">Balance Due</fo:block>
 									</fo:table-cell>
 									<fo:table-cell padding="1mm">
-										<fo:block text-align="center">$<xsl:value-of select="root/amount" /></fo:block>
+										<fo:block text-align="center">$<xsl:value-of select="root/balanceDue" /></fo:block>
 									</fo:table-cell>
 
 								</fo:table-row>
@@ -184,7 +184,7 @@
 										<fo:block text-align="start">Educator’s Number</fo:block>
 									</fo:table-cell>
 									<fo:table-cell padding="1mm">
-										<fo:block text-align="right">1234567</fo:block>
+										<fo:block text-align="right">Q0008</fo:block>
 									</fo:table-cell>
 
 								</fo:table-row>
@@ -209,10 +209,34 @@
 										<fo:block text-align="end"></fo:block>
 									</fo:table-cell>
 									<fo:table-cell padding="1mm">
-										<fo:block text-align="start">Payment</fo:block>
+										<fo:block text-align="start">Account Amount</fo:block>
 									</fo:table-cell>
 									<fo:table-cell padding="1mm">
-										<fo:block text-align="right">$<xsl:value-of select="root/amount" /></fo:block>
+										<fo:block text-align="right">$<xsl:value-of select="root/accountAmount" /></fo:block>
+									</fo:table-cell>
+
+								</fo:table-row>
+								<fo:table-row line-height="20pt">
+									<fo:table-cell padding="1mm">
+										<fo:block text-align="end"></fo:block>
+									</fo:table-cell>
+									<fo:table-cell padding="1mm">
+										<fo:block text-align="start">Amount Paid</fo:block>
+									</fo:table-cell>
+									<fo:table-cell padding="1mm">
+										<fo:block text-align="right">$<xsl:value-of select="root/accountPaid" /></fo:block>
+									</fo:table-cell>
+
+								</fo:table-row>
+								<fo:table-row line-height="20pt">
+									<fo:table-cell padding="1mm">
+										<fo:block text-align="end"></fo:block>
+									</fo:table-cell>
+									<fo:table-cell padding="1mm">
+										<fo:block text-align="start">Balance Due</fo:block>
+									</fo:table-cell>
+									<fo:table-cell padding="1mm">
+										<fo:block text-align="right">$<xsl:value-of select="root/balanceDue" /></fo:block>
 									</fo:table-cell>
 
 								</fo:table-row>

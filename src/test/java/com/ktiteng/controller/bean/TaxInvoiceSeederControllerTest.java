@@ -1,4 +1,4 @@
-package com.ktiteng.controller;
+package com.ktiteng.controller.bean;
 
 import static org.junit.Assert.assertEquals;
 
