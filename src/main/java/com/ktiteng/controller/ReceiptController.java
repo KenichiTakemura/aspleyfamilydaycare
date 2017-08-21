@@ -9,5 +9,5 @@ public interface ReceiptController {
 
 	void issueReceipt(Child child, PaymentSchedule paymentSchedule) throws IOException;
 
-	void sendReceipt(Child child, PaymentSchedule paymentSchedule) throws IOException;
+	void sendReceipt(String childId, String paymentScheduleId) throws IOException;
 }

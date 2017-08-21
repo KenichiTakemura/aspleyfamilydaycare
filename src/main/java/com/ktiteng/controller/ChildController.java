@@ -1,6 +1,7 @@
 package com.ktiteng.controller;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import com.ktiteng.entity.Child;
 import com.ktiteng.entity.Parent;
@@ -17,8 +18,12 @@ public interface ChildController {
 
 	Child updateChild(Child child) throws IOException;
 
+	Collection<Parent> getAllParents() throws IOException;
+	
 	Parent findParent(String id) throws IOException;
 
+	Child getAllChildren(String id) throws IOException;
+	
 	Child findChild(String id) throws IOException;
 
 }

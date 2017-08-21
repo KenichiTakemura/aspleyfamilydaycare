@@ -10,6 +10,8 @@ import com.ktiteng.entity.PaymentSchedule;
 public interface PaymentController {
 	
 	Payment findPayment(Child child) throws IOException;
+	
+	PaymentSchedule findPaymentSchedule(Child child, String paymentScheduleId) throws IOException;
 
 	Payment updateInitialPayment(Child child, InitialPayment initialPayment) throws IOException;
 

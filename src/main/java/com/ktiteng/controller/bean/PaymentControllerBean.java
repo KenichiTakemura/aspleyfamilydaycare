@@ -1,6 +1,7 @@
 package com.ktiteng.controller.bean;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
@@ -13,7 +14,6 @@ import com.ktiteng.entity.InitialPayment;
 import com.ktiteng.entity.Payment;
 import com.ktiteng.entity.PaymentSchedule;
 import com.ktiteng.entity.Receipt;
-import com.ktiteng.entity.TaxInvoiceSeeder;
 import com.ktiteng.entity.manager.PersistenceManager;
 import com.ktiteng.util.Utils;
 
@@ -47,10 +47,11 @@ public class PaymentControllerBean extends BaseController implements PaymentCont
 		Payment payment = findPayment(child);
 		payment.setChildId(child.getId());
 		Receipt receipt = new Receipt().setTaxInvoiceId(tcs.generateNextId());
-		receipt.setName(String.format("Receipt for %s %s(%s-%s)", child.getFirstName(), child.getLastName(), Utils.toS(paymentSchedule.getBillingStartDate()),
-				Utils.toS(paymentSchedule.getBillingEndDate())));
+		receipt.setName(String.format("Receipt for %s %s(%s-%s)", child.getFirstName(), child.getLastName(),
+				Utils.toS(paymentSchedule.getBillingStartDate()), Utils.toS(paymentSchedule.getBillingEndDate())));
 		String location = String.format("%s/receipt/Receipt_%s_%s(%s-%s).pdf", pm.getPath().toString(),
-				child.getFirstName(), child.getLastName().trim(), Utils.toS(paymentSchedule.getBillingStartDate()).replaceAll("/", ""),
+				child.getFirstName(), child.getLastName().trim(),
+				Utils.toS(paymentSchedule.getBillingStartDate()).replaceAll("/", ""),
 				Utils.toS(paymentSchedule.getBillingEndDate()).replaceAll("/", ""));
 		receipt.setLocation(location);
 		paymentSchedule.setReceipt(receipt);
@@ -59,9 +60,12 @@ public class PaymentControllerBean extends BaseController implements PaymentCont
 		return paymentSchedule;
 	}
 
-	// Private Area
-	private PaymentSchedule findPaymentSchedule(String childId, String paymentScheduleId) throws IOException {
-		return (PaymentSchedule) em.find(PaymentSchedule.class, childId, paymentScheduleId);
+	@Override
+	public PaymentSchedule findPaymentSchedule(Child child, String paymentScheduleId) throws IOException {
+		Payment payment = findPayment(child);
+		Optional<PaymentSchedule> ops = payment.getPaymentSchedule().stream()
+				.filter(ps -> ps.getId().equals(paymentScheduleId)).findFirst();
+		return ops.get();
 	}
 
 }

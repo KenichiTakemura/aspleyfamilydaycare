@@ -18,6 +18,7 @@ public class Payment extends BaseEntity {
 
 	public Payment() {
 		setId(Utils.getId());
+		paymentSchedule = new ArrayList<>();
 	}
 
 	public String getChildId() {

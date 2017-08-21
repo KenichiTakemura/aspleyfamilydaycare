@@ -1,6 +1,7 @@
 package com.ktiteng.controller.bean;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -73,8 +74,18 @@ public class ChildControllerBean extends BaseController implements ChildControll
 
 	@Override
 	public Child findChild(String id) throws IOException {
-		return (Child) em.find(Parent.class, id);
+		return (Child) em.find(Child.class, id);
 	}
 
+	@Override
+	public Collection<Parent> getAllParents() throws IOException {
+		return (Collection<Parent>) (em.getAll(Parent.class).getEntities());
+	}
+
+	@Override
+	public Child getAllChildren(String id) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

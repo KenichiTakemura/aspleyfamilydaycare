@@ -19,6 +19,7 @@ import org.w3c.dom.Text;
 import com.ktiteng.afdc.AFDC;
 import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.ChildController;
+import com.ktiteng.controller.PaymentController;
 import com.ktiteng.controller.PdfGenerator;
 import com.ktiteng.controller.ReceiptController;
 import com.ktiteng.entity.Child;
@@ -40,6 +41,9 @@ public class ReceiptControllerBean implements ReceiptController {
 	@Inject
 	ChildController cc;
 
+	@Inject
+	PaymentController pc;
+
 	@Override
 	public void issueReceipt(Child child, PaymentSchedule paymentSchedule) throws IOException {
 		try {
@@ -51,9 +55,21 @@ public class ReceiptControllerBean implements ReceiptController {
 	}
 
 	@Override
-	public void sendReceipt(Child child, PaymentSchedule paymentSchedule) throws IOException {
+	public void sendReceipt(String childId, String paymentScheduleId) throws IOException {
+		Child child = cc.findChild(childId);
+		if (child == null) {
+			throw new IOException("Child not found by " + childId);
+		}
+		PaymentSchedule ps = pc.findPaymentSchedule(child, paymentScheduleId);
+		if (ps == null) {
+			throw new IOException("PaymentSchedule not found by " + paymentScheduleId);
+		}
 		String to = cc.findParent(child.getParentId()).getEmailAddress();
-		gmailSender.sendEmail(to, paymentSchedule.getReceipt().getName(), AFDC.EmailContent, paymentSchedule.getReceipt().getLocation());
+		if (to == null) {
+			throw new IOException("Parent Email not found for " + child.getParentId());
+		}
+		gmailSender.sendEmail(to, ps.getReceipt().getName(), AFDC.EmailContent,
+				ps.getReceipt().getLocation());
 	}
 
 	Document convertToDocument(Child child, PaymentSchedule paymentSchedule) throws Exception {
@@ -75,12 +91,12 @@ public class ReceiptControllerBean implements ReceiptController {
 		addElement(root, "weekStart", toS(paymentSchedule.getBillingStartDate()));
 		addElement(root, "weekEnd", toS(paymentSchedule.getBillingEndDate()));
 		String currentBalance = Double.compare(paymentSchedule.getCurrentBalance(), 0.0) > 0
-				? toS(paymentSchedule.getCurrentBalance()) + "CR" : toS(paymentSchedule.getCurrentBalance());
+				? toS(paymentSchedule.getCurrentBalance()) + " CR" : toS(paymentSchedule.getCurrentBalance());
 		addElement(root, "currentBalance", currentBalance);
 		addElement(root, "accountAmount", toS(paymentSchedule.getAmountInvoiced()));
 		addElement(root, "accountPaid", toS(paymentSchedule.getAmountReceived()));
 		String balanceDue = Double.compare(paymentSchedule.getBalanceDue(), 0.0) > 0
-				? toS(paymentSchedule.getBalanceDue()) + "CR" : toS(paymentSchedule.getBalanceDue());
+				? toS(paymentSchedule.getBalanceDue()) + " CR" : toS(paymentSchedule.getBalanceDue());
 		addElement(root, "balanceDue", balanceDue);
 
 		return foDoc;

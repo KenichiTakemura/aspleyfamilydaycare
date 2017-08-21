@@ -62,36 +62,36 @@
 							RECEIPT
 						</fo:block>
 					</fo:block-container>
+<!-- 					<fo:block-container border-color="black" -->
+<!-- 						border-style="solid" border-width=".5mm" height="0.5cm" width="2.49cm" -->
+<!-- 						top="3.2cm" left="13.8cm" padding=".6mm" position="absolute"> -->
+<!-- 						<fo:block text-align="start" space-after.optimum="3pt" -->
+<!-- 							line-height="14pt" font-family="sans-serif" font-size="12pt"> -->
+<!-- 							DATE -->
+<!-- 						</fo:block> -->
+<!-- 					</fo:block-container> -->
+<!-- 					<fo:block-container border-color="black" -->
+<!-- 						border-style="solid" border-width=".5mm" height="0.5cm" width="2.49cm" -->
+<!-- 						top="3.87cm" left="13.8cm" padding=".6mm" position="absolute"> -->
+<!-- 						<fo:block text-align="start" space-after.optimum="3pt" -->
+<!-- 							line-height="14pt" font-family="sans-serif" font-size="10pt"> -->
+<!-- 							<xsl:value-of select="root/date" /> -->
+<!-- 						</fo:block> -->
+<!-- 					</fo:block-container> -->
 					<fo:block-container border-color="black"
 						border-style="solid" border-width=".5mm" height="0.5cm" width="2.49cm"
-						top="3.2cm" left="13.8cm" padding=".6mm" position="absolute">
-						<fo:block text-align="start" space-after.optimum="3pt"
+						top="3.2cm" left="16.46cm" padding=".6mm" position="absolute">
+						<fo:block text-align="center" space-after.optimum="3pt"
 							line-height="14pt" font-family="sans-serif" font-size="12pt">
 							DATE
 						</fo:block>
 					</fo:block-container>
 					<fo:block-container border-color="black"
 						border-style="solid" border-width=".5mm" height="0.5cm" width="2.49cm"
-						top="3.87cm" left="13.8cm" padding=".6mm" position="absolute">
-						<fo:block text-align="start" space-after.optimum="3pt"
+						top="3.87cm" left="16.46cm" padding=".6mm" position="absolute">
+						<fo:block text-align="center" space-after.optimum="3pt"
 							line-height="14pt" font-family="sans-serif" font-size="10pt">
 							<xsl:value-of select="root/date" />
-						</fo:block>
-					</fo:block-container>
-					<fo:block-container border-color="black"
-						border-style="solid" border-width=".5mm" height="0.5cm" width="2.49cm"
-						top="3.2cm" left="16.46cm" padding=".6mm" position="absolute">
-						<fo:block text-align="start" space-after.optimum="3pt"
-							line-height="14pt" font-family="sans-serif" font-size="12pt">
-							RECEIPT #
-						</fo:block>
-					</fo:block-container>
-					<fo:block-container border-color="black"
-						border-style="solid" border-width=".5mm" height="0.5cm" width="2.49cm"
-						top="3.87cm" left="16.46cm" padding=".6mm" position="absolute">
-						<fo:block text-align="start" space-after.optimum="3pt"
-							line-height="14pt" font-family="sans-serif" font-size="10pt">
-							<xsl:value-of select="root/receiptNumber" />
 						</fo:block>
 					</fo:block-container>
 					<fo:block-container height="14cm" width="12cm"
@@ -143,7 +143,10 @@
 										<fo:block text-align="start">Balance Due</fo:block>
 									</fo:table-cell>
 									<fo:table-cell padding="1mm">
-										<fo:block text-align="center">$<xsl:value-of select="root/balanceDue" /></fo:block>
+										<fo:block text-align="center">
+											$
+											<xsl:value-of select="root/balanceDue" />
+										</fo:block>
 									</fo:table-cell>
 
 								</fo:table-row>
@@ -209,10 +212,28 @@
 										<fo:block text-align="end"></fo:block>
 									</fo:table-cell>
 									<fo:table-cell padding="1mm">
-										<fo:block text-align="start">Current Balance</fo:block>
+										<fo:block text-align="start">Balance Carried Forward</fo:block>
 									</fo:table-cell>
 									<fo:table-cell padding="1mm">
-										<fo:block text-align="right">$<xsl:value-of select="root/currentBalance" /></fo:block>
+										<fo:block text-align="right">
+											$
+											<xsl:value-of select="root/currentBalance" />
+										</fo:block>
+									</fo:table-cell>
+
+								</fo:table-row>
+								<fo:table-row line-height="20pt">
+									<fo:table-cell padding="1mm">
+										<fo:block text-align="end"></fo:block>
+									</fo:table-cell>
+									<fo:table-cell padding="1mm">
+										<fo:block text-align="start">Gap Fees for this Period</fo:block>
+									</fo:table-cell>
+									<fo:table-cell padding="1mm">
+										<fo:block text-align="right">
+											$
+											<xsl:value-of select="root/accountAmount" />
+										</fo:block>
 									</fo:table-cell>
 
 								</fo:table-row>
@@ -224,7 +245,11 @@
 										<fo:block text-align="start">Amount Paid</fo:block>
 									</fo:table-cell>
 									<fo:table-cell padding="1mm">
-										<fo:block text-align="right">$<xsl:value-of select="root/accountPaid" /></fo:block>
+										<fo:block text-align="right">
+											$
+											<xsl:value-of select="root/accountPaid" />
+											CR
+										</fo:block>
 									</fo:table-cell>
 
 								</fo:table-row>
@@ -236,7 +261,10 @@
 										<fo:block text-align="start">Balance Due</fo:block>
 									</fo:table-cell>
 									<fo:table-cell padding="1mm">
-										<fo:block text-align="right">$<xsl:value-of select="root/balanceDue" /></fo:block>
+										<fo:block text-align="right">
+											$
+											<xsl:value-of select="root/balanceDue" />
+										</fo:block>
 									</fo:table-cell>
 
 								</fo:table-row>

@@ -45,7 +45,7 @@ public class GmailSender {
 
 		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("aspleyfamilydaycare@gmail.com", "Sarang1107");
+				return new PasswordAuthentication("username", "password");
 			}
 		});
 
@@ -54,8 +54,7 @@ public class GmailSender {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(AFDC.afdcAdminEmail));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-			message.setRecipients(Message.RecipientType.CC, InternetAddress.parse("ohin.kwon@yahoo.com.au"));
-//			message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(AFDC.kaAdminEmail));
+			message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(AFDC.kaAdminEmail));
 			message.setSubject(subject);
 			BodyPart messageBodyPart = new MimeBodyPart();
 			messageBodyPart.setText(text);

@@ -2,6 +2,8 @@ package com.ktiteng.entity;
 
 import java.time.LocalDate;
 
+import com.ktiteng.util.Utils;
+
 public class PaymentSchedule extends BaseEntity {
 
 	/**
@@ -20,6 +22,10 @@ public class PaymentSchedule extends BaseEntity {
 	private boolean receiptIssued;
 	private Receipt receipt;
 
+	public PaymentSchedule() {
+		setId(Utils.getId());
+	}
+	
 	public double getAmountInvoiced() {
 		return amountInvoiced;
 	}

@@ -61,6 +61,7 @@ public class PersistenceManager {
 			in = new FileReader(new File(getPath().toString(), String.join(join, filename, ext)));
 			JsonReader reader = new JsonReader(in);
 			Object data = gson.fromJson(reader, entityType);
+			log.info("Loaded from {}", filename);
 			return data;
 		} catch (Exception e) {
 			log.warn("Cannot load. {}", e.getMessage());

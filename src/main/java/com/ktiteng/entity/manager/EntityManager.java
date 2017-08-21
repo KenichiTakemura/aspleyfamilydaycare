@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import com.ktiteng.cdi.Log;
 import com.ktiteng.entity.BaseEntity;
 import com.ktiteng.entity.Child;
+import com.ktiteng.entity.EntityBag;
 import com.ktiteng.entity.Parent;
 import com.ktiteng.entity.Payment;
 import com.ktiteng.entity.TaxInvoiceSeeder;
@@ -54,11 +55,11 @@ public class EntityManager {
 	@PostConstruct
 	public void init() {
 		onLoad();
-		parents = new ArrayList<>();
 		children = new ArrayList<>();
-		payments = new ArrayList<>();
+
 		timecards = new ArrayList<>();
 		if (parents == null) {
+			log.info("Create a new parent list");
 			parents = new ArrayList<>();
 		}
 		if (taxInvoiceSeeder == null) {
@@ -95,6 +96,14 @@ public class EntityManager {
 		} else if (entity instanceof TaxInvoiceSeeder) {
 			pm.persist(taxInvoiceSeeder, taxInvoiceSeeder.getClass(), taxinvoiceseeder);
 		}
+	}
+
+	public EntityBag getAll(Class<?> entityClass) {
+		EntityBag bag = new EntityBag();
+		if (entityClass.isAssignableFrom(Parent.class)) {
+			return bag.setEntities(parents);
+		}
+		return bag;
 	}
 
 	public BaseEntity get(Class<?> entityClass) {
