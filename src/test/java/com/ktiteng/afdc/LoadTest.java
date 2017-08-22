@@ -45,7 +45,6 @@ public class LoadTest extends ArquillianUnitTest {
 		Collection<Parent>  parents = cc.getAllParents();
 		parents.stream().forEach(p -> log.info("Parent " + p.getFirstName()));
 		assertEquals(7, parents.size());
-
 	}
 
 }

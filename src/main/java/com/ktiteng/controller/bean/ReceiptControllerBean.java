@@ -16,8 +16,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
-import com.ktiteng.afdc.AFDC;
+import com.ktiteng.cdi.Config;
 import com.ktiteng.cdi.Log;
+import com.ktiteng.controller.AfdcConfig;
 import com.ktiteng.controller.ChildController;
 import com.ktiteng.controller.PaymentController;
 import com.ktiteng.controller.PdfGenerator;
@@ -44,6 +45,10 @@ public class ReceiptControllerBean implements ReceiptController {
 	@Inject
 	PaymentController pc;
 
+	@Inject
+	@Config
+	AfdcConfig config;
+
 	@Override
 	public void issueReceipt(Child child, PaymentSchedule paymentSchedule) throws IOException {
 		try {
@@ -68,8 +73,7 @@ public class ReceiptControllerBean implements ReceiptController {
 		if (to == null) {
 			throw new IOException("Parent Email not found for " + child.getParentId());
 		}
-		gmailSender.sendEmail(to, ps.getReceipt().getName(), AFDC.EmailContent,
-				ps.getReceipt().getLocation());
+		gmailSender.sendEmail(to, ps.getReceipt().getName(), config.getEmailContents(), ps.getReceipt().getLocation());
 	}
 
 	Document convertToDocument(Child child, PaymentSchedule paymentSchedule) throws Exception {

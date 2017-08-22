@@ -22,13 +22,18 @@ import javax.mail.internet.MimeMultipart;
 
 import org.slf4j.Logger;
 
-import com.ktiteng.afdc.AFDC;
+import com.ktiteng.cdi.Config;
 import com.ktiteng.cdi.Log;
+import com.ktiteng.controller.AfdcConfig;
 
 public class GmailSender {
 	@Inject
 	@Log
 	protected Logger log;
+	
+	@Inject
+	@Config
+	AfdcConfig config;
 
 	@PostConstruct
 	public void init() {
@@ -45,16 +50,17 @@ public class GmailSender {
 
 		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("username", "password");
+				String password = new String(config.getGmailPassword());
+				return new PasswordAuthentication(config.getGamilUserName(), password);
 			}
 		});
 
 		try {
 			log.info("Sending an email to {}", to);
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(AFDC.afdcAdminEmail));
+			message.setFrom(new InternetAddress(config.getAfdcAdminEmail()));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-			message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(AFDC.kaAdminEmail));
+			message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(config.getKaAdminEmail()));
 			message.setSubject(subject);
 			BodyPart messageBodyPart = new MimeBodyPart();
 			messageBodyPart.setText(text);
