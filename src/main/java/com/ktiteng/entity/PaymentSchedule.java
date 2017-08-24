@@ -20,12 +20,13 @@ public class PaymentSchedule extends BaseEntity {
 	private LocalDate dateReceived;
 	private boolean completed;
 	private boolean receiptIssued;
+	private boolean receiptSent;
 	private Receipt receipt;
 
 	public PaymentSchedule() {
 		setId(Utils.getId());
 	}
-	
+
 	public double getAmountInvoiced() {
 		return amountInvoiced;
 	}
@@ -47,7 +48,7 @@ public class PaymentSchedule extends BaseEntity {
 	public LocalDate getBillingStartDate() {
 		return billingStartDate;
 	}
-	
+
 	public PaymentSchedule setBillingStartDate(LocalDate billingStartDate) {
 		this.billingStartDate = billingStartDate;
 		return this;
@@ -102,7 +103,6 @@ public class PaymentSchedule extends BaseEntity {
 		return balanceDue;
 	}
 
-
 	public PaymentSchedule setBalanceDue(double balanceDue) {
 		this.balanceDue = balanceDue;
 		return this;
@@ -117,4 +117,23 @@ public class PaymentSchedule extends BaseEntity {
 		return this;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (!(obj instanceof PaymentSchedule)) {
+			return false;
+		}
+		PaymentSchedule other = (PaymentSchedule) obj;
+		return billingStartDate.equals(other.billingStartDate) && billingEndDate.equals(other.billingEndDate);
+	}
+
+	public boolean isReceiptSent() {
+		return receiptSent;
+	}
+
+	public PaymentSchedule setReceiptSent(boolean receiptSent) {
+		this.receiptSent = receiptSent;
+		return this;
+	}
 }

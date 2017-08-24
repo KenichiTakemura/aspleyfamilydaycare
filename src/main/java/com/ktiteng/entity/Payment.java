@@ -56,6 +56,15 @@ public class Payment extends BaseEntity {
 		return paymentSchedule;
 	}
 
+	public PaymentSchedule updatePaymentSchedule(PaymentSchedule paymentSchedule) {
+		if (this.paymentSchedule == null) {
+			throw new IllegalStateException("Not exists. Use add.");
+		}
+		this.paymentSchedule.removeIf(p -> p.getId().equals(paymentSchedule.getId()));
+		this.paymentSchedule.add(paymentSchedule);
+		return paymentSchedule;
+	}
+	
 	public double getBalanceDue() {
 		return balanceDue;
 	}

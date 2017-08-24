@@ -16,7 +16,9 @@ import com.ktiteng.arquillian.ArquillianUnitTest;
 import com.ktiteng.controller.ChildController;
 import com.ktiteng.controller.PaymentController;
 import com.ktiteng.controller.ReceiptController;
+import com.ktiteng.entity.Child;
 import com.ktiteng.entity.Parent;
+import com.ktiteng.entity.Payment;
 
 public class LoadTest extends ArquillianUnitTest {
 
@@ -42,9 +44,22 @@ public class LoadTest extends ArquillianUnitTest {
 
 	@Test
 	public void loadParent() throws IOException {
-		Collection<Parent>  parents = cc.getAllParents();
+		Collection<Parent> parents = cc.getAllParents();
 		parents.stream().forEach(p -> log.info("Parent " + p.getFirstName()));
 		assertEquals(7, parents.size());
 	}
 
+	@Test
+	public void loadChildren() throws IOException {
+		Collection<Child> children = cc.getAllChildren();
+		children.stream().forEach(c -> log.info("Child " + c.getFirstName()));
+		assertEquals(7, children.size());
+	}
+
+	@Test
+	public void loadPayments() throws IOException {
+		Collection<Payment> payments = pc.getAllPayments();
+		payments.stream().forEach(p -> log.info("Payment " + p.getId()));
+		assertEquals(7, payments.size());
+	}
 }

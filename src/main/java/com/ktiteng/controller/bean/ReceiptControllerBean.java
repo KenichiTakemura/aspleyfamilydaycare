@@ -51,9 +51,13 @@ public class ReceiptControllerBean implements ReceiptController {
 
 	@Override
 	public void issueReceipt(Child child, PaymentSchedule paymentSchedule) throws IOException {
+		if (paymentSchedule.isReceiptIssued()) {
+			throw new IllegalStateException("Already receipt issued.");
+		}
 		try {
 			pdfGen.generateReceipt(convertToDocument(child, paymentSchedule),
 					paymentSchedule.getReceipt().getLocation());
+			pc.updatePaymentSchedule(child, paymentSchedule.setReceiptIssued(true));
 		} catch (Exception e) {
 			throw new IOException(e);
 		}
@@ -65,15 +69,20 @@ public class ReceiptControllerBean implements ReceiptController {
 		if (child == null) {
 			throw new IOException("Child not found by " + childId);
 		}
-		PaymentSchedule ps = pc.findPaymentSchedule(child, paymentScheduleId);
-		if (ps == null) {
+		PaymentSchedule paymentSchedule = pc.findPaymentSchedule(child, paymentScheduleId);
+		if (paymentSchedule == null) {
 			throw new IOException("PaymentSchedule not found by " + paymentScheduleId);
+		}
+		if (paymentSchedule.isReceiptSent()) {
+			throw new IllegalStateException("Already receipt was sent.");
 		}
 		String to = cc.findParent(child.getParentId()).getEmailAddress();
 		if (to == null) {
 			throw new IOException("Parent Email not found for " + child.getParentId());
 		}
-		gmailSender.sendEmail(to, ps.getReceipt().getName(), config.getEmailContents(), ps.getReceipt().getLocation());
+		gmailSender.sendEmail(to, paymentSchedule.getReceipt().getName(), config.getEmailContents(),
+				paymentSchedule.getReceipt().getLocation());
+		paymentSchedule.setReceiptSent(true);
 	}
 
 	Document convertToDocument(Child child, PaymentSchedule paymentSchedule) throws Exception {

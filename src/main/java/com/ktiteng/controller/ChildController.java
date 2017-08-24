@@ -7,7 +7,7 @@ import com.ktiteng.entity.Child;
 import com.ktiteng.entity.Parent;
 
 public interface ChildController {
-	
+
 	Parent addParent(String firstName, String lastName) throws IOException;
 
 	Parent addParent(String firstName, String lastName, String phoneNumber, String emailAddress) throws IOException;
@@ -19,11 +19,15 @@ public interface ChildController {
 	Child updateChild(Child child) throws IOException;
 
 	Collection<Parent> getAllParents() throws IOException;
-	
+
 	Parent findParent(String id) throws IOException;
 
-	Child getAllChildren(String id) throws IOException;
-	
+	Parent findParent(String firstName, String lastName) throws IOException;
+
+	Collection<Child> getAllChildren() throws IOException;
+
 	Child findChild(String id) throws IOException;
+
+	Child findChild(String firstName, String lastName) throws IOException;
 
 }

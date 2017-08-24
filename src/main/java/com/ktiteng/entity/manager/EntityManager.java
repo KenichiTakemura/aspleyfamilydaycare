@@ -2,6 +2,7 @@ package com.ktiteng.entity.manager;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,21 +43,14 @@ public class EntityManager {
 	Type parentType = new TypeToken<ArrayList<Parent>>() {
 	}.getType();
 	List<Child> children;
-	Type childType = new TypeToken<ArrayList<Child>>() {
-	}.getType();
+
 	List<Payment> payments;
-	Type paymentType = new TypeToken<ArrayList<Payment>>() {
-	}.getType();
 	List<TimeCard> timecards;
-	Type timecardType = new TypeToken<ArrayList<TimeCard>>() {
-	}.getType();
 	TaxInvoiceSeeder taxInvoiceSeeder;
 
 	@PostConstruct
 	public void init() {
 		onLoad();
-		children = new ArrayList<>();
-
 		timecards = new ArrayList<>();
 		if (parents == null) {
 			log.info("Create a new parent list");
@@ -72,6 +66,24 @@ public class EntityManager {
 		Type parentType = new TypeToken<ArrayList<Parent>>() {
 		}.getType();
 		parents = (List<Parent>) pm.load(parentType, parent);
+		children = new ArrayList<>();
+		payments = new ArrayList<>();
+		try {
+			Files.newDirectoryStream(pm.getPath(),
+					path -> path.toFile().isFile() && path.toFile().getName().startsWith(child)).forEach(file -> {
+						children.add((Child) pm.load(Child.class, file.toFile().getName()));
+					});
+		} catch (IOException e) {
+			log.warn("Cannot load children");
+		}
+		try {
+			Files.newDirectoryStream(pm.getPath(),
+					path -> path.toFile().isFile() && path.toFile().getName().startsWith(payment)).forEach(file -> {
+						payments.add((Payment) pm.load(Payment.class, file.toFile().getName()));
+					});
+		} catch (IOException e) {
+			log.warn("Cannot load payment");
+		}
 		taxInvoiceSeeder = (TaxInvoiceSeeder) pm.load(TaxInvoiceSeeder.class, taxinvoiceseeder);
 	}
 
@@ -84,15 +96,15 @@ public class EntityManager {
 		} else if (entity instanceof Child) {
 			children.removeIf(c -> c.getId().equals(entity.getId()));
 			children.add((Child) entity);
-			pm.persist(entity, childType, child + entity.getId());
+			pm.persist(entity, Child.class, child + entity.getId());
 		} else if (entity instanceof Payment) {
 			payments.removeIf(c -> c.getId().equals(entity.getId()));
 			payments.add((Payment) entity);
-			pm.persist(entity, parentType, payment + entity.getId());
+			pm.persist(entity, Payment.class, payment + entity.getId());
 		} else if (entity instanceof TimeCard) {
 			timecards.removeIf(c -> c.getId().equals(entity.getId()));
 			timecards.add((TimeCard) entity);
-			pm.persist(entity, timecardType, timecard + entity.getId());
+			pm.persist(entity, TimeCard.class, timecard + entity.getId());
 		} else if (entity instanceof TaxInvoiceSeeder) {
 			pm.persist(taxInvoiceSeeder, taxInvoiceSeeder.getClass(), taxinvoiceseeder);
 		}
@@ -102,6 +114,10 @@ public class EntityManager {
 		EntityBag bag = new EntityBag();
 		if (entityClass.isAssignableFrom(Parent.class)) {
 			return bag.setEntities(parents);
+		} else if (entityClass.isAssignableFrom(Child.class)) {
+			return bag.setEntities(children);
+		} else if (entityClass.isAssignableFrom(Payment.class)) {
+			return bag.setEntities(payments);
 		}
 		return bag;
 	}
@@ -115,10 +131,16 @@ public class EntityManager {
 
 	public BaseEntity find(Class<?> entityClass, String... ids) {
 		if (entityClass.isAssignableFrom(Parent.class)) {
-			Optional<Parent> parent = parents.stream().filter(p -> p.getId().equals(ids[0])).findFirst();
+			Optional<Parent> parent = (ids.length == 1)
+					? parents.stream().filter(p -> p.getId().equals(ids[0])).findFirst()
+					: parents.stream().filter(p -> p.getFirstName().equals(ids[0]) && p.getLastName().equals(ids[1]))
+							.findFirst();
 			return parent.isPresent() ? parent.get() : null;
 		} else if (entityClass.isAssignableFrom(Child.class)) {
-			Optional<Child> child = children.stream().filter(p -> p.getId().equals(ids[0])).findFirst();
+			Optional<Child> child = (ids.length == 1)
+					? children.stream().filter(c -> c.getId().equals(ids[0])).findFirst()
+					: children.stream().filter(c -> c.getFirstName().equals(ids[0]) && c.getLastName().equals(ids[1]))
+							.findFirst();
 			return child.isPresent() ? child.get() : null;
 		} else if (entityClass.isAssignableFrom(Payment.class)) {
 			Optional<Payment> payment = payments.stream().filter(p -> p.getChildId().equals(ids[0])).findFirst();

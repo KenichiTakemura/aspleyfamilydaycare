@@ -58,4 +58,7 @@ public class Parent extends BaseEntity {
 		this.bankDetail = bankDetail;
 	}
 
+	public String getName() {
+		return this.firstName + " " + this.lastName;
+	}
 }

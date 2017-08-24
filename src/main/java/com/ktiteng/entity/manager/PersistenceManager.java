@@ -58,7 +58,8 @@ public class PersistenceManager {
 	protected Object load(Type entityType, String filename) {
 		Reader in = null;
 		try {
-			in = new FileReader(new File(getPath().toString(), String.join(join, filename, ext)));
+			String jsonFile = filename.endsWith(ext) ? filename : String.join(join, filename, ext);
+			in = new FileReader(new File(getPath().toString(), jsonFile));
 			JsonReader reader = new JsonReader(in);
 			Object data = gson.fromJson(reader, entityType);
 			log.info("Loaded from {}", filename);
