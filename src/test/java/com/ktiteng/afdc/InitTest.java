@@ -12,12 +12,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.ktiteng.arquillian.ArquillianUnitTest;
-import com.ktiteng.controller.ChildController;
-import com.ktiteng.controller.PaymentController;
-import com.ktiteng.controller.ReceiptController;
-import com.ktiteng.entity.Child;
-import com.ktiteng.entity.Parent;
-import com.ktiteng.entity.PaymentSchedule;
+import com.ktiteng.controller.service.ChildController;
+import com.ktiteng.controller.service.PaymentController;
+import com.ktiteng.controller.service.ReceiptController;
+import com.ktiteng.entity.service.Child;
+import com.ktiteng.entity.service.Parent;
+import com.ktiteng.entity.service.PaymentSchedule;
 
 public class InitTest extends ArquillianUnitTest {
 
@@ -43,7 +43,7 @@ public class InitTest extends ArquillianUnitTest {
 
 	private void issue(Child c, PaymentSchedule ps) throws IOException {
 		PaymentSchedule paymentSchedule = pc.addPaymentSchedule(c, ps);
-		if (!paymentSchedule.isReceiptIssued()) {
+		if (!paymentSchedule.getReceipt().isIssued()) {
 			rc.issueReceipt(c, paymentSchedule);
 		}
 		// rc.sendReceipt(c.getId(), ps.getId());

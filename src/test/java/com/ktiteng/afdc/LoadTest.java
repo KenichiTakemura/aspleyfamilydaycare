@@ -13,12 +13,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.ktiteng.arquillian.ArquillianUnitTest;
-import com.ktiteng.controller.ChildController;
-import com.ktiteng.controller.PaymentController;
-import com.ktiteng.controller.ReceiptController;
-import com.ktiteng.entity.Child;
-import com.ktiteng.entity.Parent;
-import com.ktiteng.entity.Payment;
+import com.ktiteng.controller.service.ChildController;
+import com.ktiteng.controller.service.PaymentController;
+import com.ktiteng.controller.service.ReceiptController;
+import com.ktiteng.entity.service.Child;
+import com.ktiteng.entity.service.Parent;
+import com.ktiteng.entity.service.Payment;
 
 public class LoadTest extends ArquillianUnitTest {
 

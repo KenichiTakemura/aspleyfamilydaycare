@@ -16,12 +16,12 @@ import org.slf4j.Logger;
 import com.google.gson.reflect.TypeToken;
 import com.ktiteng.cdi.Log;
 import com.ktiteng.entity.BaseEntity;
-import com.ktiteng.entity.Child;
 import com.ktiteng.entity.EntityBag;
-import com.ktiteng.entity.Parent;
-import com.ktiteng.entity.Payment;
-import com.ktiteng.entity.TaxInvoiceSeeder;
-import com.ktiteng.entity.TimeCard;
+import com.ktiteng.entity.service.Child;
+import com.ktiteng.entity.service.Parent;
+import com.ktiteng.entity.service.Payment;
+import com.ktiteng.entity.service.TaxInvoiceSeeder;
+import com.ktiteng.entity.service.TimeCard;
 
 @Singleton
 public class EntityManager {
