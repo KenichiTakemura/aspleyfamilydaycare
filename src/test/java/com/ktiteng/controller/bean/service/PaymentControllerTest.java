@@ -11,8 +11,10 @@ import java.nio.file.Paths;
 import javax.inject.Inject;
 
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import com.ktiteng.arquillian.ArquillianUnitTest;
+import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.service.ChildController;
 import com.ktiteng.controller.service.PaymentController;
 import com.ktiteng.entity.service.Child;
@@ -23,7 +25,9 @@ import com.ktiteng.entity.service.PaymentSchedule;
 import com.ktiteng.util.Utils;
 
 public class PaymentControllerTest extends ArquillianUnitTest {
-
+	@Inject
+	@Log
+	private Logger log;
 	@Inject
 	ChildController cc;
 
@@ -52,8 +56,8 @@ public class PaymentControllerTest extends ArquillianUnitTest {
 	public void updatePaymentSchedule() throws IOException {
 		Parent p1 = cc.addParent("pfirst2", "plast2", "0433654800", "test1@gmail.com");
 		Child c1 = cc.addChild("cfirst2", "clast2", "Q00085", p1);
-		pc.updatePaymentSchedule(c1, new PaymentSchedule()
-				.setBillingStartDate(Utils.toDate("2017-08-01")).setBillingEndDate(Utils.toDate("2017-08-15")));
+		pc.updatePaymentSchedule(c1, new PaymentSchedule().setBillingStartDate(Utils.toDate("2017-08-01"))
+				.setBillingEndDate(Utils.toDate("2017-08-15")));
 	}
 
 	@Test

@@ -23,7 +23,7 @@ import com.ktiteng.entity.manager.PersistenceManager;
 public class ArquillianUnitTest {
 	@Inject
 	@Log
-	protected Logger log;
+	private Logger log;
 
 	private Path path = Paths.get(System.getProperty("user.home"), ".afdc", "data");
 

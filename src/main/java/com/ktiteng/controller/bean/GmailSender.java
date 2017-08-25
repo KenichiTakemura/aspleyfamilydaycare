@@ -30,7 +30,7 @@ public class GmailSender {
 	@Inject
 	@Log
 	protected Logger log;
-	
+
 	@Inject
 	@Config
 	AfdcConfig config;
@@ -40,7 +40,7 @@ public class GmailSender {
 		log.info("produced.");
 	}
 
-	public synchronized void sendEmail(String to, String subject, String text, String attachment) {
+	public synchronized void sendEmail(String to, String cc, String subject, String text, String attachment) {
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.socketFactory.port", "465");
@@ -60,7 +60,7 @@ public class GmailSender {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(config.getAfdcAdminEmail()));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-			message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(config.getKaAdminEmail()));
+			message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(cc));
 			message.setSubject(subject);
 			BodyPart messageBodyPart = new MimeBodyPart();
 			messageBodyPart.setText(text);

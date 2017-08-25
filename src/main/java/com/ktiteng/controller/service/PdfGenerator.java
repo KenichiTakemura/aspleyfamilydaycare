@@ -8,5 +8,9 @@ import com.ktiteng.entity.service.Receipt;
 
 public interface PdfGenerator {
 
-	Receipt generateReceipt(Document source, String pdfLocation) throws IOException;
+	Receipt generateDepositReceipt(Document source, String pdfLocation) throws IOException;
+
+	Receipt generateEnrollmentFeeReceipt(Document source, String pdfLocation) throws IOException;
+
+	Receipt generateWeeksReceipt(Document source, String pdfLocation) throws IOException;
 }

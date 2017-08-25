@@ -22,7 +22,7 @@ import com.ktiteng.entity.service.TaxInvoiceSeeder;
 public class ReceiptControllerBeanTest {
 	@Inject
 	@Log
-	protected Logger log;
+	private Logger log;
 	@Inject
 	TaxInvoiceSeeder tcs;
 	@Inject
@@ -39,7 +39,7 @@ public class ReceiptControllerBeanTest {
 
 		Receipt r = new Receipt().setTaxInvoiceId(tcs.nextVal());
 		ps.setReceipt(r);
-		Document root = bean.convertToDocument(c1, ps);
+		Document root = bean.convertPaymentScheduleToDocument(c1, ps);
 		DOMImplementationLS domImplLS = (DOMImplementationLS) root.getImplementation();
 		LSSerializer serializer = domImplLS.createLSSerializer();
 		String str = serializer.writeToString(root);

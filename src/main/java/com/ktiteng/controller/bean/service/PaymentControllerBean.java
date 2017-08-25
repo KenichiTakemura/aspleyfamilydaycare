@@ -8,6 +8,9 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+
+import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.bean.BaseController;
 import com.ktiteng.controller.service.PaymentController;
 import com.ktiteng.controller.service.TaxInvoiceSeederController;
@@ -22,7 +25,9 @@ import com.ktiteng.util.Utils;
 @Default
 @ApplicationScoped
 public class PaymentControllerBean extends BaseController implements PaymentController {
-
+	@Inject
+	@Log
+	private Logger log;
 	@Inject
 	TaxInvoiceSeederController tcs;
 
@@ -36,15 +41,18 @@ public class PaymentControllerBean extends BaseController implements PaymentCont
 	}
 
 	@Override
-	public InitialPayment addInitialPayment(Child child, InitialPayment initialPayment) throws IOException {
+	public Payment addInitialPayment(Child child, InitialPayment initialPayment) throws IOException {
 		Payment payment = findPayment(child);
-		if (payment.getInitialPayment() != null) {
-			throw new IOException("Already exists. Use update.");
+		if (payment.getInitialPayment() == null) {
+			initialPayment.setGeneratedAt();
+			initialPayment.setReceiptDeposit(genDepositReceipt(child, initialPayment));
+			initialPayment.setReceiptEnrollmentFee(genEnrollmentFeeReceipt(child, initialPayment));
+			payment.setInitialPayment(initialPayment);
+			save(payment);
+		} else {
+			log.info("Already exists. Use update");
 		}
-		initialPayment.setGeneratedAt();
-		payment.setInitialPayment(initialPayment);
-		save(payment);
-		return initialPayment;
+		return payment;
 	}
 
 	@Override
@@ -106,14 +114,32 @@ public class PaymentControllerBean extends BaseController implements PaymentCont
 		return receipt;
 	}
 
+	private Receipt genDepositReceipt(Child child, InitialPayment initialPayment) throws IOException {
+		Receipt receipt = new Receipt().setTaxInvoiceId(tcs.generateNextId());
+		receipt.setName(String.format("Deposit Receipt for %s %s", child.getFirstName(), child.getLastName()));
+		String location = String.format("%s/receipt/Deposit_Receipt_%s_%s.pdf", pm.getPath().toString(),
+				child.getFirstName(), child.getLastName().trim());
+		receipt.setLocation(location);
+		return receipt;
+	}
+
+	private Receipt genEnrollmentFeeReceipt(Child child, InitialPayment initialPayment) throws IOException {
+		Receipt receipt = new Receipt().setTaxInvoiceId(tcs.generateNextId());
+		receipt.setName(String.format("Enrollment Fee Receipt for %s %s", child.getFirstName(), child.getLastName()));
+		String location = String.format("%s/receipt/EnrollmentFee_Receipt_%s_%s.pdf", pm.getPath().toString(),
+				child.getFirstName(), child.getLastName().trim());
+		receipt.setLocation(location);
+		return receipt;
+	}
+
 	@Override
-	public InitialPayment updateInitialPayment(Child child, InitialPayment initialPayment) throws IOException {
+	public Payment updateInitialPayment(Child child, InitialPayment initialPayment) throws IOException {
 		Payment payment = findPayment(child);
 		if (payment.getInitialPayment() == null) {
 			throw new IOException("Not exists. Use add.");
 		}
 		payment.setInitialPayment(initialPayment);
 		save(payment);
-		return initialPayment;
+		return payment;
 	}
 }

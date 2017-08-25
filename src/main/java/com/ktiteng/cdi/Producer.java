@@ -14,7 +14,7 @@ public class Producer {
 	@Produces
 	@Log
 	public Logger createLogger(InjectionPoint injectionPoint) {
-		return LoggerFactory.getLogger(injectionPoint.getMember().getDeclaringClass());
+		return LoggerFactory.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
 	}
 
 	@Produces

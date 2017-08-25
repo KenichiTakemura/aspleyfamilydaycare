@@ -20,7 +20,7 @@ import com.ktiteng.controller.AfdcConfig;
 public class AfdcConfigBean implements AfdcConfig {
 	@Inject
 	@Log	
-	protected Logger log;
+	private Logger log;
 
 	private Properties props;
 	private String configName;
@@ -36,16 +36,6 @@ public class AfdcConfigBean implements AfdcConfig {
 		} catch (IOException e) {
 			throw new RuntimeException("Cannot read config file.", e);
 		}
-	}
-
-	@PostConstruct
-	public void init() {
-		log.info("PostConstruct starting.");
-	}
-
-	@PreDestroy
-	protected void destroy() {
-		log.info("PreDestroy");
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package com.ktiteng.controller.bean.service;
 import static com.ktiteng.util.Utils.toS;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
@@ -26,6 +27,7 @@ import com.ktiteng.controller.service.PdfGenerator;
 import com.ktiteng.controller.service.ReceiptController;
 import com.ktiteng.entity.service.Child;
 import com.ktiteng.entity.service.InitialPayment;
+import com.ktiteng.entity.service.Payment;
 import com.ktiteng.entity.service.PaymentSchedule;
 import com.ktiteng.entity.service.Receipt;
 
@@ -34,9 +36,10 @@ import com.ktiteng.entity.service.Receipt;
 public class ReceiptControllerBean implements ReceiptController {
 	@Inject
 	PdfGenerator pdfGen;
+
 	@Inject
 	@Log
-	protected Logger log;
+	private Logger log;
 
 	@Inject
 	GmailSender gmailSender;
@@ -52,13 +55,13 @@ public class ReceiptControllerBean implements ReceiptController {
 	AfdcConfig config;
 
 	@Override
-	public void issueReceipt(Child child, PaymentSchedule paymentSchedule) throws IOException {
+	public void issueReceiptWeeks(Child child, PaymentSchedule paymentSchedule) throws IOException {
 		Receipt receipt = paymentSchedule.getReceipt();
 		if (receipt.isIssued()) {
 			throw new IllegalStateException("Already receipt issued.");
 		}
 		try {
-			pdfGen.generateReceipt(convertPaymentScheduleToDocument(child, paymentSchedule),
+			pdfGen.generateWeeksReceipt(convertPaymentScheduleToDocument(child, paymentSchedule),
 					receipt.getLocation());
 			receipt.setIssued(true);
 			pc.updatePaymentSchedule(child, paymentSchedule);
@@ -68,7 +71,7 @@ public class ReceiptControllerBean implements ReceiptController {
 	}
 
 	@Override
-	public void sendReceipt(String childId, String paymentScheduleId) throws IOException {
+	public void sendReceiptWeeks(String childId, String paymentScheduleId) throws IOException {
 		Child child = cc.findChild(childId);
 		if (child == null) {
 			throw new IOException("Child not found by " + childId);
@@ -77,32 +80,94 @@ public class ReceiptControllerBean implements ReceiptController {
 		if (paymentSchedule == null) {
 			throw new IOException("PaymentSchedule not found by " + paymentScheduleId);
 		}
-		Receipt receipt = paymentSchedule.getReceipt();
-		if (receipt.isSent()) {
-			throw new IllegalStateException("Already receipt was sent.");
+		if (sendReceipt(child, paymentSchedule.getReceipt())) {
+			pc.updatePaymentSchedule(child, paymentSchedule);
 		}
-		String to = cc.findParent(child.getParentId()).getEmailAddress();
-		if (to == null) {
-			throw new IOException("Parent Email not found for " + child.getParentId());
+	}
+
+	@Override
+	public void issueReceiptDeposit(Child child, InitialPayment initialPayment) throws IOException {
+		Receipt receipt = initialPayment.getReceiptDeposit();
+		if (receipt.isIssued()) {
+			throw new IllegalStateException("Already receipt issued.");
 		}
-		gmailSender.sendEmail(to, receipt.getName(), config.getEmailContents(),
-				receipt.getLocation());
-		receipt.setSent(true);
-		pc.updatePaymentSchedule(child, paymentSchedule);
+		try {
+			pdfGen.generateDepositReceipt(convertDepositToDocument(child, initialPayment), receipt.getLocation());
+			receipt.setIssued(true);
+			pc.updateInitialPayment(child, initialPayment);
+		} catch (Exception e) {
+			throw new IOException(e);
+		}
+	}
+
+	@Override
+	public void issueReceiptEnrollmentFee(Child child, InitialPayment initialPayment) throws IOException {
+		Receipt receipt = initialPayment.getReceiptEnrollmentFee();
+		if (receipt.isIssued()) {
+			throw new IllegalStateException("Already receipt issued.");
+		}
+		try {
+			pdfGen.generateEnrollmentFeeReceipt(convertEnrollmentFeeToDocument(child, initialPayment),
+					receipt.getLocation());
+			receipt.setIssued(true);
+			pc.updateInitialPayment(child, initialPayment);
+		} catch (Exception e) {
+			throw new IOException(e);
+		}
+	}
+
+	@Override
+	public void sendReceiptDeposit(String childId) throws IOException {
+		Child child = cc.findChild(childId);
+		if (child == null) {
+			throw new IOException("Child not found by " + childId);
+		}
+		Payment payment = pc.findPayment(child);
+		InitialPayment initialPayment = payment.getInitialPayment();
+		if (initialPayment == null) {
+			throw new IOException("InitialPayment not found by " + childId);
+		}
+		if (sendReceipt(child, initialPayment.getReceiptDeposit())) {
+			pc.updateInitialPayment(child, initialPayment);
+		}
+	}
+
+	@Override
+	public void sendReceiptEnrollmentFee(String childId) throws IOException {
+		Child child = cc.findChild(childId);
+		if (child == null) {
+			throw new IOException("Child not found by " + childId);
+		}
+		Payment payment = pc.findPayment(child);
+		InitialPayment initialPayment = payment.getInitialPayment();
+		if (initialPayment == null) {
+			throw new IOException("InitialPayment not found by " + childId);
+		}
+		if (sendReceipt(child, initialPayment.getReceiptEnrollmentFee())) {
+			pc.updateInitialPayment(child, initialPayment);
+		}
+	}
+
+	boolean sendReceipt(Child child, Receipt receipt) throws IOException {
+		if (!receipt.isSent()) {
+			String to = cc.findParent(child.getParentId()).getEmailAddress();
+			if (to == null) {
+				throw new IOException("Parent Email not found for " + child.getParentId());
+			}
+			String cc = config.getKaAdminEmail();
+			gmailSender.sendEmail(to, cc, receipt.getName(), config.getEmailContents(), receipt.getLocation());
+			receipt.setSent(true);
+			receipt.setSentAt(LocalDateTime.now());
+		} else {
+			log.info("Receipt was already sent");
+			return false;
+		}
+		return true;
 	}
 
 	Document convertPaymentScheduleToDocument(Child child, PaymentSchedule paymentSchedule) throws Exception {
-		Document foDoc = null;
-		Element root = null;
+		Element root = getRootElement();
 		Receipt receipt = paymentSchedule.getReceipt();
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		dbf.setNamespaceAware(true);
-		DocumentBuilder db = dbf.newDocumentBuilder();
-		foDoc = db.newDocument();
-
-		root = foDoc.createElement("root");
-		foDoc.appendChild(root);
-
 		addElement(root, "date", toS(paymentSchedule.getDateReceived()));
 		addElement(root, "receiptNumber", receipt.getTaxInvoiceId());
 		addElement(root, "childName", child.getName());
@@ -118,7 +183,52 @@ public class ReceiptControllerBean implements ReceiptController {
 				? toS(paymentSchedule.getBalanceDue()) + " CR" : toS(paymentSchedule.getBalanceDue());
 		addElement(root, "balanceDue", balanceDue);
 
-		return foDoc;
+		return root.getOwnerDocument();
+	}
+
+	Document convertDepositToDocument(Child child, InitialPayment initialPayment) throws Exception {
+		Element root = getRootElement();
+		Receipt receipt = initialPayment.getReceiptDeposit();
+
+		addElement(root, "date", toS(initialPayment.getDepositPaidOn()));
+		addElement(root, "receiptNumber", receipt.getTaxInvoiceId());
+		addElement(root, "childName", child.getName());
+		addElement(root, "childNumber", child.getChildNumber());
+		addElement(root, "depositAmount", toS(initialPayment.getDeposit()));
+		addElement(root, "accountAmount", toS(initialPayment.getDeposit()));
+		addElement(root, "accountPaid", toS(initialPayment.getDeposit()));
+		addElement(root, "depositDue", toS(0.0));
+
+		return root.getOwnerDocument();
+	}
+
+	Document convertEnrollmentFeeToDocument(Child child, InitialPayment initialPayment) throws Exception {
+		Element root = getRootElement();
+		Receipt receipt = initialPayment.getReceiptEnrollmentFee();
+		addElement(root, "date", toS(initialPayment.getEnrollmentFeePaidOn()));
+		addElement(root, "receiptNumber", receipt.getTaxInvoiceId());
+		addElement(root, "childName", child.getName());
+		addElement(root, "childNumber", child.getChildNumber());
+		addElement(root, "enrollmentFeeAmount", toS(initialPayment.getEnrollmentFee()));
+		addElement(root, "accountAmount", toS(initialPayment.getEnrollmentFee()));
+		addElement(root, "accountPaid", toS(initialPayment.getEnrollmentFee()));
+		addElement(root, "enrollmentFeeDue", toS(0.0));
+
+		return root.getOwnerDocument();
+	}
+
+	Element getRootElement() throws Exception {
+		Document foDoc = null;
+		Element root = null;
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		dbf.setNamespaceAware(true);
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		foDoc = db.newDocument();
+
+		root = foDoc.createElement("root");
+		foDoc.appendChild(root);
+		return root;
+
 	}
 
 	private void addElement(Node parent, String newNodeName, String textVal) {
@@ -129,40 +239,6 @@ public class ReceiptControllerBean implements ReceiptController {
 		Text elementText = parent.getOwnerDocument().createTextNode(textVal);
 		newElement.appendChild(elementText);
 		parent.appendChild(newElement);
-	}
-
-	@Override
-	public void issueReceiptDeposit(Child child, InitialPayment initialPayment) throws IOException {
-		Receipt receipt = initialPayment.getReceiptDeposit();
-		if (receipt.isIssued()) {
-			throw new IllegalStateException("Already receipt issued.");
-		}
-		try {
-//			pdfGen.generateReceipt(convertPaymentScheduleToDocument(child, initialPayment),
-//					receipt.getLocation());
-			receipt.setIssued(true);
-			pc.updatePaymentSchedule(child, initialPayment);
-		} catch (Exception e) {
-			throw new IOException(e);
-		}
-	}
-
-	@Override
-	public void issueReceiptEnrollmentFee(Child child, InitialPayment initialPayment) throws IOException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void sendReceiptDeposit(String childId, String initialPaymentId) throws IOException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void sendReceiptEnrollmentFee(String childId, String initialPaymentId) throws IOException {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

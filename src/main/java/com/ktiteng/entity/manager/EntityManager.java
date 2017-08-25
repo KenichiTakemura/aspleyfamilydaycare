@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
@@ -90,19 +91,19 @@ public class EntityManager {
 	public void save(BaseEntity entity) throws IOException {
 		log.info("save {}", entity);
 		if (entity instanceof Parent) {
-			parents.removeIf(p -> p.getId().equals(entity.getId()));
+			parents.removeIf(p -> p != null && p.getId().equals(entity.getId()));
 			parents.add((Parent) entity);
 			pm.persist(parents, parentType, parent);
 		} else if (entity instanceof Child) {
-			children.removeIf(c -> c.getId().equals(entity.getId()));
+			children.removeIf(c -> c != null && c.getId().equals(entity.getId()));
 			children.add((Child) entity);
 			pm.persist(entity, Child.class, child + entity.getId());
 		} else if (entity instanceof Payment) {
-			payments.removeIf(c -> c.getId().equals(entity.getId()));
+			payments.removeIf(p -> p != null && p.getId().equals(entity.getId()));
 			payments.add((Payment) entity);
 			pm.persist(entity, Payment.class, payment + entity.getId());
 		} else if (entity instanceof TimeCard) {
-			timecards.removeIf(c -> c.getId().equals(entity.getId()));
+			timecards.removeIf(t -> t != null && t.getId().equals(entity.getId()));
 			timecards.add((TimeCard) entity);
 			pm.persist(entity, TimeCard.class, timecard + entity.getId());
 		} else if (entity instanceof TaxInvoiceSeeder) {

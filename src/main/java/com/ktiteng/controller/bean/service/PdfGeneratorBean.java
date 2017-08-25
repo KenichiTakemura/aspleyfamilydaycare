@@ -33,10 +33,24 @@ public class PdfGeneratorBean implements PdfGenerator {
 
 	@Inject
 	@Log
-	protected Logger log;
+	private Logger log;
 
 	@Override
-	public Receipt generateReceipt(Document source, String pdfLocation) throws IOException {
+	public Receipt generateWeeksReceipt(Document source, String pdfLocation) throws IOException {
+		return this.generateReceipt(source, "/fop/weeksReceipt.xsl", pdfLocation);
+	}
+
+	@Override
+	public Receipt generateDepositReceipt(Document source, String pdfLocation) throws IOException {
+		return this.generateReceipt(source, "/fop/depositReceipt.xsl", pdfLocation);
+	}
+
+	@Override
+	public Receipt generateEnrollmentFeeReceipt(Document source, String pdfLocation) throws IOException {
+		return this.generateReceipt(source, "/fop/enrollmentfeeReceipt.xsl", pdfLocation);
+	}
+
+	private Receipt generateReceipt(Document source, String xsl, String pdfLocation) throws IOException {
 		FopFactory fopFactory = null;
 		OutputStream out;
 		try {
@@ -48,7 +62,7 @@ public class PdfGeneratorBean implements PdfGenerator {
 		try {
 			Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);
 			TransformerFactory factory = TransformerFactory.newInstance();
-			Source xslt = new StreamSource(this.getClass().getResourceAsStream("/fop/receipt.xsl"));
+			Source xslt = new StreamSource(this.getClass().getResourceAsStream(xsl));
 			Transformer transformer = factory.newTransformer(xslt);
 			Source src = new DOMSource(source);
 			Result res = new SAXResult(fop.getDefaultHandler());

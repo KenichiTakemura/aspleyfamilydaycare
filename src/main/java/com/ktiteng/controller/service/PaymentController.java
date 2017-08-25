@@ -16,9 +16,9 @@ public interface PaymentController {
 
 	PaymentSchedule findPaymentSchedule(Child child, PaymentSchedule paymentSchedule) throws IOException;
 
-	InitialPayment addInitialPayment(Child child, InitialPayment initialPayment) throws IOException;
+	Payment addInitialPayment(Child child, InitialPayment initialPayment) throws IOException;
 
-	InitialPayment updateInitialPayment(Child child, InitialPayment initialPayment) throws IOException;
+	Payment updateInitialPayment(Child child, InitialPayment initialPayment) throws IOException;
 	
 	PaymentSchedule addPaymentSchedule(Child child, PaymentSchedule paymentSchedule) throws IOException;
 

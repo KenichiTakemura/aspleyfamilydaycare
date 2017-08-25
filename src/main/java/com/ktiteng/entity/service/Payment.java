@@ -61,7 +61,7 @@ public class Payment extends BaseEntity {
 		if (this.paymentSchedule == null) {
 			throw new IllegalStateException("Not exists. Use add.");
 		}
-		this.paymentSchedule.removeIf(p -> p.getId().equals(paymentSchedule.getId()));
+		this.paymentSchedule.removeIf(p -> p!= null && p.getId().equals(paymentSchedule.getId()));
 		this.paymentSchedule.add(paymentSchedule);
 		return paymentSchedule;
 	}

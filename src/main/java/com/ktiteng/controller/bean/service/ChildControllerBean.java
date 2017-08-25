@@ -6,7 +6,11 @@ import java.util.Collection;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 
+import org.slf4j.Logger;
+
+import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.bean.BaseController;
 import com.ktiteng.controller.service.ChildController;
 import com.ktiteng.entity.service.Child;
@@ -15,6 +19,9 @@ import com.ktiteng.entity.service.Parent;
 @Default
 @ApplicationScoped
 public class ChildControllerBean extends BaseController implements ChildController {
+	@Inject
+	@Log
+	private Logger log;
 
 	@PostConstruct
 	public void init() {

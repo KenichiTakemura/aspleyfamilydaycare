@@ -8,16 +8,16 @@ import com.ktiteng.entity.service.PaymentSchedule;
 
 public interface ReceiptController {
 
-	void issueReceipt(Child child, PaymentSchedule paymentSchedule) throws IOException;
+	void issueReceiptWeeks(Child child, PaymentSchedule paymentSchedule) throws IOException;
 
-	void sendReceipt(String childId, String paymentScheduleId) throws IOException;
+	void sendReceiptWeeks(String childId, String paymentScheduleId) throws IOException;
 
 	void issueReceiptDeposit(Child child, InitialPayment initialPayment) throws IOException;
 
 	void issueReceiptEnrollmentFee(Child child, InitialPayment initialPayment) throws IOException;
 
-	void sendReceiptDeposit(String childId, String initialPaymentId) throws IOException;
+	void sendReceiptDeposit(String childId) throws IOException;
 
-	void sendReceiptEnrollmentFee(String childId, String initialPaymentId) throws IOException;
+	void sendReceiptEnrollmentFee(String childId) throws IOException;
 
 }

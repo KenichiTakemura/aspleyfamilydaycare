@@ -10,17 +10,23 @@ import javax.inject.Inject;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import com.ktiteng.arquillian.ArquillianUnitTest;
+import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.service.ChildController;
 import com.ktiteng.controller.service.PaymentController;
 import com.ktiteng.controller.service.ReceiptController;
 import com.ktiteng.entity.service.Child;
+import com.ktiteng.entity.service.InitialPayment;
 import com.ktiteng.entity.service.Parent;
+import com.ktiteng.entity.service.Payment;
 import com.ktiteng.entity.service.PaymentSchedule;
 
 public class InitTest extends ArquillianUnitTest {
-
+	@Inject
+	@Log
+	private Logger log;
 	@Inject
 	ChildController cc;
 	@Inject
@@ -41,12 +47,37 @@ public class InitTest extends ArquillianUnitTest {
 		Paths.get(getPath().toString(), "receipt").toFile().mkdirs();
 	}
 
+	private void issue(Child c, InitialPayment ip) throws IOException {
+		Payment p = pc.addInitialPayment(c, ip);
+		InitialPayment initialPayment = p.getInitialPayment();
+//		if (!initialPayment.getReceiptDeposit().isIssued()) {
+//			rc.issueReceiptDeposit(c, initialPayment);
+//		}
+//		try {
+//			rc.sendReceiptDeposit(c.getId());
+//		} catch (Exception e) {
+//			log.info("{}", e);
+//		}
+		if (!initialPayment.getReceiptEnrollmentFee().isIssued()) {
+			rc.issueReceiptEnrollmentFee(c, initialPayment);
+		}
+		try {
+			rc.sendReceiptEnrollmentFee(c.getId());
+		} catch (Exception e) {
+			log.info("{}", e);
+		}
+	}
+
 	private void issue(Child c, PaymentSchedule ps) throws IOException {
 		PaymentSchedule paymentSchedule = pc.addPaymentSchedule(c, ps);
 		if (!paymentSchedule.getReceipt().isIssued()) {
-			rc.issueReceipt(c, paymentSchedule);
+			rc.issueReceiptWeeks(c, paymentSchedule);
 		}
-		// rc.sendReceipt(c.getId(), ps.getId());
+		try {
+			rc.sendReceiptWeeks(c.getId(), paymentSchedule.getId());
+		} catch (Exception e) {
+			log.info("{}", e);
+		}
 		// log.info("Issued Receipt Child:{} PaymentSchedule:{}", c.getId(),
 		// ps.getId());
 	}
@@ -61,7 +92,7 @@ public class InitTest extends ArquillianUnitTest {
 		return c != null ? c : cc.addChild(attrs[0], attrs[1], attrs[2], p);
 	}
 
-	@Test
+	// @Test
 	public void channy() throws IOException {
 		Parent p = addMe("Yun Kyung", "Youn", "0428933858", "kattio85@hotmail.com");
 		Child c = addMyChild(p, "Channy", "Youn", "Q00085");
@@ -82,7 +113,7 @@ public class InitTest extends ArquillianUnitTest {
 		issue(c, ps3);
 	}
 
-	@Test
+	// @Test
 	public void allan() throws IOException {
 		Parent p = addMe("Jihyun", "Broadhurst", "0423313077", "ijiat27@gmail.com");
 		Child c = addMyChild(p, "Allan", "Broadhurst", "Q00081");
@@ -96,7 +127,7 @@ public class InitTest extends ArquillianUnitTest {
 		issue(c, ps2);
 	}
 
-	@Test
+	// @Test
 	public void yuna() throws IOException {
 		Parent p = addMe("Miyoung", "Cho", "0435262072", "yitmy@naver.com");
 		Child c = addMyChild(p, "Yuna", "Cho", "Q00086");
@@ -110,7 +141,7 @@ public class InitTest extends ArquillianUnitTest {
 		issue(c, ps2);
 	}
 
-	@Test
+	// @Test
 	public void ruby() throws IOException {
 		Parent p = addMe("Seong Wan", "Hong", "0407357839", "minsanghee@gmail.com");
 		Child c = addMyChild(p, "Ruby", "Hong", "Q00087");
@@ -120,7 +151,7 @@ public class InitTest extends ArquillianUnitTest {
 		issue(c, ps);
 	}
 
-	@Test
+	// @Test
 	public void leon() throws IOException {
 		Parent p = addMe("Eun Ju", "Kim", "0430705329", "rladmswn81@hotmail.com");
 		Child c = addMyChild(p, "Leon", "Jeong", "Q00088");
@@ -134,7 +165,7 @@ public class InitTest extends ArquillianUnitTest {
 		issue(c, ps2);
 	}
 
-	@Test
+	// @Test
 	public void jason() throws IOException {
 		Parent p = addMe("Hyeeun", "Lee", "0411431913", "hyeeun79@hotmail.com");
 		Child c = addMyChild(p, "Jason", "Lee", "Q000810");
@@ -144,7 +175,7 @@ public class InitTest extends ArquillianUnitTest {
 		issue(c, ps);
 	}
 
-	@Test
+	// @Test
 	public void ian() throws IOException {
 		Parent p = addMe("Sung Joon", "Hong", "0452506955", "jooninau@gmail.com");
 		Child c = addMyChild(p, "Ian", "Kim", "Q000811");
@@ -163,14 +194,16 @@ public class InitTest extends ArquillianUnitTest {
 	public void louis() throws IOException {
 		Parent p = addMe("Eunhee", "Yang", "0431175258", "david@casscale.com.au");
 		Child c = addMyChild(p, "Louis", "Oh", "Q000812");
-		PaymentSchedule ps1 = new PaymentSchedule().setDateReceived(toDate("2017-08-23"))
-				.setBillingStartDate(toDate("2017-07-17")).setBillingEndDate(toDate("2017-07-30"))
-				.setCurrentBalance(0.0d).setAmountInvoiced(213.24d).setAmountReceived(213.24d).setBalanceDue(0.0d);
-		issue(c, ps1);
-		PaymentSchedule ps2 = new PaymentSchedule().setDateReceived(toDate("2017-08-23"))
-				.setBillingStartDate(toDate("2017-07-31")).setBillingEndDate(toDate("2017-08-13"))
-				.setCurrentBalance(0.0d).setAmountInvoiced(142.16d).setAmountReceived(142.16d).setBalanceDue(0.0d);
-		issue(c, ps2);
+		issue(c, new InitialPayment().setDeposit(266.00d).setDepositPaidOn("2017-07-26")
+				.setEnrollmentFee(50.00d).setEnrollmentFeePaidOn("2017-07-26"));
+//		PaymentSchedule ps1 = new PaymentSchedule().setDateReceived(toDate("2017-08-23"))
+//				.setBillingStartDate(toDate("2017-07-17")).setBillingEndDate(toDate("2017-07-30"))
+//				.setCurrentBalance(0.0d).setAmountInvoiced(213.24d).setAmountReceived(213.24d).setBalanceDue(0.0d);
+//		issue(c, ps1);
+//		PaymentSchedule ps2 = new PaymentSchedule().setDateReceived(toDate("2017-08-23"))
+//				.setBillingStartDate(toDate("2017-07-31")).setBillingEndDate(toDate("2017-08-13"))
+//				.setCurrentBalance(0.0d).setAmountInvoiced(142.16d).setAmountReceived(142.16d).setBalanceDue(0.0d);
+//		issue(c, ps2);
 	}
 
 }

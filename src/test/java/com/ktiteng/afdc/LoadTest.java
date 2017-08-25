@@ -11,8 +11,10 @@ import javax.inject.Inject;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import com.ktiteng.arquillian.ArquillianUnitTest;
+import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.service.ChildController;
 import com.ktiteng.controller.service.PaymentController;
 import com.ktiteng.controller.service.ReceiptController;
@@ -21,7 +23,9 @@ import com.ktiteng.entity.service.Parent;
 import com.ktiteng.entity.service.Payment;
 
 public class LoadTest extends ArquillianUnitTest {
-
+	@Inject
+	@Log
+	private Logger log;
 	@Inject
 	ChildController cc;
 	@Inject
