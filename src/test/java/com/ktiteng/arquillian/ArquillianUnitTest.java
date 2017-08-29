@@ -43,6 +43,11 @@ public class ArquillianUnitTest {
 			FileUtils.deleteDirectory(path.toFile());
 			path.toFile().mkdirs();
 		}
+		afterBefore();
+	}
+	
+	protected void afterBefore() {
+		
 	}
 
 	protected boolean getDeletePath() {
