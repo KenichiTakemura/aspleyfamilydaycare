@@ -23,14 +23,17 @@ import com.ktiteng.entity.manager.PersistenceManager;
 public class ArquillianUnitTest {
 	@Inject
 	@Log
-	private Logger log;
+	private static Logger log;
 
 	private Path path = Paths.get(System.getProperty("user.home"), ".afdc", "data");
 
 	@Deployment
 	public static JavaArchive createDeployment() {
-		return ShrinkWrap.create(JavaArchive.class).addPackages(true, "com.ktiteng")
-				.addPackages(true, "org.apache.commons.io").addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+		JavaArchive jar = ShrinkWrap.create(JavaArchive.class).addPackages(true, "com.ktiteng")
+				.addPackages(true, "org.apache.commons.io")
+				.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+		System.out.println(jar.getContent());
+		return jar;
 	}
 
 	@Inject

@@ -50,14 +50,14 @@ public class InitTest extends ArquillianUnitTest {
 	private void issue(Child c, InitialPayment ip) throws IOException {
 		Payment p = pc.addInitialPayment(c, ip);
 		InitialPayment initialPayment = p.getInitialPayment();
-//		if (!initialPayment.getReceiptDeposit().isIssued()) {
-//			rc.issueReceiptDeposit(c, initialPayment);
-//		}
-//		try {
-//			rc.sendReceiptDeposit(c.getId());
-//		} catch (Exception e) {
-//			log.info("{}", e);
-//		}
+		if (!initialPayment.getReceiptDeposit().isIssued()) {
+			rc.issueReceiptDeposit(c, initialPayment);
+		}
+		try {
+			rc.sendReceiptDeposit(c.getId());
+		} catch (Exception e) {
+			log.info("{}", e);
+		}
 		if (!initialPayment.getReceiptEnrollmentFee().isIssued()) {
 			rc.issueReceiptEnrollmentFee(c, initialPayment);
 		}
@@ -145,10 +145,14 @@ public class InitTest extends ArquillianUnitTest {
 	public void ruby() throws IOException {
 		Parent p = addMe("Seong Wan", "Hong", "0407357839", "minsanghee@gmail.com");
 		Child c = addMyChild(p, "Ruby", "Hong", "Q00087");
-		PaymentSchedule ps = new PaymentSchedule().setDateReceived(toDate("2017-08-07"))
+		PaymentSchedule ps1 = new PaymentSchedule().setDateReceived(toDate("2017-08-07"))
 				.setBillingStartDate(toDate("2017-07-17")).setBillingEndDate(toDate("2017-07-30"))
 				.setCurrentBalance(18.50d).setAmountInvoiced(131.88d).setAmountReceived(113.38d).setBalanceDue(0.0d);
-		issue(c, ps);
+		issue(c, ps1);
+		PaymentSchedule ps2 = new PaymentSchedule().setDateReceived(toDate("2017-08-30"))
+				.setBillingStartDate(toDate("2017-07-31")).setBillingEndDate(toDate("2017-08-13"))
+				.setCurrentBalance(0.0d).setAmountInvoiced(131.88d).setAmountReceived(131.88d).setBalanceDue(0.0d);
+		issue(c, ps2);
 	}
 
 	// @Test
@@ -165,14 +169,18 @@ public class InitTest extends ArquillianUnitTest {
 		issue(c, ps2);
 	}
 
-	// @Test
+	@Test
 	public void jason() throws IOException {
 		Parent p = addMe("Hyeeun", "Lee", "0411431913", "hyeeun79@hotmail.com");
 		Child c = addMyChild(p, "Jason", "Lee", "Q000810");
-		PaymentSchedule ps = new PaymentSchedule().setDateReceived(toDate("2017-08-08"))
+		PaymentSchedule ps1 = new PaymentSchedule().setDateReceived(toDate("2017-08-08"))
 				.setBillingStartDate(toDate("2017-07-17")).setBillingEndDate(toDate("2017-07-30"))
 				.setCurrentBalance(0.0d).setAmountInvoiced(87.26d).setAmountReceived(87.26d).setBalanceDue(0.0d);
-		issue(c, ps);
+		issue(c, ps1);
+		PaymentSchedule ps2 = new PaymentSchedule().setDateReceived(toDate("2017-08-29"))
+				.setBillingStartDate(toDate("2017-07-31")).setBillingEndDate(toDate("2017-08-13"))
+				.setCurrentBalance(0.0d).setAmountInvoiced(87.26d).setAmountReceived(87.26d).setBalanceDue(0.0d);
+		issue(c, ps2);
 	}
 
 	// @Test
@@ -190,20 +198,20 @@ public class InitTest extends ArquillianUnitTest {
 
 	}
 
-	@Test
+	// @Test
 	public void louis() throws IOException {
 		Parent p = addMe("Eunhee", "Yang", "0431175258", "david@casscale.com.au");
 		Child c = addMyChild(p, "Louis", "Oh", "Q000812");
-		issue(c, new InitialPayment().setDeposit(266.00d).setDepositPaidOn("2017-07-26")
-				.setEnrollmentFee(50.00d).setEnrollmentFeePaidOn("2017-07-26"));
-//		PaymentSchedule ps1 = new PaymentSchedule().setDateReceived(toDate("2017-08-23"))
-//				.setBillingStartDate(toDate("2017-07-17")).setBillingEndDate(toDate("2017-07-30"))
-//				.setCurrentBalance(0.0d).setAmountInvoiced(213.24d).setAmountReceived(213.24d).setBalanceDue(0.0d);
-//		issue(c, ps1);
-//		PaymentSchedule ps2 = new PaymentSchedule().setDateReceived(toDate("2017-08-23"))
-//				.setBillingStartDate(toDate("2017-07-31")).setBillingEndDate(toDate("2017-08-13"))
-//				.setCurrentBalance(0.0d).setAmountInvoiced(142.16d).setAmountReceived(142.16d).setBalanceDue(0.0d);
-//		issue(c, ps2);
+		issue(c, new InitialPayment().setDeposit(266.00d).setDepositPaidOn("2017-07-26").setEnrollmentFee(50.00d)
+				.setEnrollmentFeePaidOn("2017-07-26"));
+		PaymentSchedule ps1 = new PaymentSchedule().setDateReceived(toDate("2017-08-23"))
+				.setBillingStartDate(toDate("2017-07-17")).setBillingEndDate(toDate("2017-07-30"))
+				.setCurrentBalance(0.0d).setAmountInvoiced(213.24d).setAmountReceived(213.24d).setBalanceDue(0.0d);
+		issue(c, ps1);
+		PaymentSchedule ps2 = new PaymentSchedule().setDateReceived(toDate("2017-08-23"))
+				.setBillingStartDate(toDate("2017-07-31")).setBillingEndDate(toDate("2017-08-13"))
+				.setCurrentBalance(0.0d).setAmountInvoiced(142.16d).setAmountReceived(142.16d).setBalanceDue(0.0d);
+		issue(c, ps2);
 	}
 
 }

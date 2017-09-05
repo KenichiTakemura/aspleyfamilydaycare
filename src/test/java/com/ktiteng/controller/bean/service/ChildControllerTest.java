@@ -1,7 +1,6 @@
 package com.ktiteng.controller.bean.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -56,5 +55,10 @@ public class ChildControllerTest extends ArquillianUnitTest {
 		assertEquals("pfirst4", cc.addParent("pfirst4", "plast4", "0433654800", "test1@gmail.com").getFirstName());
 		cc.addParent("pfirst4", "plast4", "0433654800", "test1@gmail.com");
 		fail();
+	}
+	
+	@Test
+	public void getParents() throws IOException {
+		cc.getAllParents();
 	}
 }

@@ -15,7 +15,6 @@ import com.ktiteng.controller.service.ChildController;
 import com.ktiteng.entity.service.Parent;
 
 @Path("/resource")
-@Produces("application/json")
 public class ResourceRestService {
 	@Inject
 	@Log
@@ -25,6 +24,7 @@ public class ResourceRestService {
 
 	@GET
 	@Path("/parents")
+	@Produces("application/json")
 	public Collection<Parent> getParents() throws IOException {
 		log.info("started.");
 		return cc.getAllParents();

@@ -41,10 +41,7 @@ public class EntityManager {
 	private final static String taxinvoiceseeder = "taxinvoiceseeder";
 
 	List<Parent> parents;
-	Type parentType = new TypeToken<ArrayList<Parent>>() {
-	}.getType();
 	List<Child> children;
-
 	List<Payment> payments;
 	List<TimeCard> timecards;
 	TaxInvoiceSeeder taxInvoiceSeeder;
@@ -93,7 +90,7 @@ public class EntityManager {
 		if (entity instanceof Parent) {
 			parents.removeIf(p -> p != null && p.getId().equals(entity.getId()));
 			parents.add((Parent) entity);
-			pm.persist(parents, parentType, parent);
+			pm.persist(parents, getParentType(), parent);
 		} else if (entity instanceof Child) {
 			children.removeIf(c -> c != null && c.getId().equals(entity.getId()));
 			children.add((Child) entity);
@@ -150,4 +147,8 @@ public class EntityManager {
 		return null;
 	}
 
+	public static Type getParentType() {
+		return new TypeToken<ArrayList<Parent>>() {
+		}.getType();
+	}
 }
