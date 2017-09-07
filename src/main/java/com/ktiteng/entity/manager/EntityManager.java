@@ -12,17 +12,13 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.ktiteng.entity.service.*;
 import org.slf4j.Logger;
 
 import com.google.gson.reflect.TypeToken;
 import com.ktiteng.cdi.Log;
 import com.ktiteng.entity.BaseEntity;
 import com.ktiteng.entity.EntityBag;
-import com.ktiteng.entity.service.Child;
-import com.ktiteng.entity.service.Parent;
-import com.ktiteng.entity.service.Payment;
-import com.ktiteng.entity.service.TaxInvoiceSeeder;
-import com.ktiteng.entity.service.TimeCard;
 
 @Singleton
 public class EntityManager {
@@ -151,4 +147,5 @@ public class EntityManager {
 		return new TypeToken<ArrayList<Parent>>() {
 		}.getType();
 	}
+
 }

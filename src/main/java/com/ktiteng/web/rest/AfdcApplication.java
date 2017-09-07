@@ -10,6 +10,7 @@ import javax.ws.rs.core.Application;
 import org.slf4j.Logger;
 
 import com.ktiteng.cdi.Log;
+import com.ktiteng.web.rest.service.PaymentRestService;
 import com.ktiteng.web.rest.service.ResourceRestService;
 
 @ApplicationPath("/rest")

@@ -1,0 +1,177 @@
+{
+  "childId": "1e6a16dc-e6e5-4ed0-ad5e-b6b2b3a8a5e7",
+  "initialPayment": {
+    "deposit": 95.0,
+    "enrollmentFee": 50.0,
+    "depositPaidOn": {
+      "year": 2017,
+      "month": 5,
+      "day": 4
+    },
+    "enrollmentFeePaidOn": {
+      "year": 2017,
+      "month": 5,
+      "day": 4
+    },
+    "receiptDeposit": {
+      "taxInvoiceId": "AFDC-10001",
+      "name": "Deposit Receipt for ChildFirst1 ChildLast1",
+      "location": "src/test/resources/data/receipt/Deposit_Receipt_ChildFirst1_ChildLast1.pdf",
+      "issued": false,
+      "sent": false
+    },
+    "receiptEnrollmentFee": {
+      "taxInvoiceId": "AFDC-10002",
+      "name": "Enrollment Fee Receipt for ChildFirst1 ChildLast1",
+      "location": "src/test/resources/data/receipt/EnrollmentFee_Receipt_ChildFirst1_ChildLast1.pdf",
+      "issued": false,
+      "sent": false
+    },
+    "generatedAt": {
+      "date": {
+        "year": 2017,
+        "month": 9,
+        "day": 7
+      },
+      "time": {
+        "hour": 13,
+        "minute": 19,
+        "second": 31,
+        "nano": 406000000
+      }
+    }
+  },
+  "balanceDue": 0.0,
+  "paymentSchedule": [
+    {
+      "balanceDue": 0.0,
+      "currentBalance": 0.0,
+      "amountInvoiced": 114.0,
+      "amountReceived": 114.0,
+      "billingStartDate": {
+        "year": 2017,
+        "month": 7,
+        "day": 3
+      },
+      "billingEndDate": {
+        "year": 2017,
+        "month": 7,
+        "day": 16
+      },
+      "dateReceived": {
+        "year": 2017,
+        "month": 7,
+        "day": 18
+      },
+      "completed": false,
+      "receipt": {
+        "taxInvoiceId": "AFDC-10003",
+        "name": "Receipt for ChildFirst1 ChildLast1(03/07/2017-16/07/2017)",
+        "location": "src/test/resources/data/receipt/Receipt_ChildFirst1_ChildLast1(03072017-16072017).pdf",
+        "issued": false,
+        "sent": false
+      },
+      "id": "f9195a5e-1bce-44b6-b534-29f4fad8fa18",
+      "generatedAt": {
+        "date": {
+          "year": 2017,
+          "month": 9,
+          "day": 7
+        },
+        "time": {
+          "hour": 13,
+          "minute": 19,
+          "second": 31,
+          "nano": 412000000
+        }
+      }
+    },
+    {
+      "balanceDue": 9.5,
+      "currentBalance": 0.0,
+      "amountInvoiced": 123.5,
+      "amountReceived": 133.0,
+      "billingStartDate": {
+        "year": 2017,
+        "month": 7,
+        "day": 17
+      },
+      "billingEndDate": {
+        "year": 2017,
+        "month": 7,
+        "day": 30
+      },
+      "dateReceived": {
+        "year": 2017,
+        "month": 7,
+        "day": 31
+      },
+      "completed": false,
+      "receipt": {
+        "taxInvoiceId": "AFDC-10004",
+        "name": "Receipt for ChildFirst1 ChildLast1(17/07/2017-30/07/2017)",
+        "location": "src/test/resources/data/receipt/Receipt_ChildFirst1_ChildLast1(17072017-30072017).pdf",
+        "issued": false,
+        "sent": false
+      },
+      "id": "cd01369d-b478-4753-b58e-69b64252dfe5",
+      "generatedAt": {
+        "date": {
+          "year": 2017,
+          "month": 9,
+          "day": 7
+        },
+        "time": {
+          "hour": 13,
+          "minute": 19,
+          "second": 31,
+          "nano": 414000000
+        }
+      }
+    },
+    {
+      "balanceDue": 9.5,
+      "currentBalance": 9.5,
+      "amountInvoiced": 133.0,
+      "amountReceived": 133.0,
+      "billingStartDate": {
+        "year": 2017,
+        "month": 7,
+        "day": 31
+      },
+      "billingEndDate": {
+        "year": 2017,
+        "month": 8,
+        "day": 13
+      },
+      "dateReceived": {
+        "year": 2017,
+        "month": 8,
+        "day": 15
+      },
+      "completed": false,
+      "receipt": {
+        "taxInvoiceId": "AFDC-10005",
+        "name": "Receipt for ChildFirst1 ChildLast1(31/07/2017-13/08/2017)",
+        "location": "src/test/resources/data/receipt/Receipt_ChildFirst1_ChildLast1(31072017-13082017).pdf",
+        "issued": false,
+        "sent": false
+      },
+      "id": "9e18b799-a0aa-4275-829c-f2a3a7274416",
+      "generatedAt": {
+        "date": {
+          "year": 2017,
+          "month": 9,
+          "day": 7
+        },
+        "time": {
+          "hour": 13,
+          "minute": 19,
+          "second": 31,
+          "nano": 416000000
+        }
+      }
+    }
+  ],
+  "id": "6c74d011-9bce-4fda-a344-8e529f6d58f2"
+}

@@ -48,36 +48,36 @@ public class InitTest extends ArquillianUnitTest {
 	}
 
 	private void issue(Child c, InitialPayment ip) throws IOException {
-		Payment p = pc.addInitialPayment(c, ip);
-		InitialPayment initialPayment = p.getInitialPayment();
-		if (!initialPayment.getReceiptDeposit().isIssued()) {
-			rc.issueReceiptDeposit(c, initialPayment);
-		}
-		try {
-			rc.sendReceiptDeposit(c.getId());
-		} catch (Exception e) {
-			log.info("{}", e);
-		}
-		if (!initialPayment.getReceiptEnrollmentFee().isIssued()) {
-			rc.issueReceiptEnrollmentFee(c, initialPayment);
-		}
-		try {
-			rc.sendReceiptEnrollmentFee(c.getId());
-		} catch (Exception e) {
-			log.info("{}", e);
-		}
+//		Payment p = pc.addInitialPayment(c, ip);
+//		InitialPayment initialPayment = p.getInitialPayment();
+//		if (!initialPayment.getReceiptDeposit().isIssued()) {
+//			rc.issueReceiptDeposit(c, initialPayment);
+//		}
+//		try {
+//			rc.sendReceiptDeposit(c.getId());
+//		} catch (Exception e) {
+//			log.info("{}", e);
+//		}
+//		if (!initialPayment.getReceiptEnrollmentFee().isIssued()) {
+//			rc.issueReceiptEnrollmentFee(c, initialPayment);
+//		}
+//		try {
+//			rc.sendReceiptEnrollmentFee(c.getId());
+//		} catch (Exception e) {
+//			log.info("{}", e);
+//		}
 	}
 
 	private void issue(Child c, PaymentSchedule ps) throws IOException {
-		PaymentSchedule paymentSchedule = pc.addPaymentSchedule(c, ps);
-		if (!paymentSchedule.getReceipt().isIssued()) {
-			rc.issueReceiptWeeks(c, paymentSchedule);
-		}
-		try {
-			rc.sendReceiptWeeks(c.getId(), paymentSchedule.getId());
-		} catch (Exception e) {
-			log.info("{}", e);
-		}
+//		PaymentSchedule paymentSchedule = pc.addPaymentSchedule(c, ps);
+//		if (!paymentSchedule.getReceipt().isIssued()) {
+//			rc.issueReceiptWeeks(c, paymentSchedule);
+//		}
+//		try {
+//			rc.sendReceiptWeeks(c.getId(), paymentSchedule.getId());
+//		} catch (Exception e) {
+//			log.info("{}", e);
+//		}
 		// log.info("Issued Receipt Child:{} PaymentSchedule:{}", c.getId(),
 		// ps.getId());
 	}

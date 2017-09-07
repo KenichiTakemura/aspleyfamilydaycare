@@ -11,6 +11,8 @@ import com.ktiteng.entity.service.PaymentSchedule;
 public interface PaymentController {
 
 	Payment findPayment(Child child) throws IOException;
+	
+	Payment findPayment(String childId) throws IOException;
 
 	PaymentSchedule findPaymentSchedule(Child child, String paymentScheduleId) throws IOException;
 

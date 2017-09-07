@@ -30,7 +30,6 @@ public class PaymentControllerTest extends ArquillianUnitTest {
 	private Logger log;
 	@Inject
 	ChildController cc;
-
 	@Inject
 	PaymentController pc;
 

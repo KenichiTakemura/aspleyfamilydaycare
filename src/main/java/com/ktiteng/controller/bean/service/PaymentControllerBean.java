@@ -36,9 +36,15 @@ public class PaymentControllerBean extends BaseController implements PaymentCont
 
 	@Override
 	public Payment findPayment(Child child) throws IOException {
-		Payment p = (Payment) em.find(Payment.class, child.getId());
-		return p != null ? p : new Payment().setChildId(child.getId());
+		return this.findPayment(child.getId());
 	}
+	
+	@Override
+	public Payment findPayment(String childId) throws IOException {
+		Payment p = (Payment) em.find(Payment.class, childId);
+		return p != null ? p : new Payment().setChildId(childId);
+	}
+
 
 	@Override
 	public Payment addInitialPayment(Child child, InitialPayment initialPayment) throws IOException {

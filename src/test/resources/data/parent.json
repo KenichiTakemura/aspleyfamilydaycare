@@ -1,0 +1,42 @@
+[
+  {
+    "firstName": "ParentFirst1",
+    "lastName": "ParentLast1",
+    "phoneNumber": "123456789",
+    "emailAddress": "username1@google.com",
+    "id": "3ed480b2-6e5e-4945-bf18-100d06d22e65",
+    "generatedAt": {
+      "date": {
+        "year": 2017,
+        "month": 9,
+        "day": 7
+      },
+      "time": {
+        "hour": 13,
+        "minute": 19,
+        "second": 31,
+        "nano": 387000000
+      }
+    }
+  },
+  {
+    "firstName": "ParentFirst2",
+    "lastName": "ParentLast2",
+    "phoneNumber": "2123456789",
+    "emailAddress": "username2@google.com",
+    "id": "116f1ee3-3db1-4ca9-b260-f6235a9571fc",
+    "generatedAt": {
+      "date": {
+        "year": 2017,
+        "month": 9,
+        "day": 7
+      },
+      "time": {
+        "hour": 13,
+        "minute": 19,
+        "second": 31,
+        "nano": 428000000
+      }
+    }
+  }
+]

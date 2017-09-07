@@ -1,0 +1,134 @@
+{
+  "childId": "cc794178-ca9f-4c33-a525-bb88870267eb",
+  "initialPayment": {
+    "deposit": 95.0,
+    "enrollmentFee": 50.0,
+    "depositPaidOn": {
+      "year": 2017,
+      "month": 6,
+      "day": 4
+    },
+    "enrollmentFeePaidOn": {
+      "year": 2017,
+      "month": 7,
+      "day": 4
+    },
+    "receiptDeposit": {
+      "taxInvoiceId": "AFDC-10006",
+      "name": "Deposit Receipt for ChildFirst2 ChildLast2",
+      "location": "src/test/resources/data/receipt/Deposit_Receipt_ChildFirst2_ChildLast2.pdf",
+      "issued": false,
+      "sent": false
+    },
+    "receiptEnrollmentFee": {
+      "taxInvoiceId": "AFDC-10007",
+      "name": "Enrollment Fee Receipt for ChildFirst2 ChildLast2",
+      "location": "src/test/resources/data/receipt/EnrollmentFee_Receipt_ChildFirst2_ChildLast2.pdf",
+      "issued": false,
+      "sent": false
+    },
+    "generatedAt": {
+      "date": {
+        "year": 2017,
+        "month": 9,
+        "day": 7
+      },
+      "time": {
+        "hour": 13,
+        "minute": 19,
+        "second": 31,
+        "nano": 430000000
+      }
+    }
+  },
+  "balanceDue": 0.0,
+  "paymentSchedule": [
+    {
+      "balanceDue": 0.0,
+      "currentBalance": 0.0,
+      "amountInvoiced": 31.96,
+      "amountReceived": 31.96,
+      "billingStartDate": {
+        "year": 2017,
+        "month": 7,
+        "day": 17
+      },
+      "billingEndDate": {
+        "year": 2017,
+        "month": 7,
+        "day": 30
+      },
+      "dateReceived": {
+        "year": 2017,
+        "month": 8,
+        "day": 9
+      },
+      "completed": false,
+      "receipt": {
+        "taxInvoiceId": "AFDC-10008",
+        "name": "Receipt for ChildFirst2 ChildLast2(17/07/2017-30/07/2017)",
+        "location": "src/test/resources/data/receipt/Receipt_ChildFirst2_ChildLast2(17072017-30072017).pdf",
+        "issued": false,
+        "sent": false
+      },
+      "id": "02c7c0a7-88d1-4606-a7db-2c8591f7456f",
+      "generatedAt": {
+        "date": {
+          "year": 2017,
+          "month": 9,
+          "day": 7
+        },
+        "time": {
+          "hour": 13,
+          "minute": 19,
+          "second": 31,
+          "nano": 431000000
+        }
+      }
+    },
+    {
+      "balanceDue": 0.0,
+      "currentBalance": 0.0,
+      "amountInvoiced": 31.96,
+      "amountReceived": 31.96,
+      "billingStartDate": {
+        "year": 2017,
+        "month": 7,
+        "day": 31
+      },
+      "billingEndDate": {
+        "year": 2017,
+        "month": 8,
+        "day": 13
+      },
+      "dateReceived": {
+        "year": 2017,
+        "month": 8,
+        "day": 23
+      },
+      "completed": false,
+      "receipt": {
+        "taxInvoiceId": "AFDC-10009",
+        "name": "Receipt for ChildFirst2 ChildLast2(31/07/2017-13/08/2017)",
+        "location": "src/test/resources/data/receipt/Receipt_ChildFirst2_ChildLast2(31072017-13082017).pdf",
+        "issued": false,
+        "sent": false
+      },
+      "id": "fa16a030-71d7-4284-8422-c86292e4489b",
+      "generatedAt": {
+        "date": {
+          "year": 2017,
+          "month": 9,
+          "day": 7
+        },
+        "time": {
+          "hour": 13,
+          "minute": 19,
+          "second": 31,
+          "nano": 433000000
+        }
+      }
+    }
+  ],
+  "id": "e0d4da4d-fb61-467e-95d3-32200274076b"
+}
