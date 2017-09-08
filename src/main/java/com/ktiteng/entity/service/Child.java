@@ -2,6 +2,7 @@ package com.ktiteng.entity.service;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ktiteng.entity.BaseEntity;
 import com.ktiteng.util.Utils;
 
@@ -71,6 +72,7 @@ public class Child extends BaseEntity {
 		this.lastDate = lastDate;
 	}
 
+	@JsonIgnore
 	public String getName() {
 		return this.firstName + " " + this.lastName;
 	}

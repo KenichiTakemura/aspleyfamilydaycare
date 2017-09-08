@@ -3,22 +3,19 @@ package com.ktiteng.web.rest;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ktiteng.web.rest.jackson.JacksonConfig;
 import com.ktiteng.web.rest.service.PaymentRestService;
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.jboss.resteasy.cdi.CdiInjectorFactory;
 import org.jboss.resteasy.core.Dispatcher;
 import org.jboss.resteasy.mock.MockDispatcherFactory;
 import org.jboss.resteasy.mock.MockHttpRequest;
 import org.jboss.resteasy.mock.MockHttpResponse;
 import org.jboss.resteasy.plugins.server.resourcefactory.POJOResourceFactory;
-import org.jboss.resteasy.spi.InjectorFactory;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.junit.Assert;
-import org.junit.Before;
 import org.slf4j.Logger;
 
-import com.google.gson.Gson;
 import com.ktiteng.arquillian.ArquillianUnitTest;
 import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.service.ChildController;
@@ -40,12 +37,15 @@ public class RestMockFramework extends ArquillianUnitTest {
 	protected ChildController cc;
 	@Inject
 	protected PaymentController pc;
-	protected ObjectMapper mapper = new ObjectMapper();
+	protected ObjectMapper mapper;
 
 	public void afterBefore() {
+		mapper = new ObjectMapper();
+		mapper.findAndRegisterModules();
+
 		ResteasyProviderFactory resteasyProviderFactory = dispatcher.getProviderFactory();
 		resteasyProviderFactory.setInjectorFactory(new CdiInjectorFactory());
-		Assert.assertNotNull(cc);
+		ResteasyProviderFactory.getInstance().registerProvider(JacksonConfig.class);
 		dispatcher.getRegistry().addResourceFactory(new POJOResourceFactory(ResourceRestService.class));
 		dispatcher.getRegistry().addResourceFactory(new POJOResourceFactory(PaymentRestService.class));
 		log.info("afterBefore done.");

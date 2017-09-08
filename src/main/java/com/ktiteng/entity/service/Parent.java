@@ -1,5 +1,6 @@
 package com.ktiteng.entity.service;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ktiteng.entity.BaseEntity;
 import com.ktiteng.util.Utils;
 
@@ -59,6 +60,7 @@ public class Parent extends BaseEntity {
 		this.bankDetail = bankDetail;
 	}
 
+	@JsonIgnore
 	public String getName() {
 		return this.firstName + " " + this.lastName;
 	}

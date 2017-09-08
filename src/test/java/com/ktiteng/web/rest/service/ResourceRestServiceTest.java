@@ -6,13 +6,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.codehaus.jackson.type.JavaType;
+import com.fasterxml.jackson.databind.JavaType;
 import org.jboss.resteasy.mock.MockHttpResponse;
 import org.junit.Test;
 import org.slf4j.Logger;
 
 import com.ktiteng.cdi.Log;
-import com.ktiteng.entity.manager.EntityManager;
 import com.ktiteng.entity.service.Child;
 import com.ktiteng.entity.service.Parent;
 import com.ktiteng.web.rest.RestMockFramework;

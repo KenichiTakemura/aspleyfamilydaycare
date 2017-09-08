@@ -1,25 +1,20 @@
 package com.ktiteng.web.rest.service;
 
-import static com.ktiteng.util.Utils.toDate;
-
-import java.net.URLEncoder;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import static org.junit.Assert.assertEquals;
-
-import org.codehaus.jackson.type.JavaType;
-import org.jboss.resteasy.mock.MockHttpResponse;
-import org.junit.Test;
-import org.slf4j.Logger;
-
+import com.fasterxml.jackson.databind.JavaType;
 import com.ktiteng.cdi.Log;
-import com.ktiteng.entity.manager.EntityManager;
 import com.ktiteng.entity.service.Child;
 import com.ktiteng.entity.service.Parent;
 import com.ktiteng.entity.service.PaymentSchedule;
 import com.ktiteng.web.rest.RestMockFramework;
+import org.jboss.resteasy.mock.MockHttpResponse;
+import org.junit.Test;
+import org.slf4j.Logger;
+
+import javax.inject.Inject;
+import java.util.List;
+
+import static com.ktiteng.util.Utils.toDate;
+import static org.junit.Assert.assertEquals;
 
 public class PaymentRestServiceTest extends RestMockFramework {
 	@Inject
