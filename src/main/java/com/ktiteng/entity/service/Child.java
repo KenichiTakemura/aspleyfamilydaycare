@@ -24,6 +24,14 @@ public class Child extends BaseEntity {
 		setId(Utils.getId());
 	}
 
+	public Child(String firstName, String lastName, String childNumber, String parentId) {
+		this();
+		setFirstName(firstName);
+		setLastName(lastName);
+		setChildNumber(childNumber);
+		setParentId(parentId);
+	}
+
 	public String getParentId() {
 		return parentId;
 	}
@@ -53,7 +61,9 @@ public class Child extends BaseEntity {
 	}
 
 	public void setStartDate(String startDate) {
-		this.startDate = LocalDate.parse(startDate);
+		if (!Utils.isNullOrBlank(startDate)) {
+			this.startDate = LocalDate.parse(startDate);
+		}
 	}
 
 	public void setStartDate(LocalDate startDate) {
@@ -65,7 +75,9 @@ public class Child extends BaseEntity {
 	}
 
 	public void setLastDate(String lastDate) {
-		this.lastDate = LocalDate.parse(lastDate);
+		if (!Utils.isNullOrBlank(lastDate)) {
+			this.lastDate = LocalDate.parse(lastDate);
+		}
 	}
 
 	public void setLastDate(LocalDate lastDate) {

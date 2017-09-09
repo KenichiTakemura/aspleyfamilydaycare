@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
+import org.jboss.resteasy.util.IsAssignableFrom;
 import org.slf4j.Logger;
 
 import com.kotcrab.annotation.CallSuper;
@@ -40,13 +41,4 @@ public abstract class BaseController {
 		log.info("PreDestroy");
 	}
 
-	protected void validate(Parent parent) throws IllegalArgumentException {
-		if (parent.getEmailAddress() != null) {
-			if (Validator.isValidEmailAddress(parent.getEmailAddress()) == null) {
-				log.warn("Email is invalid {}", parent.getEmailAddress());
-				throw new IllegalArgumentException("Email is invalid");
-			}
-			log.debug("Email is valid {}", parent.getEmailAddress());
-		}
-	}
 }

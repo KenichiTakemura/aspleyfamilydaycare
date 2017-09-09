@@ -8,13 +8,11 @@ import com.ktiteng.entity.service.Parent;
 
 public interface ChildController {
 
-	Parent addParent(String firstName, String lastName) throws IOException;
-
-	Parent addParent(String firstName, String lastName, String phoneNumber, String emailAddress) throws IOException;
+	Parent addParent(Parent parent) throws IOException;
 
 	Parent updateParent(Parent parent) throws IOException;
 
-	Child addChild(String firstName, String lastName, String childNumber, Parent parent) throws IOException;
+	Child addChild(Child child) throws IOException;
 
 	Child updateChild(Child child) throws IOException;
 

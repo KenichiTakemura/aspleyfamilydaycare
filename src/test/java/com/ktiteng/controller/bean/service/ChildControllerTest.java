@@ -24,17 +24,17 @@ public class ChildControllerTest extends ArquillianUnitTest {
 
 	@Test
 	public void add() throws IOException {
-		Parent p1 = cc.addParent("pfirst1", "plast1", "0433654800", "test1@gmail.com");
+		Parent p1 = cc.addParent(parent1);
 		assertEquals("pfirst1", cc.findParent(p1.getId()).getFirstName());
-		Parent p2 = cc.addParent("pfirst2", "plast2", "0433654801", "test2@gmail.com");
+		Parent p2 = cc.addParent(parent2);
 		assertEquals("pfirst2", cc.findParent(p2.getId()).getFirstName());
 		assertEquals("pfirst2", cc.findParent(p2.getFirstName(), p2.getLastName()).getFirstName());
 		assertTrue(Paths.get(getPathStr(), "parent.json").toFile().exists());
 		p1.setBankDetail(new BankDetail().setAccount("pfirst1"));
 		p1 = cc.updateParent(p1);
-		Child c1 = cc.addChild("cfirst1", "clast1", "Q00085", p1);
+		Child c1 = cc.addChild(child1);
 		assertEquals("cfirst1", cc.findChild(c1.getId()).getFirstName());
-		Child c2 = cc.addChild("cfirst2", "clast2", "Q00085", p2);
+		Child c2 = cc.addChild(child2);
 		assertEquals("cfirst2", cc.findChild(c2.getFirstName(), c2.getLastName()).getFirstName());
 		c1.setStartDate("2017-06-12");
 		cc.updateChild(c1);
@@ -44,7 +44,8 @@ public class ChildControllerTest extends ArquillianUnitTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void badEmail() {
 		try {
-			cc.addParent("pfirst3", "plast3", "0433654800", "test1.gmail.com");
+			parent3.setEmailAddress("bad.domain.com");
+			cc.addParent(parent3);
 		} catch (IOException ioe) {
 			fail();
 		}
@@ -52,8 +53,8 @@ public class ChildControllerTest extends ArquillianUnitTest {
 
 	@Test(expected = IOException.class)
 	public void addTwice() throws IOException {
-		assertEquals("pfirst4", cc.addParent("pfirst4", "plast4", "0433654800", "test1@gmail.com").getFirstName());
-		cc.addParent("pfirst4", "plast4", "0433654800", "test1@gmail.com");
+		assertEquals("pfirst4", cc.addParent(parent4).getFirstName());
+		cc.addParent(parent4);
 		fail();
 	}
 	

@@ -23,8 +23,8 @@ public class PaymentRestServiceTest extends RestMockFramework {
 
 	@Test
 	public void getPaymentSchedule() throws Exception {
-		Parent p1 = cc.addParent("pfirst1", "plast1", "0433654800", "test1@gmail.com");
-		Child c = cc.addChild("cfirst1", "clast1", "Q00085", p1);
+		Parent p1 = cc.addParent(parent1);
+		Child c = cc.addChild(child1);
 		PaymentSchedule ps = new PaymentSchedule().setDateReceived(toDate("2017-07-18"))
 				.setBillingStartDate(toDate("2017-07-03")).setBillingEndDate(toDate("2017-07-16"))
 				.setAmountInvoiced(114.00d).setAmountReceived(114.00d).setBalanceDue(0.0d);

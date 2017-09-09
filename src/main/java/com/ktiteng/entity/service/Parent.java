@@ -20,48 +20,73 @@ public class Parent extends BaseEntity {
 		setId(Utils.getId());
 	}
 
+	public Parent(String firstName, String lastName, String phoneNumber, String emailAddress) {
+		this();
+		setFirstName(firstName);
+		setLastName(lastName);
+		setPhoneNumber(phoneNumber);
+		setEmailAddress(emailAddress);
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public Parent setFirstName(String firstName) {
 		this.firstName = firstName;
+		return this;
 	}
 
 	public String getLastName() {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public Parent setLastName(String lastName) {
 		this.lastName = lastName;
+		return this;
 	}
 
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(String phoneNumber) {
+	public Parent setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+		return this;
 	}
 
 	public String getEmailAddress() {
 		return emailAddress;
 	}
 
-	public void setEmailAddress(String emailAddress) {
+	public Parent setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
+		return this;
 	}
 
 	public BankDetail getBankDetail() {
 		return bankDetail;
 	}
 
-	public void setBankDetail(BankDetail bankDetail) {
+	public Parent setBankDetail(BankDetail bankDetail) {
 		this.bankDetail = bankDetail;
+		return this;
 	}
 
 	@JsonIgnore
 	public String getName() {
 		return this.firstName + " " + this.lastName;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (!(obj instanceof Parent)) {
+			return false;
+		}
+		Parent other = (Parent) obj;
+		return getName().equals(other.getName());
+	}
+
 }

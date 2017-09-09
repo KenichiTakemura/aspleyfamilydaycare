@@ -24,7 +24,7 @@ public class JacksonConfig implements ContextResolver<ObjectMapper> {
     @Override
     public ObjectMapper getContext(final Class<?> type) {
         final ObjectMapper mapper = new ObjectMapper();
-        log.info("Configured Jackson Json module");
+//        log.info("Configured Jackson Json module");
 //        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 //        mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
         mapper.findAndRegisterModules();

@@ -1,5 +1,17 @@
 package com.ktiteng.arquillian;
 
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collection;
+
+import javax.inject.Inject;
+
+import org.junit.Test;
+import org.slf4j.Logger;
+
 import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.service.ChildController;
 import com.ktiteng.controller.service.PaymentController;
@@ -8,18 +20,6 @@ import com.ktiteng.entity.service.Child;
 import com.ktiteng.entity.service.Parent;
 import com.ktiteng.entity.service.Payment;
 import com.ktiteng.entity.service.PaymentSchedule;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.slf4j.Logger;
-
-import javax.inject.Inject;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collection;
-
-import static org.junit.Assert.assertEquals;
 
 public class LoadTest extends ArquillianUnitTest {
 	@Inject
@@ -42,6 +42,11 @@ public class LoadTest extends ArquillianUnitTest {
 
 	}
 
+	@Override
+	protected boolean getDeletePath() {
+		return false;
+	}
+	
 	@Test
 	public void loadParent() throws IOException {
 		Collection<Parent> parents = cc.getAllParents();

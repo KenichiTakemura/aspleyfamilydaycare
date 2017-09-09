@@ -1,5 +1,5 @@
 {
-  "childId": "cc794178-ca9f-4c33-a525-bb88870267eb",
+  "childId": "d3b2992d-a8ab-402b-89bb-5edf84b8adfc",
   "initialPayment": {
     "deposit": 95.0,
     "enrollmentFee": 50.0,
@@ -15,15 +15,15 @@
     },
     "receiptDeposit": {
       "taxInvoiceId": "AFDC-10006",
-      "name": "Deposit Receipt for ChildFirst2 ChildLast2",
-      "location": "src/test/resources/data/receipt/Deposit_Receipt_ChildFirst2_ChildLast2.pdf",
+      "name": "Deposit Receipt for cfirst2 clast2",
+      "location": "src/test/resources/data/receipt/Deposit_Receipt_cfirst2_clast2.pdf",
       "issued": false,
       "sent": false
     },
     "receiptEnrollmentFee": {
       "taxInvoiceId": "AFDC-10007",
-      "name": "Enrollment Fee Receipt for ChildFirst2 ChildLast2",
-      "location": "src/test/resources/data/receipt/EnrollmentFee_Receipt_ChildFirst2_ChildLast2.pdf",
+      "name": "Enrollment Fee Receipt for cfirst2 clast2",
+      "location": "src/test/resources/data/receipt/EnrollmentFee_Receipt_cfirst2_clast2.pdf",
       "issued": false,
       "sent": false
     },
@@ -31,13 +31,13 @@
       "date": {
         "year": 2017,
         "month": 9,
-        "day": 7
+        "day": 9
       },
       "time": {
         "hour": 13,
-        "minute": 19,
+        "minute": 17,
         "second": 31,
-        "nano": 430000000
+        "nano": 684000000
       }
     }
   },
@@ -66,23 +66,23 @@
       "completed": false,
       "receipt": {
         "taxInvoiceId": "AFDC-10008",
-        "name": "Receipt for ChildFirst2 ChildLast2(17/07/2017-30/07/2017)",
-        "location": "src/test/resources/data/receipt/Receipt_ChildFirst2_ChildLast2(17072017-30072017).pdf",
+        "name": "Receipt for cfirst2 clast2(17/07/2017-30/07/2017)",
+        "location": "src/test/resources/data/receipt/Receipt_cfirst2_clast2(17072017-30072017).pdf",
         "issued": false,
         "sent": false
       },
-      "id": "02c7c0a7-88d1-4606-a7db-2c8591f7456f",
+      "id": "8ea047ef-7ede-44ab-940a-ea4989b6e0e8",
       "generatedAt": {
         "date": {
           "year": 2017,
           "month": 9,
-          "day": 7
+          "day": 9
         },
         "time": {
           "hour": 13,
-          "minute": 19,
+          "minute": 17,
           "second": 31,
-          "nano": 431000000
+          "nano": 688000000
         }
       }
     },
@@ -109,26 +109,26 @@
       "completed": false,
       "receipt": {
         "taxInvoiceId": "AFDC-10009",
-        "name": "Receipt for ChildFirst2 ChildLast2(31/07/2017-13/08/2017)",
-        "location": "src/test/resources/data/receipt/Receipt_ChildFirst2_ChildLast2(31072017-13082017).pdf",
+        "name": "Receipt for cfirst2 clast2(31/07/2017-13/08/2017)",
+        "location": "src/test/resources/data/receipt/Receipt_cfirst2_clast2(31072017-13082017).pdf",
         "issued": false,
         "sent": false
       },
-      "id": "fa16a030-71d7-4284-8422-c86292e4489b",
+      "id": "f4e45176-564f-4b27-9ed1-08e26ac9408b",
       "generatedAt": {
         "date": {
           "year": 2017,
           "month": 9,
-          "day": 7
+          "day": 9
         },
         "time": {
           "hour": 13,
-          "minute": 19,
+          "minute": 17,
           "second": 31,
-          "nano": 433000000
+          "nano": 693000000
         }
       }
     }
   ],
-  "id": "e0d4da4d-fb61-467e-95d3-32200274076b"
+  "id": "fcb02c92-79e8-4387-ba0e-f417ca9304c4"
 }

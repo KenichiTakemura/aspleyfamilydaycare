@@ -13,8 +13,11 @@ import org.slf4j.Logger;
 import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.bean.BaseController;
 import com.ktiteng.controller.service.ChildController;
+import com.ktiteng.entity.BaseEntity;
 import com.ktiteng.entity.service.Child;
 import com.ktiteng.entity.service.Parent;
+import com.ktiteng.util.Utils;
+import com.ktiteng.util.Validator;
 
 @Default
 @ApplicationScoped
@@ -29,27 +32,14 @@ public class ChildControllerBean extends BaseController implements ChildControll
 	}
 
 	@Override
-	public Parent addParent(String firstName, String lastName) throws IOException {
-		return addParent(firstName, lastName, null, null);
-	}
-
-	@Override
-	public Parent addParent(String firstName, String lastName, String phoneNumber, String emailAddress)
-			throws IOException {
-		if (this.findParent(firstName, lastName) != null) {
+	public Parent addParent(Parent parent) throws IOException {
+		if (this.findParent(parent.getFirstName(), parent.getLastName()) != null) {
 			throw new IOException("Already exists. Use update.");
 		}
-		Parent p = new Parent();
-		p.setFirstName(firstName);
-		p.setLastName(lastName);
-		if (phoneNumber != null) {
-			p.setPhoneNumber(phoneNumber);
+		if (parent.getGeneratedAt() == null) {
+			parent.setGeneratedAt();
 		}
-		if (emailAddress != null) {
-			p.setEmailAddress(emailAddress);
-		}
-		p.setGeneratedAt();
-		return updateParent(p);
+		return updateParent(parent);
 	}
 
 	@Override
@@ -60,21 +50,17 @@ public class ChildControllerBean extends BaseController implements ChildControll
 	}
 
 	@Override
-	public Child addChild(String firstName, String lastName, String childNumber, Parent parent) throws IOException {
-		if (this.findChild(firstName, lastName) != null) {
+	public Child addChild(Child child) throws IOException {
+		if (this.findChild(child.getFirstName(), child.getLastName()) != null) {
 			throw new IOException("Already exists. Use update.");
 		}
-		Child c = new Child();
-		c.setFirstName(firstName);
-		if (lastName == null) {
-			c.setLastName(parent.getLastName());
-		} else {
-			c.setLastName(lastName);
+		if (Utils.isNullOrBlank(child.getParentId()) || this.findParent(child.getParentId()) == null) {
+			throw new IOException("No Parent for this child.");
 		}
-		c.setChildNumber(childNumber);
-		c.setParentId(parent.getId());
-		c.setGeneratedAt();
-		return updateChild(c);
+		if (child.getGeneratedAt() == null) {
+			child.setGeneratedAt();
+		}
+		return updateChild(child);
 	}
 
 	@Override
@@ -111,6 +97,20 @@ public class ChildControllerBean extends BaseController implements ChildControll
 	@Override
 	public Child findChild(String firstName, String lastName) throws IOException {
 		return (Child) em.find(Child.class, firstName, lastName);
+	}
+
+	protected void validate(BaseEntity entity) throws IOException {
+		if (entity instanceof Parent) {
+			Parent parent = (Parent) entity;
+
+			if (parent.getEmailAddress() != null) {
+				if (Validator.isValidEmailAddress(parent.getEmailAddress()) == null) {
+					log.warn("Email is invalid {}", parent.getEmailAddress());
+					throw new IllegalArgumentException("Email is invalid");
+				}
+				log.debug("Email is valid {}", parent.getEmailAddress());
+			}
+		}
 	}
 
 }

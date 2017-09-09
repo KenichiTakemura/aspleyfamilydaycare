@@ -1,25 +1,26 @@
 package com.ktiteng.arquillian;
 
+import static com.ktiteng.util.Utils.toDate;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import javax.inject.Inject;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
+import org.slf4j.Logger;
+
 import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.service.ChildController;
 import com.ktiteng.controller.service.PaymentController;
 import com.ktiteng.controller.service.ReceiptController;
 import com.ktiteng.entity.service.Child;
 import com.ktiteng.entity.service.InitialPayment;
-import com.ktiteng.entity.service.Parent;
 import com.ktiteng.entity.service.PaymentSchedule;
-import org.junit.Before;
-import org.junit.Test;
-import org.slf4j.Logger;
 
-import javax.inject.Inject;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import static com.ktiteng.util.Utils.toDate;
-
-public class IntiDataTest extends ArquillianUnitTest {
+public class IntiTestDataTest extends ArquillianUnitTest {
     @Inject
     @Log
     private Logger log;
@@ -36,7 +37,7 @@ public class IntiDataTest extends ArquillianUnitTest {
     }
 
     protected boolean getDeletePath() {
-        return false;
+        return true;
     }
 
     @Override
@@ -44,20 +45,10 @@ public class IntiDataTest extends ArquillianUnitTest {
         Paths.get(getPath().toString(), "receipt").toFile().mkdirs();
     }
 
-    private Parent addMe(String... attrs) throws IOException {
-        Parent p = cc.findParent(attrs[0], attrs[1]);
-        return p != null ? p : cc.addParent(attrs[0], attrs[1], attrs[2], attrs[3]);
-    }
-
-    private Child addMyChild(Parent p, String... attrs) throws IOException {
-        Child c = cc.findChild(attrs[0], attrs[1]);
-        return c != null ? c : cc.addChild(attrs[0], attrs[1], attrs[2], p);
-    }
-
     @Test
-    public void p1() throws IOException {
-        Parent p = addMe("ParentFirst1", "ParentLast1", "123456789", "username1@google.com");
-        Child c = addMyChild(p, "ChildFirst1", "ChildLast1", "Q00085");
+    public void genData() throws IOException {
+    	cc.addParent(parent1);
+        Child c = cc.addChild(child1);
         pc.addInitialPayment(c, new
                 InitialPayment().setDeposit(95.00).setDepositPaidOn("2017-05-04")
                 .setEnrollmentFee(50.00).setEnrollmentFeePaidOn("2017-05-04"));
@@ -70,12 +61,8 @@ public class IntiDataTest extends ArquillianUnitTest {
         pc.addPaymentSchedule(c, new PaymentSchedule().setDateReceived(toDate("2017-08-15"))
                 .setBillingStartDate(toDate("2017-07-31")).setBillingEndDate(toDate("2017-08-13"))
                 .setCurrentBalance(9.5d).setAmountInvoiced(133.00d).setAmountReceived(133.00d).setBalanceDue(9.5d));
-    }
-
-    @Test
-    public void p2() throws IOException {
-        Parent p = addMe("ParentFirst2", "ParentLast2", "2123456789", "username2@google.com");
-        Child c = addMyChild(p, "ChildFirst2", "ChildLast2", "Q00086");
+    	cc.addParent(parent2);
+    	c = cc.addChild(child2);
         pc.addInitialPayment(c, new
                 InitialPayment().setDeposit(95.00).setDepositPaidOn("2017-06-04")
                 .setEnrollmentFee(50.00).setEnrollmentFeePaidOn("2017-07-04"));
