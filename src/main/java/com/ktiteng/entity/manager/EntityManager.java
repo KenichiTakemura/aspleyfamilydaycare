@@ -5,20 +5,23 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.ktiteng.entity.service.*;
 import org.slf4j.Logger;
 
 import com.google.gson.reflect.TypeToken;
 import com.ktiteng.cdi.Log;
 import com.ktiteng.entity.BaseEntity;
 import com.ktiteng.entity.EntityBag;
+import com.ktiteng.entity.service.Child;
+import com.ktiteng.entity.service.Parent;
+import com.ktiteng.entity.service.Payment;
+import com.ktiteng.entity.service.TaxInvoiceSeeder;
+import com.ktiteng.entity.service.TimeCard;
 
 @Singleton
 public class EntityManager {
@@ -107,11 +110,11 @@ public class EntityManager {
 	public EntityBag getAll(Class<?> entityClass) {
 		EntityBag bag = new EntityBag();
 		if (entityClass.isAssignableFrom(Parent.class)) {
-			return bag.setEntities(parents);
+			return bag.setEntity(parents);
 		} else if (entityClass.isAssignableFrom(Child.class)) {
-			return bag.setEntities(children);
+			return bag.setEntity(children);
 		} else if (entityClass.isAssignableFrom(Payment.class)) {
-			return bag.setEntities(payments);
+			return bag.setEntity(payments);
 		}
 		return bag;
 	}

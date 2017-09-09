@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 
 import javax.inject.Inject;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 

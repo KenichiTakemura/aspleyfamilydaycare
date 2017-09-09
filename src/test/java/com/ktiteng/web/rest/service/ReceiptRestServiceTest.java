@@ -24,8 +24,8 @@ public class ReceiptRestServiceTest extends RestMockFramework {
 		invokePost("/resource/child", toJson(child1));
 		PaymentSchedule ps = new PaymentSchedule().setDateReceived(toDate("2017-07-18"))
 				.setBillingStartDate(toDate("2017-07-03")).setAmountInvoiced(114.00d);
-		log.info("{}", toJson(ps));
 		invokePost(addQueryParam("/payment/paymentschedule", "c", child1.getId()), toJson(ps));
-
+		invokePost(addQueryParam("/receipt/issue", new String[]{"t", "weeks", "c", child1.getId(),
+				"ps", ps.getId()}), null);
 	}
 }

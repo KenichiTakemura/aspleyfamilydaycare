@@ -27,7 +27,6 @@ import com.ktiteng.controller.service.PdfGenerator;
 import com.ktiteng.controller.service.ReceiptController;
 import com.ktiteng.entity.service.Child;
 import com.ktiteng.entity.service.InitialPayment;
-import com.ktiteng.entity.service.Payment;
 import com.ktiteng.entity.service.PaymentSchedule;
 import com.ktiteng.entity.service.Receipt;
 
@@ -71,92 +70,67 @@ public class ReceiptControllerBean implements ReceiptController {
 	}
 
 	@Override
-	public void issueReceiptWeeks(String childId, String paymentScheduleId) throws IOException {
+	public void issueReceipt(String childId, String id, ReceiptType type) throws IOException {
+		log.info("issueReceipt childId={}, id={}, type={}", childId, id, type);
 		Child child = findChild(childId);
-		PaymentSchedule paymentSchedule = findPaymentSchedule(child, paymentScheduleId);
-		Receipt receipt = paymentSchedule.getReceipt();
-		if (receipt.isIssued()) {
-			throw new IllegalStateException("Already receipt issued.");
-		}
+		Receipt receipt;
+		Document document;
+		PaymentSchedule paymentSchedule = null;
+		InitialPayment initialPayment = null;
 		try {
-			pdfGen.generateWeeksReceipt(convertPaymentScheduleToDocument(child, paymentSchedule),
-					receipt.getLocation());
+			if (type == ReceiptType.WEEKS) {
+				paymentSchedule = findPaymentSchedule(child, id);
+				receipt = paymentSchedule.getReceipt();
+				document = convertPaymentScheduleToDocument(child, paymentSchedule);
+			} else if (type == ReceiptType.DEPOSIT) {
+				initialPayment = pc.findPayment(childId).getInitialPayment();
+				receipt = initialPayment.getReceiptDeposit();
+				document = convertDepositToDocument(child, initialPayment);
+			} else if (type == ReceiptType.ENROLLMENT) {
+				initialPayment = pc.findPayment(childId).getInitialPayment();
+				receipt = initialPayment.getReceiptEnrollmentFee();
+				document = convertEnrollmentFeeToDocument(child, initialPayment);
+			} else {
+				throw new IOException("Unknown ReceiptType " + type);
+			}
+			if (receipt.isIssued()) {
+				throw new IllegalStateException("Already receipt issued.");
+			}
+			pdfGen.generateReceipt(document, receipt.getLocation(), type);
 			receipt.setIssued(true);
-			pc.updatePaymentSchedule(child, paymentSchedule);
+			if (type == ReceiptType.WEEKS) {
+				pc.updatePaymentSchedule(child, paymentSchedule);
+			} else {
+				pc.updateInitialPayment(child, initialPayment);
+			}
 		} catch (Exception e) {
+			log.warn("Cannot generate a pdf receipt.", e);
 			throw new IOException(e);
 		}
 	}
 
 	@Override
-	public void sendReceiptWeeks(String childId, String paymentScheduleId) throws IOException {
+	public void sendReceipt(String childId, String id, ReceiptType type) throws IOException {
 		Child child = findChild(childId);
-		PaymentSchedule paymentSchedule = findPaymentSchedule(child, paymentScheduleId);
-		if (sendReceipt(child, paymentSchedule.getReceipt())) {
-			pc.updatePaymentSchedule(child, paymentSchedule);
+		Receipt receipt = null;
+		PaymentSchedule paymentSchedule = null;
+		InitialPayment initialPayment = null;
+		if (type == ReceiptType.WEEKS) {
+			paymentSchedule = findPaymentSchedule(child, id);
+			receipt = paymentSchedule.getReceipt();
+		} else if (type == ReceiptType.DEPOSIT) {
+			initialPayment = pc.findPayment(child).getInitialPayment();
+			receipt = initialPayment.getReceiptDeposit();
+		} else if (type == ReceiptType.ENROLLMENT) {
+			initialPayment = pc.findPayment(child).getInitialPayment();
+			receipt = initialPayment.getReceiptEnrollmentFee();
 		}
-	}
-
-	@Override
-	public void issueReceiptDeposit(Child child, InitialPayment initialPayment) throws IOException {
-		Receipt receipt = initialPayment.getReceiptDeposit();
-		if (receipt.isIssued()) {
-			throw new IllegalStateException("Already receipt issued.");
-		}
-		try {
-			pdfGen.generateDepositReceipt(convertDepositToDocument(child, initialPayment), receipt.getLocation());
-			receipt.setIssued(true);
-			pc.updateInitialPayment(child, initialPayment);
-		} catch (Exception e) {
-			throw new IOException(e);
-		}
-	}
-
-	@Override
-	public void issueReceiptEnrollmentFee(Child child, InitialPayment initialPayment) throws IOException {
-		Receipt receipt = initialPayment.getReceiptEnrollmentFee();
-		if (receipt.isIssued()) {
-			throw new IllegalStateException("Already receipt issued.");
-		}
-		try {
-			pdfGen.generateEnrollmentFeeReceipt(convertEnrollmentFeeToDocument(child, initialPayment),
-					receipt.getLocation());
-			receipt.setIssued(true);
-			pc.updateInitialPayment(child, initialPayment);
-		} catch (Exception e) {
-			throw new IOException(e);
-		}
-	}
-
-	@Override
-	public void sendReceiptDeposit(String childId) throws IOException {
-		Child child = cc.findChild(childId);
-		if (child == null) {
-			throw new IOException("Child not found by " + childId);
-		}
-		Payment payment = pc.findPayment(child);
-		InitialPayment initialPayment = payment.getInitialPayment();
-		if (initialPayment == null) {
-			throw new IOException("InitialPayment not found by " + childId);
-		}
-		if (sendReceipt(child, initialPayment.getReceiptDeposit())) {
-			pc.updateInitialPayment(child, initialPayment);
-		}
-	}
-
-	@Override
-	public void sendReceiptEnrollmentFee(String childId) throws IOException {
-		Child child = cc.findChild(childId);
-		if (child == null) {
-			throw new IOException("Child not found by " + childId);
-		}
-		Payment payment = pc.findPayment(child);
-		InitialPayment initialPayment = payment.getInitialPayment();
-		if (initialPayment == null) {
-			throw new IOException("InitialPayment not found by " + childId);
-		}
-		if (sendReceipt(child, initialPayment.getReceiptEnrollmentFee())) {
-			pc.updateInitialPayment(child, initialPayment);
+		if (sendReceipt(child, receipt)) {
+			if (type == ReceiptType.WEEKS) {
+				pc.updatePaymentSchedule(child, paymentSchedule);
+			} else {
+				pc.updateInitialPayment(child, initialPayment);
+			}
 		}
 	}
 

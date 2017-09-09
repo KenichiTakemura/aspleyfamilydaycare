@@ -8,8 +8,6 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Properties;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;

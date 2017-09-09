@@ -6,15 +6,12 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 
-import org.jboss.resteasy.util.IsAssignableFrom;
 import org.slf4j.Logger;
 
 import com.kotcrab.annotation.CallSuper;
 import com.ktiteng.cdi.Log;
 import com.ktiteng.entity.BaseEntity;
 import com.ktiteng.entity.manager.EntityManager;
-import com.ktiteng.entity.service.Parent;
-import com.ktiteng.util.Validator;
 
 public abstract class BaseController {
 

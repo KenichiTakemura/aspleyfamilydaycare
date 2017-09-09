@@ -67,7 +67,7 @@ public class ResourceRestService {
 	@POST
 	@Path("/child")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addChild(final Child child, String parentId) throws IOException {
+	public Response addChild(final Child child) throws IOException {
 		log.info("addChild started. child={}", child);
 		if (child != null) {
 			cc.addChild(child);

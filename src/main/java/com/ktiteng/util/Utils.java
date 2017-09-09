@@ -1,14 +1,9 @@
 package com.ktiteng.util;
 
-import com.google.gson.reflect.TypeToken;
-import com.ktiteng.entity.service.Parent;
-
-import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.UUID;
 
 public class Utils {

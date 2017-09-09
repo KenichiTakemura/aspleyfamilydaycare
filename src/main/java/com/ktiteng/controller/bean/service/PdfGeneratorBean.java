@@ -25,6 +25,7 @@ import org.w3c.dom.Document;
 
 import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.service.PdfGenerator;
+import com.ktiteng.controller.service.ReceiptController.ReceiptType;
 import com.ktiteng.entity.service.Receipt;
 
 @Default
@@ -36,26 +37,28 @@ public class PdfGeneratorBean implements PdfGenerator {
 	private Logger log;
 
 	@Override
-	public Receipt generateWeeksReceipt(Document source, String pdfLocation) throws IOException {
+	public Receipt generateReceipt(Document source, String pdfLocation, ReceiptType type) throws IOException {
+		if (type == ReceiptType.WEEKS) {
 		return this.generateReceipt(source, "/fop/weeksReceipt.xsl", pdfLocation);
+		} else if (type == ReceiptType.DEPOSIT) {
+			return this.generateReceipt(source, "/fop/depositReceipt.xsl", pdfLocation);
+		} else if (type == ReceiptType.ENROLLMENT) {
+			return this.generateReceipt(source, "/fop/enrollmentfeeReceipt.xsl", pdfLocation);
+		} else {
+			throw new IOException("Unknown ReceiptType " + type);
+		}
 	}
 
-	@Override
-	public Receipt generateDepositReceipt(Document source, String pdfLocation) throws IOException {
-		return this.generateReceipt(source, "/fop/depositReceipt.xsl", pdfLocation);
-	}
-
-	@Override
-	public Receipt generateEnrollmentFeeReceipt(Document source, String pdfLocation) throws IOException {
-		return this.generateReceipt(source, "/fop/enrollmentfeeReceipt.xsl", pdfLocation);
-	}
-
-	private Receipt generateReceipt(Document source, String xsl, String pdfLocation) throws IOException {
+	private Receipt generateReceipt(Document source, String xsl, String pdfPath) throws IOException {
 		FopFactory fopFactory = null;
 		OutputStream out;
 		try {
 			fopFactory = FopFactory.newInstance(this.getClass().getResource("/fop/fop.xconf").toURI());
-			out = new BufferedOutputStream(new FileOutputStream(new File(pdfLocation)));
+			File pdf = new File(pdfPath);
+			if (!pdf.getParentFile().exists()) {
+				pdf.getParentFile().mkdirs();
+			}
+			out = new BufferedOutputStream(new FileOutputStream(new File(pdfPath)));
 		} catch (Exception e) {
 			throw new IOException(e);
 		}

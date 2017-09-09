@@ -1,16 +1,15 @@
 package com.ktiteng.web.rest.jackson;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.ktiteng.cdi.Log;
-import org.slf4j.Logger;
-
 import javax.inject.Inject;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
+
+import org.slf4j.Logger;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ktiteng.cdi.Log;
 
 @Provider
 @Produces(MediaType.APPLICATION_JSON)

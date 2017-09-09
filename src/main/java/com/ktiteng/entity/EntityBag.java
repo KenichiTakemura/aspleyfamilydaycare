@@ -2,14 +2,14 @@ package com.ktiteng.entity;
 
 public class EntityBag {
 
-	private Object entities;
+	private Object entity;
 
-	public Object getEntities() {
-		return entities;
+	public Object getEntity() {
+		return entity;
 	}
 
-	public EntityBag setEntities(Object entities) {
-		this.entities = entities;
+	public EntityBag setEntity(Object entity) {
+		this.entity = entity;
 		return this;
 	}
 

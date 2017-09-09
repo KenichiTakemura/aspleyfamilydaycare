@@ -20,7 +20,6 @@ import com.ktiteng.controller.service.ReceiptController;
 import com.ktiteng.entity.service.Child;
 import com.ktiteng.entity.service.InitialPayment;
 import com.ktiteng.entity.service.Parent;
-import com.ktiteng.entity.service.Payment;
 import com.ktiteng.entity.service.PaymentSchedule;
 
 public class InitTest extends ArquillianUnitTest {

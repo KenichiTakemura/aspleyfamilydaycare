@@ -81,12 +81,12 @@ public class ChildControllerBean extends BaseController implements ChildControll
 
 	@Override
 	public Collection<Parent> getAllParents() throws IOException {
-		return (Collection<Parent>) (em.getAll(Parent.class).getEntities());
+		return (Collection<Parent>) (em.getAll(Parent.class).getEntity());
 	}
 
 	@Override
 	public Collection<Child> getAllChildren() throws IOException {
-		return (Collection<Child>) (em.getAll(Child.class).getEntities());
+		return (Collection<Child>) (em.getAll(Child.class).getEntity());
 	}
 
 	@Override

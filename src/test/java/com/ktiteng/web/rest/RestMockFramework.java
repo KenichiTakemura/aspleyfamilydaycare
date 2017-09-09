@@ -52,9 +52,11 @@ public class RestMockFramework extends ArquillianUnitTest {
 	protected MockHttpResponse invokePost(String path, String json) throws Exception {
 		MockHttpResponse response = new MockHttpResponse();
 		MockHttpRequest request = MockHttpRequest.post(path);
-		request.accept(MediaType.APPLICATION_JSON);
-		request.contentType(MediaType.APPLICATION_JSON_TYPE);
-		request.content(json.getBytes());
+		if (json != null) {
+			request.accept(MediaType.APPLICATION_JSON);
+			request.contentType(MediaType.APPLICATION_JSON_TYPE);
+			request.content(json.getBytes());
+		}
 		log.info("invoke {}", request.getUri().getRequestUri());
 		dispatcher.invoke(request, response);
 		Assert.assertEquals(HttpServletResponse.SC_OK, response.getStatus());
@@ -71,13 +73,21 @@ public class RestMockFramework extends ArquillianUnitTest {
 		return response;
 	}
 
-	protected String addQueryParam(String path, String key, String value) {
-		try {
-			return String.format("%s?%s=%s", path, key, URLEncoder.encode(value, "UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			fail(e.getMessage());
+	protected String addQueryParam(String path, String... params) {
+		String url = path;
+		for (int i = 0; i < params.length; i = i+2) {
+			String separator = url.contains("?") ? "&" : "?";
+			try {
+				url = String.format("%s%s%s=%s", url, separator, params[i], URLEncoder.encode(params[i + 1], "UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+				fail(e.getMessage());
+			}
 		}
-		return path;
+		return url;
+	}
+
+	protected String addQueryParam(String path, String key, String value) {
+		return addQueryParam(path, new String[] { key, value });
 	}
 
 	protected String toJson(Object entity) throws JsonProcessingException {

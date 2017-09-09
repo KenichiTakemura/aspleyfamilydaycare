@@ -96,7 +96,7 @@ public class PaymentControllerBean extends BaseController implements PaymentCont
 
 	@Override
 	public Collection<Payment> getAllPayments() throws IOException {
-		return (Collection<Payment>) (em.getAll(Payment.class).getEntities());
+		return (Collection<Payment>) (em.getAll(Payment.class).getEntity());
 	}
 
 	@Override
