@@ -26,7 +26,7 @@ public class ResourceRestServiceTest extends RestMockFramework {
 	@Test
 	public void getParents() throws Exception {
 
-		invokePost("/resource/parent", mapper.writeValueAsString(parent1));
+		invokePost("/resource/parent", toJson(parent1));
 
 		response = invokeGet(addQueryParam("/resource/parents", "p", parent1.getId()));
 		log.info("{}", response.getContentAsString());
@@ -46,12 +46,8 @@ public class ResourceRestServiceTest extends RestMockFramework {
 
 	@Test
 	public void getChildren() throws Exception {
-
-		invokePost("/resource/parent", mapper.writeValueAsString(parent2));
-
-		String cson = mapper.writeValueAsString(child2);
-		log.info("adding child {}", cson);
-		invokePost("/resource/child", cson);
+		invokePost("/resource/parent", toJson(parent2));
+		invokePost("/resource/child", toJson(child2));
 
 		response = invokeGet(addQueryParam("/resource/children", "c", child2.getId()));
 		log.info("{}", response.getContentAsString());

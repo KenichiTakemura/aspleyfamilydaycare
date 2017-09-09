@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 
 import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.service.PaymentController;
-import com.ktiteng.entity.service.Parent;
 import com.ktiteng.entity.service.Payment;
 import com.ktiteng.entity.service.PaymentSchedule;
 
@@ -29,22 +28,21 @@ public class PaymentRestService {
 	@Inject
 	PaymentController pc;
 
-
-	@GET
+	@POST
 	@Path("/paymentschedule")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addPaymentSchedule(final PaymentSchedule paymentSchedule) throws IOException {
+	public Response addPaymentSchedule(@QueryParam("c") final String childId,
+			final PaymentSchedule paymentSchedule) throws IOException {
 		log.info("addPaymentSchedule started. paymentSchedule={}", paymentSchedule);
 		if (paymentSchedule != null) {
-			pc.addPaymentSchedule(paymentSchedule);
-			return Response.ok().entity(cc.getAllParents()).build();
+			pc.addPaymentSchedule(childId, paymentSchedule);
+			return Response.ok().build();
 		} else {
 			return Response.serverError().build();
 		}
 	}
-
 	
-	@POST
+	@GET
 	@Path("/paymentschedule")
 	public Response getPaymentSchedule(@QueryParam("c") final String childId) {
 		log.info("getPaymentSchedule {}", childId);

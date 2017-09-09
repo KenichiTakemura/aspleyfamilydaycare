@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 
 import com.ktiteng.cdi.Log;
 import com.ktiteng.web.rest.service.PaymentRestService;
+import com.ktiteng.web.rest.service.ReceiptRestService;
 import com.ktiteng.web.rest.service.ResourceRestService;
 
 @ApplicationPath("/rest")
@@ -25,6 +26,7 @@ public class AfdcApplication extends Application {
 		log.info("Adding classes");
 		requests.add(PaymentRestService.class);
 		requests.add(ResourceRestService.class);
+		requests.add(ReceiptRestService.class);
 	}
 
 	public Set<Class<?>> getClasses() {

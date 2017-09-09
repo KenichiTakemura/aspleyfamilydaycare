@@ -19,11 +19,13 @@ import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.junit.Assert;
 import org.slf4j.Logger;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ktiteng.arquillian.ArquillianUnitTest;
 import com.ktiteng.cdi.Log;
 import com.ktiteng.web.rest.jackson.JacksonConfig;
 import com.ktiteng.web.rest.service.PaymentRestService;
+import com.ktiteng.web.rest.service.ReceiptRestService;
 import com.ktiteng.web.rest.service.ResourceRestService;
 
 public class RestMockFramework extends ArquillianUnitTest {
@@ -43,6 +45,7 @@ public class RestMockFramework extends ArquillianUnitTest {
 		ResteasyProviderFactory.getInstance().registerProvider(JacksonConfig.class);
 		dispatcher.getRegistry().addResourceFactory(new POJOResourceFactory(ResourceRestService.class));
 		dispatcher.getRegistry().addResourceFactory(new POJOResourceFactory(PaymentRestService.class));
+		dispatcher.getRegistry().addResourceFactory(new POJOResourceFactory(ReceiptRestService.class));
 		log.info("afterBefore done.");
 	}
 
@@ -77,4 +80,7 @@ public class RestMockFramework extends ArquillianUnitTest {
 		return path;
 	}
 
+	protected String toJson(Object entity) throws JsonProcessingException {
+		return mapper.writeValueAsString(entity);
+	}
 }

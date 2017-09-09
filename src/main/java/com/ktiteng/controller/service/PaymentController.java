@@ -16,13 +16,11 @@ public interface PaymentController {
 
 	PaymentSchedule findPaymentSchedule(Child child, String paymentScheduleId) throws IOException;
 
-	PaymentSchedule findPaymentSchedule(Child child, PaymentSchedule paymentSchedule) throws IOException;
-
 	Payment addInitialPayment(Child child, InitialPayment initialPayment) throws IOException;
 
 	Payment updateInitialPayment(Child child, InitialPayment initialPayment) throws IOException;
 	
-	PaymentSchedule addPaymentSchedule(Child child, PaymentSchedule paymentSchedule) throws IOException;
+	PaymentSchedule addPaymentSchedule(String childId, PaymentSchedule paymentSchedule) throws IOException;
 
 	Collection<Payment> getAllPayments() throws IOException;
 

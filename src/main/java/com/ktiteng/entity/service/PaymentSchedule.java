@@ -2,6 +2,7 @@ package com.ktiteng.entity.service;
 
 import java.time.LocalDate;
 
+import com.ktiteng.controller.account.BillingWeek;
 import com.ktiteng.entity.BaseEntity;
 import com.ktiteng.util.Utils;
 
@@ -32,6 +33,8 @@ public class PaymentSchedule extends BaseEntity {
 
 	public PaymentSchedule setAmountInvoiced(double amountInvoiced) {
 		this.amountInvoiced = amountInvoiced;
+		setAmountReceived(amountInvoiced);
+		setBalanceDue(NIL_BALANCE);
 		return this;
 	}
 
@@ -50,6 +53,7 @@ public class PaymentSchedule extends BaseEntity {
 
 	public PaymentSchedule setBillingStartDate(LocalDate billingStartDate) {
 		this.billingStartDate = billingStartDate;
+		setBillingEndDate(billingStartDate.plusDays(BillingWeek.numberOfDays));
 		return this;
 	}
 
@@ -115,7 +119,8 @@ public class PaymentSchedule extends BaseEntity {
 			return false;
 		}
 		PaymentSchedule other = (PaymentSchedule) obj;
-		return billingStartDate.equals(other.billingStartDate) && billingEndDate.equals(other.billingEndDate);
+		return billingStartDate.equals(other.billingStartDate) &&
+				billingEndDate.equals(other.billingEndDate);
 	}
 
 }

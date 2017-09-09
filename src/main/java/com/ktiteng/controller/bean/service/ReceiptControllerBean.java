@@ -54,8 +54,26 @@ public class ReceiptControllerBean implements ReceiptController {
 	@Config
 	AfdcConfig config;
 
+	private Child findChild(String childId) throws IOException {
+		Child child = cc.findChild(childId);
+		if (child == null) {
+			throw new IOException("Child not found by " + childId);
+		}
+		return child;
+	}
+
+	private PaymentSchedule findPaymentSchedule(Child child, String paymentScheduleId) throws IOException {
+		PaymentSchedule paymentSchedule = pc.findPaymentSchedule(child, paymentScheduleId);
+		if (paymentSchedule == null) {
+			throw new IOException("PaymentSchedule not found by " + paymentScheduleId);
+		}
+		return paymentSchedule;
+	}
+
 	@Override
-	public void issueReceiptWeeks(Child child, PaymentSchedule paymentSchedule) throws IOException {
+	public void issueReceiptWeeks(String childId, String paymentScheduleId) throws IOException {
+		Child child = findChild(childId);
+		PaymentSchedule paymentSchedule = findPaymentSchedule(child, paymentScheduleId);
 		Receipt receipt = paymentSchedule.getReceipt();
 		if (receipt.isIssued()) {
 			throw new IllegalStateException("Already receipt issued.");
@@ -72,14 +90,8 @@ public class ReceiptControllerBean implements ReceiptController {
 
 	@Override
 	public void sendReceiptWeeks(String childId, String paymentScheduleId) throws IOException {
-		Child child = cc.findChild(childId);
-		if (child == null) {
-			throw new IOException("Child not found by " + childId);
-		}
-		PaymentSchedule paymentSchedule = pc.findPaymentSchedule(child, paymentScheduleId);
-		if (paymentSchedule == null) {
-			throw new IOException("PaymentSchedule not found by " + paymentScheduleId);
-		}
+		Child child = findChild(childId);
+		PaymentSchedule paymentSchedule = findPaymentSchedule(child, paymentScheduleId);
 		if (sendReceipt(child, paymentSchedule.getReceipt())) {
 			pc.updatePaymentSchedule(child, paymentSchedule);
 		}

@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -35,18 +34,20 @@ public class PaymentControllerTest extends ArquillianUnitTest {
 
 	@Test
 	public void addPaymentSchedule() throws IOException {
+		cc.addParent(parent1);
 		Child c = cc.addChild(child1);
 		assertNotNull(pc.findPayment(c));
 		Payment payment = pc.addInitialPayment(c, new InitialPayment().setDeposit(150.00));
-		PaymentSchedule ps = pc.addPaymentSchedule(c, new PaymentSchedule()
+		PaymentSchedule ps = pc.addPaymentSchedule(c.getId(), new PaymentSchedule()
 				.setBillingStartDate(Utils.toDate("2017-08-01")).setBillingEndDate(Utils.toDate("2017-08-15")));
 		assertTrue(Paths.get(getPathStr(), "payment-" + payment.getId() + ".json").toFile().exists());
 		log.info("ps {}", ps.getId());
-		assertEquals(ps.getId(), pc.addPaymentSchedule(c, ps).getId());
+		assertEquals(ps.getId(), pc.addPaymentSchedule(c.getId(), ps).getId());
 	}
 
 	@Test(expected = IOException.class)
 	public void updatePaymentSchedule() throws IOException {
+		cc.addParent(parent2);
 		Child c = cc.addChild(child2);
 		pc.updatePaymentSchedule(c, new PaymentSchedule().setBillingStartDate(Utils.toDate("2017-08-01"))
 				.setBillingEndDate(Utils.toDate("2017-08-15")));
@@ -54,6 +55,7 @@ public class PaymentControllerTest extends ArquillianUnitTest {
 
 	@Test
 	public void initialPayment() throws IOException {
+		cc.addParent(parent3);
 		Child c = cc.addChild(child3);
 		pc.addInitialPayment(c, new InitialPayment().setDeposit(150.00));
 		assertNull(pc.findPaymentSchedule(c, "123"));

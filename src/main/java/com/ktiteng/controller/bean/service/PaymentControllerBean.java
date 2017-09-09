@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 
 import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.bean.BaseController;
+import com.ktiteng.controller.service.ChildController;
 import com.ktiteng.controller.service.PaymentController;
 import com.ktiteng.controller.service.TaxInvoiceSeederController;
 import com.ktiteng.entity.manager.PersistenceManager;
@@ -32,19 +33,21 @@ public class PaymentControllerBean extends BaseController implements PaymentCont
 	TaxInvoiceSeederController tcs;
 
 	@Inject
+	ChildController cc;
+	
+	@Inject
 	PersistenceManager pm;
 
 	@Override
 	public Payment findPayment(Child child) throws IOException {
 		return this.findPayment(child.getId());
 	}
-	
+
 	@Override
 	public Payment findPayment(String childId) throws IOException {
 		Payment p = (Payment) em.find(Payment.class, childId);
 		return p != null ? p : new Payment().setChildId(childId);
 	}
-
 
 	@Override
 	public Payment addInitialPayment(Child child, InitialPayment initialPayment) throws IOException {
@@ -62,18 +65,25 @@ public class PaymentControllerBean extends BaseController implements PaymentCont
 	}
 
 	@Override
-	public PaymentSchedule addPaymentSchedule(Child child, PaymentSchedule ps) throws IOException {
-		Payment payment = findPayment(child);
-		PaymentSchedule paymentSchedule = this.findPaymentSchedule(child, ps);
-		if (paymentSchedule != null) {
+	public PaymentSchedule addPaymentSchedule(String childId, PaymentSchedule paymentSchedule) throws IOException {
+		Child child = cc.findChild(childId);
+		if (child == null) {
+			throw new IOException("Child not found by " + childId);
+		}
+		Payment payment = findPayment(childId);
+		Optional<PaymentSchedule> ops = payment.getPaymentSchedule().stream().filter(ps -> ps.equals(paymentSchedule))
+				.findFirst();
+		if (ops.isPresent()) {
 			log.warn("Already exists. Use update.");
 			return paymentSchedule;
 		}
-		ps.setGeneratedAt();
-		ps.setReceipt(genReceipt(child, ps));
-		payment.addPaymentSchedule(ps);
+		if (paymentSchedule.getGeneratedAt() == null) {
+			paymentSchedule.setGeneratedAt();
+		}
+		paymentSchedule.setReceipt(genReceipt(child, paymentSchedule));
+		payment.addPaymentSchedule(paymentSchedule);
 		save(payment);
-		return ps;
+		return paymentSchedule;
 	}
 
 	@Override
@@ -81,14 +91,6 @@ public class PaymentControllerBean extends BaseController implements PaymentCont
 		Payment payment = findPayment(child);
 		Optional<PaymentSchedule> ops = payment.getPaymentSchedule().stream()
 				.filter(ps -> ps.getId().equals(paymentScheduleId)).findFirst();
-		return ops.isPresent() ? ops.get() : null;
-	}
-
-	@Override
-	public PaymentSchedule findPaymentSchedule(Child child, PaymentSchedule paymentSchedule) throws IOException {
-		Payment payment = findPayment(child);
-		Optional<PaymentSchedule> ops = payment.getPaymentSchedule().stream().filter(ps -> ps.equals(paymentSchedule))
-				.findFirst();
 		return ops.isPresent() ? ops.get() : null;
 	}
 

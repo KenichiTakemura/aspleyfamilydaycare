@@ -11,6 +11,7 @@ public abstract class BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id;
 	private LocalDateTime generatedAt;
+	public static double NIL_BALANCE = 0.0d;
 
 	protected BaseEntity() {
 	}
