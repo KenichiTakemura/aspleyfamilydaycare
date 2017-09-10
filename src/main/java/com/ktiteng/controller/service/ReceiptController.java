@@ -15,6 +15,8 @@ public interface ReceiptController {
 	}
 
 	void issueReceipt(String childId, String id, ReceiptType type) throws IOException;
+	
+	void deleteReceipt(String childId, String id, ReceiptType type) throws IOException;
 
 	void sendReceipt(String childId, String id, ReceiptType type) throws IOException;
 	

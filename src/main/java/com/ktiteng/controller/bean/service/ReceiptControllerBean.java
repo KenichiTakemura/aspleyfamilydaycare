@@ -3,6 +3,7 @@ package com.ktiteng.controller.bean.service;
 import static com.ktiteng.util.Utils.toS;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -104,11 +105,46 @@ public class ReceiptControllerBean implements ReceiptController {
 				pc.updateInitialPayment(child, initialPayment);
 			}
 		} catch (Exception e) {
-			log.warn("Cannot generate a pdf receipt.", e);
 			throw new IOException(e);
 		}
 	}
 
+	@Override
+	public void deleteReceipt(String childId, String id, ReceiptType type) throws IOException {
+		log.info("deleteReceipt childId={}, id={}, type={}", childId, id, type);
+		Child child = findChild(childId);
+		Receipt receipt;
+		PaymentSchedule paymentSchedule = null;
+		InitialPayment initialPayment = null;
+		try {
+			if (type == ReceiptType.WEEKS) {
+				paymentSchedule = findPaymentSchedule(child, id);
+				receipt = paymentSchedule.getReceipt();
+			} else if (type == ReceiptType.DEPOSIT) {
+				initialPayment = pc.findPayment(childId).getInitialPayment();
+				receipt = initialPayment.getReceiptDeposit();
+			} else if (type == ReceiptType.ENROLLMENT) {
+				initialPayment = pc.findPayment(childId).getInitialPayment();
+				receipt = initialPayment.getReceiptEnrollmentFee();
+			} else {
+				throw new IOException("Unknown ReceiptType " + type);
+			}
+			if (!receipt.isIssued()) {
+				throw new IllegalStateException("Receipt has not been issued.");
+			}
+			Paths.get(receipt.getLocation()).toFile().delete();
+			log.info("{} has been deleted.", receipt.getLocation());
+			receipt.setIssued(false);
+			if (type == ReceiptType.WEEKS) {
+				pc.updatePaymentSchedule(child, paymentSchedule);
+			} else {
+				pc.updateInitialPayment(child, initialPayment);
+			}
+		} catch (Exception e) {
+			throw new IOException(e);
+		}
+	}
+	
 	@Override
 	public void sendReceipt(String childId, String id, ReceiptType type) throws IOException {
 		Child child = findChild(childId);
