@@ -96,4 +96,9 @@ public class Child extends BaseEntity {
 	public void setChildNumber(String childNumber) {
 		this.childNumber = childNumber;
 	}
+	
+	@Override
+	public String toString() {
+		return String.join(" ", getName(), getChildNumber());
+	}
 }
