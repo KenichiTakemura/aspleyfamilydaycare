@@ -29,7 +29,7 @@ public class PaymentRestService {
 	PaymentController pc;
 
 	@POST
-	@Path("/paymentschedule")
+	@Path("/paymentschedule/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addPaymentSchedule(@QueryParam("c") final String childId,
 			final PaymentSchedule paymentSchedule) throws IOException {
@@ -41,7 +41,21 @@ public class PaymentRestService {
 			return Response.serverError().build();
 		}
 	}
-	
+
+	@POST
+	@Path("/paymentschedule/update")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updatePaymentSchedule(@QueryParam("c") final String childId,
+									   final PaymentSchedule paymentSchedule) throws IOException {
+		log.info("updatePaymentSchedule started. paymentSchedule={}", paymentSchedule);
+		if (paymentSchedule != null && paymentSchedule.getId() != null) {
+			pc.updatePaymentSchedule(childId, paymentSchedule);
+			return Response.ok().build();
+		} else {
+			return Response.serverError().build();
+		}
+	}
+
 	@GET
 	@Path("/paymentschedule")
 	public Response getPaymentSchedule(@QueryParam("c") final String childId) {

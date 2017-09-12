@@ -4,9 +4,10 @@ import java.time.LocalDate;
 
 import com.ktiteng.controller.account.BillingWeek;
 import com.ktiteng.entity.BaseEntity;
+import com.ktiteng.entity.Payable;
 import com.ktiteng.util.Utils;
 
-public class PaymentSchedule extends BaseEntity {
+public class PaymentSchedule extends BaseEntity implements Payable {
 
 	/**
 	 * 
@@ -20,6 +21,7 @@ public class PaymentSchedule extends BaseEntity {
 	private LocalDate billingEndDate;
 
 	private LocalDate dateReceived;
+	private boolean received;
 	private boolean completed;
 	private Receipt receipt;
 
@@ -123,4 +125,11 @@ public class PaymentSchedule extends BaseEntity {
 				billingEndDate.equals(other.billingEndDate);
 	}
 
+    public boolean isReceived() {
+        return received;
+    }
+
+    public void setReceived(boolean received) {
+        this.received = received;
+    }
 }

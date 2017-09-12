@@ -2,6 +2,7 @@ package com.ktiteng.entity.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.ktiteng.entity.BaseEntity;
 import com.ktiteng.util.Utils;
@@ -15,11 +16,11 @@ public class Payment extends BaseEntity {
 	private String childId;
 	private InitialPayment initialPayment;
 	private double balanceDue;
-	private List<PaymentSchedule> paymentSchedule;
+	private List<PaymentSchedule> paymentSchedules;
 
 	public Payment() {
 		setId(Utils.getId());
-		paymentSchedule = new ArrayList<>();
+		paymentSchedules = new ArrayList<>();
 	}
 
 	public String getChildId() {
@@ -40,29 +41,35 @@ public class Payment extends BaseEntity {
 		return this;
 	}
 
-	public List<PaymentSchedule> getPaymentSchedule() {
-		return paymentSchedule;
+	public PaymentSchedule getPaymentSchedule(String paymentScheduleId) {
+		Optional<PaymentSchedule> ops = paymentSchedules.stream()
+				.filter(ps -> ps.getId().equals(paymentScheduleId)).findFirst();
+		return ops.isPresent() ? ops.get() : null;
 	}
 
-	public Payment setPaymentSchedule(List<PaymentSchedule> paymentSchedule) {
-		this.paymentSchedule = paymentSchedule;
+	public List<PaymentSchedule> getPaymentSchedules() {
+		return paymentSchedules;
+	}
+
+	public Payment setPaymentSchedules(List<PaymentSchedule> paymentSchedules) {
+		this.paymentSchedules = paymentSchedules;
 		return this;
 	}
 
 	public PaymentSchedule addPaymentSchedule(PaymentSchedule paymentSchedule) {
-		if (this.paymentSchedule == null) {
-			this.paymentSchedule = new ArrayList<>();
+		if (this.paymentSchedules == null) {
+			this.paymentSchedules = new ArrayList<>();
 		}
-		this.paymentSchedule.add(paymentSchedule);
+		this.paymentSchedules.add(paymentSchedule);
 		return paymentSchedule;
 	}
 
 	public PaymentSchedule updatePaymentSchedule(PaymentSchedule paymentSchedule) {
-		if (this.paymentSchedule == null) {
+		if (this.paymentSchedules == null) {
 			throw new IllegalStateException("Not exists. Use add.");
 		}
-		this.paymentSchedule.removeIf(p -> p!= null && p.getId().equals(paymentSchedule.getId()));
-		this.paymentSchedule.add(paymentSchedule);
+		this.paymentSchedules.removeIf(p -> p!= null && p.getId().equals(paymentSchedule.getId()));
+		this.paymentSchedules.add(paymentSchedule);
 		return paymentSchedule;
 	}
 	

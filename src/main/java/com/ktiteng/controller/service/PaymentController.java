@@ -22,7 +22,9 @@ public interface PaymentController {
 	
 	PaymentSchedule addPaymentSchedule(String childId, PaymentSchedule paymentSchedule) throws IOException;
 
+	PaymentSchedule updatePaymentSchedule(String childId, PaymentSchedule paymentSchedule) throws IOException;
+
 	Collection<Payment> getAllPayments() throws IOException;
 
-	PaymentSchedule updatePaymentSchedule(Child child, PaymentSchedule paymentSchedule) throws IOException;
+
 }

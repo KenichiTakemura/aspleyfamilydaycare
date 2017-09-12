@@ -1,5 +1,7 @@
 package com.ktiteng.controller.service;
 
+import com.ktiteng.entity.service.Receipt;
+
 import java.io.IOException;
 
 public interface ReceiptController {
@@ -13,6 +15,8 @@ public interface ReceiptController {
 			return ReceiptType.valueOf(value.toUpperCase());
 		}
 	}
+
+	Receipt getReceipt(String childId, String id, ReceiptType type) throws IOException;
 
 	void issueReceipt(String childId, String id, ReceiptType type) throws IOException;
 	

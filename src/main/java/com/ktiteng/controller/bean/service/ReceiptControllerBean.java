@@ -70,11 +70,29 @@ public class ReceiptControllerBean implements ReceiptController {
 		return paymentSchedule;
 	}
 
+	private Receipt findReceipt(String childId, String id, ReceiptType type) throws IOException {
+		Child child = findChild(childId);
+		if (type == ReceiptType.WEEKS) {
+			return findPaymentSchedule(child, id).getReceipt();
+		} else if (type == ReceiptType.DEPOSIT) {
+			return pc.findPayment(childId).getInitialPayment().getReceiptDeposit();
+		} else if (type == ReceiptType.ENROLLMENT) {
+			return pc.findPayment(childId).getInitialPayment().getReceiptEnrollmentFee();
+		} else {
+			throw new IOException("Unknown ReceiptType " + type);
+		}
+	}
+
+	@Override
+	public Receipt getReceipt(String childId, String id, ReceiptType type) throws IOException {
+		log.info("getReceipt childId={}, id={}, type={}", childId, id, type);
+		return findReceipt(childId, id, type);
+	}
+
 	@Override
 	public void issueReceipt(String childId, String id, ReceiptType type) throws IOException {
 		log.info("issueReceipt childId={}, id={}, type={}", childId, id, type);
-		Child child = findChild(childId);
-		Receipt receipt;
+		Receipt receipt = findReceipt(childId, id, type);
 		Document document;
 		PaymentSchedule paymentSchedule = null;
 		InitialPayment initialPayment = null;
@@ -100,7 +118,7 @@ public class ReceiptControllerBean implements ReceiptController {
 			pdfGen.generateReceipt(document, receipt.getLocation(), type);
 			receipt.setIssued(true);
 			if (type == ReceiptType.WEEKS) {
-				pc.updatePaymentSchedule(child, paymentSchedule);
+				pc.updatePaymentSchedule(childId, paymentSchedule);
 			} else {
 				pc.updateInitialPayment(child, initialPayment);
 			}
@@ -136,7 +154,7 @@ public class ReceiptControllerBean implements ReceiptController {
 			log.info("{} has been deleted.", receipt.getLocation());
 			receipt.setIssued(false);
 			if (type == ReceiptType.WEEKS) {
-				pc.updatePaymentSchedule(child, paymentSchedule);
+				pc.updatePaymentSchedule(childId, paymentSchedule);
 			} else {
 				pc.updateInitialPayment(child, initialPayment);
 			}
@@ -163,7 +181,7 @@ public class ReceiptControllerBean implements ReceiptController {
 		}
 		if (sendReceipt(child, receipt)) {
 			if (type == ReceiptType.WEEKS) {
-				pc.updatePaymentSchedule(child, paymentSchedule);
+				pc.updatePaymentSchedule(childId, paymentSchedule);
 			} else {
 				pc.updateInitialPayment(child, initialPayment);
 			}

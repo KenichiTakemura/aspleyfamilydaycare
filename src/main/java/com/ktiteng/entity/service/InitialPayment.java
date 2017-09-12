@@ -3,8 +3,9 @@ package com.ktiteng.entity.service;
 import java.time.LocalDate;
 
 import com.ktiteng.entity.BaseEntity;
+import com.ktiteng.entity.Payable;
 
-public class InitialPayment extends BaseEntity {
+public class InitialPayment extends BaseEntity implements Payable {
 
 	/**
 	 * 
@@ -12,8 +13,10 @@ public class InitialPayment extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	private double deposit;
+	private double depositRefund;
 	private double enrollmentFee;
 	private LocalDate depositPaidOn;
+	private LocalDate depositRefundedOn;
 	private LocalDate enrollmentFeePaidOn;
 	private Receipt receiptDeposit;
 	private Receipt receiptEnrollmentFee;
@@ -68,16 +71,35 @@ public class InitialPayment extends BaseEntity {
 		return receiptDeposit;
 	}
 
-	public void setReceiptDeposit(Receipt receiptDeposit) {
+	public InitialPayment setReceiptDeposit(Receipt receiptDeposit) {
 		this.receiptDeposit = receiptDeposit;
+		return this;
 	}
 
 	public Receipt getReceiptEnrollmentFee() {
 		return receiptEnrollmentFee;
 	}
 
-	public void setReceiptEnrollmentFee(Receipt receiptEnrollmentFee) {
+	public InitialPayment setReceiptEnrollmentFee(Receipt receiptEnrollmentFee) {
 		this.receiptEnrollmentFee = receiptEnrollmentFee;
+		return this;
 	}
 
+	public double getDepositRefund() {
+		return depositRefund;
+	}
+
+	public InitialPayment setDepositRefund(double depositRefund) {
+		this.depositRefund = depositRefund;
+		return this;
+	}
+
+	public LocalDate getDepositRefundedOn() {
+		return depositRefundedOn;
+	}
+
+	public InitialPayment setDepositRefundedOn(LocalDate depositRefundedOn) {
+		this.depositRefundedOn = depositRefundedOn;
+		return this;
+	}
 }
