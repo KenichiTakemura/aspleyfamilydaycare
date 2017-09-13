@@ -63,7 +63,7 @@ public class ReceiptRestService {
                                @QueryParam("ps") final String paymentScheduleId) {
         log.info("getReceipt for {} {} {}", type, childId, paymentScheduleId);
         // Prepare a file object with file to return
-        File file = new File(&quot;c:/demoPDFFile.pdf&quot;);
+//        File file = new File(&quot;c:/demoPDFFile.pdf&quot;);
         //
         // ResponseBuilder response = Response.ok((Object) file);
         // response.header(&quot;Content-Disposition&quot;, &quot;attachment;

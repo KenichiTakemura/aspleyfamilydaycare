@@ -1,5 +1,7 @@
 package com.ktiteng.controller.service;
 
+import com.ktiteng.controller.service.ReceiptController.ReceiptType;
+import com.ktiteng.entity.service.Payable;
 import com.ktiteng.entity.service.Receipt;
 
 import java.io.IOException;
@@ -15,13 +17,13 @@ public interface ReceiptController {
 			return ReceiptType.valueOf(value.toUpperCase());
 		}
 	}
-
-	Receipt getReceipt(String childId, String id, ReceiptType type) throws IOException;
-
-	void issueReceipt(String childId, String id, ReceiptType type) throws IOException;
 	
-	void deleteReceipt(String childId, String id, ReceiptType type) throws IOException;
+	Receipt findReceipt(String id) throws IOException;
 
-	void sendReceipt(String childId, String id, ReceiptType type) throws IOException;
+	Receipt issueReceipt(String childId, Payable payable, ReceiptType type) throws IOException;
+	
+	void deleteReceipt(String childId, String receiptId, ReceiptType type) throws IOException;
+
+	void sendReceipt(String childId, String receiptId) throws IOException;
 	
 }

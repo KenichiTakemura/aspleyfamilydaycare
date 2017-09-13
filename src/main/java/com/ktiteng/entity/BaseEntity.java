@@ -1,7 +1,6 @@
 package com.ktiteng.entity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 public abstract class BaseEntity implements Serializable {
 
@@ -10,7 +9,7 @@ public abstract class BaseEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String id;
-	private LocalDateTime generatedAt;
+	private long generatedAt;
 	public static double NIL_BALANCE = 0.0d;
 
 	protected BaseEntity() {
@@ -24,12 +23,12 @@ public abstract class BaseEntity implements Serializable {
 		this.id = id;
 	}
 
-	public LocalDateTime getGeneratedAt() {
+	public long getGeneratedAt() {
 		return generatedAt;
 	}
 
 	public void setGeneratedAt() {
-		this.generatedAt = LocalDateTime.now();
+		this.generatedAt = System.currentTimeMillis();
 	}
 
 }

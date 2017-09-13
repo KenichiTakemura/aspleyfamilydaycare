@@ -62,7 +62,7 @@ public class PaymentRestService {
 		log.info("getPaymentSchedule {}", childId);
 		try {
 			Payment payment = pc.findPayment(childId);
-			return Response.ok().entity(payment.getPaymentSchedule()).build();
+			return Response.ok().entity(payment.getPaymentSchedules()).build();
 		} catch (Exception e) {
 			log.error("Cannot getPaymentSchedule.", e);
 			return Response.serverError().build();

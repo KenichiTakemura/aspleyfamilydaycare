@@ -1,5 +1,7 @@
 package com.ktiteng.entity.service;
 
+import com.ktiteng.util.Utils;
+
 public class Receipt extends TaxInvoice {
 
 	/**
@@ -10,6 +12,7 @@ public class Receipt extends TaxInvoice {
 	private String name;
 
 	public Receipt() {
+		setId(Utils.getId());
 	}
 
 	public String getTaxInvoiceId() {

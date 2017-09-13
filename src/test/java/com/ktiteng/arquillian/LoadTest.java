@@ -66,8 +66,8 @@ public class LoadTest extends ArquillianUnitTest {
 		Collection<Payment> payments = pc.getAllPayments();
 		payments.stream().forEach(p -> log.info("Payment " + p.getId()));
 		assertEquals(2, payments.size());
-		PaymentSchedule ps1 = payments.stream().findFirst().get().getPaymentSchedule().get(0);
-		PaymentSchedule ps2 = payments.stream().findFirst().get().getPaymentSchedule().get(1);
+		PaymentSchedule ps1 = payments.stream().findFirst().get().getPaymentSchedules().get(0);
+		PaymentSchedule ps2 = payments.stream().findFirst().get().getPaymentSchedules().get(1);
 		assertEquals(114.00d, ps1.getAmountInvoiced(), 0.0d);
 		assertEquals(123.5d, ps2.getAmountInvoiced(), 0.0d);
 	}

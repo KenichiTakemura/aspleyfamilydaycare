@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 
 import org.slf4j.Logger;
 
+import com.google.common.collect.Lists;
 import com.google.gson.reflect.TypeToken;
 import com.ktiteng.cdi.Log;
 import com.ktiteng.entity.BaseEntity;
@@ -20,6 +21,7 @@ import com.ktiteng.entity.EntityBag;
 import com.ktiteng.entity.service.Child;
 import com.ktiteng.entity.service.Parent;
 import com.ktiteng.entity.service.Payment;
+import com.ktiteng.entity.service.Receipt;
 import com.ktiteng.entity.service.TaxInvoiceSeeder;
 import com.ktiteng.entity.service.TimeCard;
 
@@ -33,14 +35,16 @@ public class EntityManager {
 	@Inject
 	PersistenceManager pm;
 
-	private final static String parent = "parent";
-	private final static String child = "child-";
-	private final static String payment = "payment-";
-	private final static String timecard = "timecard-";
-	private final static String taxinvoiceseeder = "taxinvoiceseeder";
+	private final static String _parents = "parents";
+	private final static String _child = "child-";
+	private final static String _payment = "payment-";
+	private final static String _timecard = "timecard-";
+	private final static String _receipts = "receipts";
+	private final static String _taxinvoiceseeder = "taxinvoiceseeder";
 
 	List<Parent> parents;
 	List<Child> children;
+	List<Receipt> receipts;
 	List<Payment> payments;
 	List<TimeCard> timecards;
 	TaxInvoiceSeeder taxInvoiceSeeder;
@@ -48,10 +52,14 @@ public class EntityManager {
 	@PostConstruct
 	public void init() {
 		onLoad();
-		timecards = new ArrayList<>();
+		timecards = Lists.newArrayList();
 		if (parents == null) {
 			log.info("Create a new parent list");
-			parents = new ArrayList<>();
+			parents = Lists.newArrayList();
+		}
+		if (receipts == null) {
+			log.info("Create a new receipt list");
+			receipts = Lists.newArrayList();
 		}
 		if (taxInvoiceSeeder == null) {
 			taxInvoiceSeeder = new TaxInvoiceSeeder();
@@ -60,14 +68,13 @@ public class EntityManager {
 	}
 
 	void onLoad() {
-		Type parentType = new TypeToken<ArrayList<Parent>>() {
-		}.getType();
-		parents = (List<Parent>) pm.load(parentType, parent);
-		children = new ArrayList<>();
-		payments = new ArrayList<>();
+		parents = (List<Parent>) pm.load(getParentType(), _parents);
+		receipts = (List<Receipt>) pm.load(getReceiptType(), _receipts);
+		children = Lists.newArrayList();
+		payments = Lists.newArrayList();
 		try {
 			Files.newDirectoryStream(pm.getPath(),
-					path -> path.toFile().isFile() && path.toFile().getName().startsWith(child)).forEach(file -> {
+					path -> path.toFile().isFile() && path.toFile().getName().startsWith(_child)).forEach(file -> {
 						children.add((Child) pm.load(Child.class, file.toFile().getName()));
 					});
 		} catch (IOException e) {
@@ -75,13 +82,13 @@ public class EntityManager {
 		}
 		try {
 			Files.newDirectoryStream(pm.getPath(),
-					path -> path.toFile().isFile() && path.toFile().getName().startsWith(payment)).forEach(file -> {
+					path -> path.toFile().isFile() && path.toFile().getName().startsWith(_payment)).forEach(file -> {
 						payments.add((Payment) pm.load(Payment.class, file.toFile().getName()));
 					});
 		} catch (IOException e) {
 			log.warn("Cannot load payment");
 		}
-		taxInvoiceSeeder = (TaxInvoiceSeeder) pm.load(TaxInvoiceSeeder.class, taxinvoiceseeder);
+		taxInvoiceSeeder = (TaxInvoiceSeeder) pm.load(TaxInvoiceSeeder.class, _taxinvoiceseeder);
 	}
 
 	public void save(BaseEntity entity) throws IOException {
@@ -89,21 +96,25 @@ public class EntityManager {
 		if (entity instanceof Parent) {
 			parents.removeIf(p -> p != null && p.getId().equals(entity.getId()));
 			parents.add((Parent) entity);
-			pm.persist(parents, getParentType(), parent);
+			pm.persist(parents, getParentType(), _parents);
 		} else if (entity instanceof Child) {
 			children.removeIf(c -> c != null && c.getId().equals(entity.getId()));
 			children.add((Child) entity);
-			pm.persist(entity, Child.class, child + entity.getId());
+			pm.persist(entity, Child.class, _child + entity.getId());
 		} else if (entity instanceof Payment) {
 			payments.removeIf(p -> p != null && p.getId().equals(entity.getId()));
 			payments.add((Payment) entity);
-			pm.persist(entity, Payment.class, payment + entity.getId());
+			pm.persist(entity, Payment.class, _payment + entity.getId());
 		} else if (entity instanceof TimeCard) {
 			timecards.removeIf(t -> t != null && t.getId().equals(entity.getId()));
 			timecards.add((TimeCard) entity);
-			pm.persist(entity, TimeCard.class, timecard + entity.getId());
+			pm.persist(entity, TimeCard.class, _timecard + entity.getId());
+		} else if (entity instanceof Receipt) {
+			receipts.removeIf(p -> p != null && p.getId().equals(entity.getId()));
+			receipts.add((Receipt) entity);
+			pm.persist(receipts, getReceiptType(), _receipts);
 		} else if (entity instanceof TaxInvoiceSeeder) {
-			pm.persist(taxInvoiceSeeder, taxInvoiceSeeder.getClass(), taxinvoiceseeder);
+			pm.persist(taxInvoiceSeeder, taxInvoiceSeeder.getClass(), _taxinvoiceseeder);
 		}
 	}
 
@@ -140,8 +151,11 @@ public class EntityManager {
 							.findFirst();
 			return child.isPresent() ? child.get() : null;
 		} else if (entityClass.isAssignableFrom(Payment.class)) {
-			Optional<Payment> payment = payments.stream().filter(p -> p.getChildId().equals(ids[0])).findFirst();
+			Optional<Payment> payment = payments.stream().filter(p -> p != null && p.getChildId().equals(ids[0])).findFirst();
 			return payment.isPresent() ? payment.get() : null;
+		} else if (entityClass.isAssignableFrom(Receipt.class)) {
+			Optional<Receipt> receipt = receipts.stream().filter(r -> r != null && r.getId().equals(ids[0])).findFirst();
+			return receipt.isPresent() ? receipt.get() : null;
 		}
 		return null;
 	}
@@ -151,4 +165,8 @@ public class EntityManager {
 		}.getType();
 	}
 
+	public static Type getReceiptType() {
+		return new TypeToken<ArrayList<Receipt>>() {
+		}.getType();
+	}
 }

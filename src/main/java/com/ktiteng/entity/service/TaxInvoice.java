@@ -11,6 +11,7 @@ public class TaxInvoice extends BaseEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private String payableId;
 	private String location;
 	private boolean issued;
 	private boolean sent;
@@ -52,6 +53,15 @@ public class TaxInvoice extends BaseEntity {
 
 	public TaxInvoice setSentAt(LocalDateTime sentAt) {
 		this.sentAt = sentAt;
+		return this;
+	}
+
+	public String getPayableId() {
+		return payableId;
+	}
+
+	public TaxInvoice setPayableId(String payableId) {
+		this.payableId = payableId;
 		return this;
 	}
 

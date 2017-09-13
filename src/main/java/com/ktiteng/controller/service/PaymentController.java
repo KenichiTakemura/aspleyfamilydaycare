@@ -4,27 +4,35 @@ import java.io.IOException;
 import java.util.Collection;
 
 import com.ktiteng.entity.service.Child;
-import com.ktiteng.entity.service.InitialPayment;
+import com.ktiteng.entity.service.Deposit;
+import com.ktiteng.entity.service.EnrollmentFee;
 import com.ktiteng.entity.service.Payment;
 import com.ktiteng.entity.service.PaymentSchedule;
 
 public interface PaymentController {
 
 	Payment findPayment(Child child) throws IOException;
-	
+
 	Payment findPayment(String childId) throws IOException;
 
-	PaymentSchedule findPaymentSchedule(Child child, String paymentScheduleId) throws IOException;
+	Deposit findDeposit(String childId) throws IOException;
 
-	Payment addInitialPayment(Child child, InitialPayment initialPayment) throws IOException;
+	Deposit addDeposit(String childId, Deposit deposit) throws IOException;
 
-	Payment updateInitialPayment(Child child, InitialPayment initialPayment) throws IOException;
-	
+	Deposit updateDeposit(String childId, Deposit deposit) throws IOException;
+
+	EnrollmentFee findEnrollmentFee(String childId) throws IOException;
+
+	EnrollmentFee addEnrollmentFee(String childId, EnrollmentFee enrollmentFee) throws IOException;
+
+	EnrollmentFee updateEnrollmentFee(String childId, EnrollmentFee enrollmentFee) throws IOException;
+
+	PaymentSchedule findPaymentSchedule(String childId, String paymentScheduleId) throws IOException;
+
 	PaymentSchedule addPaymentSchedule(String childId, PaymentSchedule paymentSchedule) throws IOException;
 
 	PaymentSchedule updatePaymentSchedule(String childId, PaymentSchedule paymentSchedule) throws IOException;
 
 	Collection<Payment> getAllPayments() throws IOException;
-
 
 }

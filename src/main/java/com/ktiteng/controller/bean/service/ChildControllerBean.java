@@ -36,9 +36,7 @@ public class ChildControllerBean extends BaseController implements ChildControll
 		if (this.findParent(parent.getFirstName(), parent.getLastName()) != null) {
 			throw new IOException("Already exists. Use update.");
 		}
-		if (parent.getGeneratedAt() == null) {
-			parent.setGeneratedAt();
-		}
+		parent.setGeneratedAt();
 		return updateParent(parent);
 	}
 
@@ -57,9 +55,7 @@ public class ChildControllerBean extends BaseController implements ChildControll
 		if (Utils.isNullOrBlank(child.getParentId()) || this.findParent(child.getParentId()) == null) {
 			throw new IOException("No Parent for this child.");
 		}
-		if (child.getGeneratedAt() == null) {
-			child.setGeneratedAt();
-		}
+		child.setGeneratedAt();
 		return updateChild(child);
 	}
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.google.common.collect.Lists;
 import com.ktiteng.entity.BaseEntity;
 import com.ktiteng.util.Utils;
 
@@ -14,7 +15,8 @@ public class Payment extends BaseEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String childId;
-	private InitialPayment initialPayment;
+	private Deposit deposit;
+	private EnrollmentFee enrollmentFee;
 	private double balanceDue;
 	private List<PaymentSchedule> paymentSchedules;
 
@@ -29,15 +31,6 @@ public class Payment extends BaseEntity {
 
 	public Payment setChildId(String childId) {
 		this.childId = childId;
-		return this;
-	}
-
-	public InitialPayment getInitialPayment() {
-		return initialPayment;
-	}
-
-	public Payment setInitialPayment(InitialPayment initialPayment) {
-		this.initialPayment = initialPayment;
 		return this;
 	}
 
@@ -58,7 +51,7 @@ public class Payment extends BaseEntity {
 
 	public PaymentSchedule addPaymentSchedule(PaymentSchedule paymentSchedule) {
 		if (this.paymentSchedules == null) {
-			this.paymentSchedules = new ArrayList<>();
+			this.paymentSchedules = Lists.newArrayList();
 		}
 		this.paymentSchedules.add(paymentSchedule);
 		return paymentSchedule;
@@ -77,8 +70,27 @@ public class Payment extends BaseEntity {
 		return balanceDue;
 	}
 
-	public void setBalanceDue(double balanceDue) {
+	public Payment setBalanceDue(double balanceDue) {
 		this.balanceDue = balanceDue;
+		return this;
+	}
+
+	public Deposit getDeposit() {
+		return deposit;
+	}
+
+	public Payment setDeposit(Deposit deposit) {
+		this.deposit = deposit;
+		return this;
+	}
+
+	public EnrollmentFee getEnrollmentFee() {
+		return enrollmentFee;
+	}
+
+	public Payment setEnrollmentFee(EnrollmentFee enrollmentFee) {
+		this.enrollmentFee = enrollmentFee;
+		return this;
 	}
 
 }

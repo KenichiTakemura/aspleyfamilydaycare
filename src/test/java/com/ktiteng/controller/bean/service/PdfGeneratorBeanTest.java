@@ -13,9 +13,9 @@ import com.ktiteng.controller.service.ChildController;
 import com.ktiteng.controller.service.PdfGenerator;
 import com.ktiteng.controller.service.ReceiptController.ReceiptType;
 import com.ktiteng.entity.service.Child;
-import com.ktiteng.entity.service.InitialPayment;
+import com.ktiteng.entity.service.Deposit;
+import com.ktiteng.entity.service.EnrollmentFee;
 import com.ktiteng.entity.service.PaymentSchedule;
-import com.ktiteng.entity.service.Receipt;
 import com.ktiteng.entity.service.TaxInvoiceSeeder;
 
 public class PdfGeneratorBeanTest extends ArquillianUnitTest {
@@ -38,20 +38,18 @@ public class PdfGeneratorBeanTest extends ArquillianUnitTest {
 				.setBillingStartDate(toDate("2017-07-16")).setBillingEndDate(toDate("2017-07-30"))
 				.setAmountInvoiced(123.12d).setAmountReceived(133.23d).setBalanceDue(9.5d);
 
-		paymentSchedule.setReceipt(new Receipt().setTaxInvoiceId(tcs.nextVal()));
-		pdfGen.generateReceipt(bean.convertPaymentScheduleToDocument(c, paymentSchedule), getPathStr() + "/weeks.pdf",
+		pdfGen.generateReceipt(bean.convertToDocument(c, paymentSchedule), getPathStr() + "/weeks.pdf",
 				ReceiptType.WEEKS);
 
 		bean = new ReceiptControllerBean();
-		InitialPayment initialPayment = new InitialPayment().setDepositPaidOn(toDate("2017-08-12")).setDeposit(123.12d)
-				.setEnrollmentFeePaidOn(toDate("2017-08-12")).setEnrollmentFee(99.99d);
+		Deposit deposit = new Deposit().setDateReceived(toDate("2017-08-12")).setAmountInvoiced(123.12d);
+		EnrollmentFee enrollmentFee = new EnrollmentFee().setDateReceived(toDate("2017-08-12"))
+				.setAmountInvoiced(123.12d);
 
-		initialPayment.setReceiptDeposit(new Receipt().setTaxInvoiceId(tcs.nextVal()));
-		pdfGen.generateReceipt(bean.convertDepositToDocument(c, initialPayment), getPathStr() + "/deposit.pdf",
-				ReceiptType.DEPOSIT);
-		initialPayment.setReceiptEnrollmentFee(new Receipt().setTaxInvoiceId(tcs.nextVal()));
-		pdfGen.generateReceipt(bean.convertEnrollmentFeeToDocument(c, initialPayment),
-				getPathStr() + "/enrollmentfee.pdf", ReceiptType.ENROLLMENT);
+		pdfGen.generateReceipt(bean.convertToDocument(c, deposit), getPathStr() + "/deposit.pdf", ReceiptType.DEPOSIT);
+
+		pdfGen.generateReceipt(bean.convertToDocument(c, enrollmentFee), getPathStr() + "/enrollmentfee.pdf",
+				ReceiptType.ENROLLMENT);
 
 	}
 

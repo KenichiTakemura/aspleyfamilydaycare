@@ -145,7 +145,7 @@
 									<fo:table-cell padding="1mm">
 										<fo:block text-align="center">
 											$
-											<xsl:value-of select="root/depositDue" />
+											<xsl:value-of select="root/balanceDue" />
 										</fo:block>
 									</fo:table-cell>
 
@@ -202,7 +202,7 @@
 									<fo:table-cell padding="1mm">
 										<fo:block text-align="right">
 											$
-											<xsl:value-of select="root/depositAmount" />
+											<xsl:value-of select="root/accountAmount" />
 										</fo:block>
 									</fo:table-cell>
 
@@ -233,7 +233,7 @@
 									<fo:table-cell padding="1mm">
 										<fo:block text-align="right">
 											$
-											<xsl:value-of select="root/depositDue" />
+											<xsl:value-of select="root/balanceDue" />
 										</fo:block>
 									</fo:table-cell>
 

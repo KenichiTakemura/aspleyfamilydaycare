@@ -1,0 +1,90 @@
+{
+  "childId": "41794f3c-a26c-4b15-b3f3-47f00ac6408a",
+  "deposit": {
+    "refund": 0.0,
+    "refunded": false,
+    "balanceDue": 0.0,
+    "currentBalance": 0.0,
+    "amountInvoiced": 195.0,
+    "amountReceived": 195.0,
+    "dateReceived": {
+      "year": 2017,
+      "month": 6,
+      "day": 4
+    },
+    "received": false,
+    "completed": false,
+    "id": "c31b5d3e-6cc4-4a46-b207-cac548f8bdc9",
+    "generatedAt": 1505301269168
+  },
+  "enrollmentFee": {
+    "balanceDue": 0.0,
+    "currentBalance": 0.0,
+    "amountInvoiced": 50.0,
+    "amountReceived": 50.0,
+    "dateReceived": {
+      "year": 2017,
+      "month": 6,
+      "day": 6
+    },
+    "received": false,
+    "completed": false,
+    "id": "4b9d346f-c612-49dd-9b7f-c73451c4f8e7",
+    "generatedAt": 1505301269169
+  },
+  "balanceDue": 0.0,
+  "paymentSchedules": [
+    {
+      "billingStartDate": {
+        "year": 2017,
+        "month": 7,
+        "day": 17
+      },
+      "billingEndDate": {
+        "year": 2017,
+        "month": 7,
+        "day": 30
+      },
+      "balanceDue": 0.0,
+      "currentBalance": 0.0,
+      "amountInvoiced": 31.96,
+      "amountReceived": 31.96,
+      "dateReceived": {
+        "year": 2017,
+        "month": 8,
+        "day": 9
+      },
+      "received": false,
+      "completed": false,
+      "id": "6b0c866f-efa2-4a1c-b19c-9aa5011092a7",
+      "generatedAt": 1505301269170
+    },
+    {
+      "billingStartDate": {
+        "year": 2017,
+        "month": 7,
+        "day": 31
+      },
+      "billingEndDate": {
+        "year": 2017,
+        "month": 8,
+        "day": 13
+      },
+      "balanceDue": 0.0,
+      "currentBalance": 0.0,
+      "amountInvoiced": 31.96,
+      "amountReceived": 31.96,
+      "dateReceived": {
+        "year": 2017,
+        "month": 8,
+        "day": 23
+      },
+      "received": false,
+      "completed": false,
+      "id": "ad2888fe-2d00-478d-89be-81ad3cf131bd",
+      "generatedAt": 1505301269174
+    }
+  ],
+  "id": "6e7aba30-c15f-43f0-b7a8-9d3c517048f3",
+  "generatedAt": 0
+}

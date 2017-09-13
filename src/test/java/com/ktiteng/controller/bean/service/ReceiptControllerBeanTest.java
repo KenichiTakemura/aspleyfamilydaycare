@@ -1,8 +1,11 @@
 package com.ktiteng.controller.bean.service;
 
 import static com.ktiteng.util.Utils.toDate;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 
 import javax.inject.Inject;
 
@@ -43,8 +46,10 @@ public class ReceiptControllerBeanTest extends ArquillianUnitTest {
 		PaymentSchedule ps = pc.addPaymentSchedule(c.getId(), new PaymentSchedule().setDateReceived(toDate("2017-08-12"))
 				.setBillingStartDate(toDate("2017-07-16"))
 				.setAmountInvoiced(123.12d));
-		rc.issueReceipt(c.getId(), ps.getId(), ReceiptType.WEEKS);
-		rc.deleteReceipt(c.getId(), ps.getId(), ReceiptType.WEEKS);
+		Receipt r = rc.issueReceipt(c.getId(), ps, ReceiptType.WEEKS);
+		assertTrue(Paths.get(r.getLocation()).toFile().exists());
+		rc.deleteReceipt(c.getId(), r.getId(), ReceiptType.WEEKS);
+		assertFalse(Paths.get(r.getLocation()).toFile().exists());
 	}
 
 	@Test(expected=IOException.class)
@@ -66,9 +71,7 @@ public class ReceiptControllerBeanTest extends ArquillianUnitTest {
 				.setBillingStartDate(toDate("2017-07-16"))
 				.setAmountInvoiced(123.12d).setAmountReceived(133.23d).setBalanceDue(9.5d);
 
-		Receipt r = new Receipt().setTaxInvoiceId(tcs.nextVal());
-		ps.setReceipt(r);
-		Document root = bean.convertPaymentScheduleToDocument(c, ps);
+		Document root = bean.convertToDocument(c, ps);
 		DOMImplementationLS domImplLS = (DOMImplementationLS) root.getImplementation();
 		LSSerializer serializer = domImplLS.createLSSerializer();
 		String str = serializer.writeToString(root);

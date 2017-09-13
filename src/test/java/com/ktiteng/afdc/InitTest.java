@@ -17,7 +17,6 @@ import com.ktiteng.controller.service.PaymentController;
 import com.ktiteng.controller.service.ReceiptController;
 import com.ktiteng.controller.service.ReceiptController.ReceiptType;
 import com.ktiteng.entity.service.Child;
-import com.ktiteng.entity.service.InitialPayment;
 import com.ktiteng.entity.service.Parent;
 import com.ktiteng.entity.service.PaymentSchedule;
 
@@ -45,7 +44,7 @@ public class InitTest extends ArquillianUnitTest {
 		Paths.get(getPath().toString(), "receipt").toFile().mkdirs();
 	}
 
-	private void issue(Child c, InitialPayment ip) throws IOException {
+//	private void issue(Child c, InitialPayment ip) throws IOException {
 		// Payment p = pc.addInitialPayment(c, ip);
 		// InitialPayment initialPayment = p.getInitialPayment();
 		// if (!initialPayment.getReceiptDeposit().isIssued()) {
@@ -64,7 +63,7 @@ public class InitTest extends ArquillianUnitTest {
 		// } catch (Exception e) {
 		// log.info("{}", e);
 		// }
-	}
+//	}
 
 	private void issue(Child c, PaymentSchedule ps) throws IOException {
 		PaymentSchedule paymentSchedule = pc.addPaymentSchedule(c.getId(), ps);
