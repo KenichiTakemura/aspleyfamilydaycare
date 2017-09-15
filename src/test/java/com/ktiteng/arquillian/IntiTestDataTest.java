@@ -21,55 +21,62 @@ import com.ktiteng.entity.service.EnrollmentFee;
 import com.ktiteng.entity.service.PaymentSchedule;
 
 public class IntiTestDataTest extends ArquillianUnitTest {
-    @Inject
-    @Log
-    private Logger log;
-    @Inject
-    ChildController cc;
-    @Inject
-    PaymentController pc;
-    @Inject
-    ReceiptController rc;
+	@Inject
+	@Log
+	private Logger log;
+	@Inject
+	ChildController cc;
+	@Inject
+	PaymentController pc;
+	@Inject
+	ReceiptController rc;
 
-    @Override
-    protected Path getPath() {
-        return Paths.get("src/test/resources/data");
-    }
+	@Override
+	protected Path getPath() {
+		return Paths.get("src/test/resources/data");
+	}
 
-    protected boolean getDeletePath() {
-        return true;
-    }
+	protected boolean getDeletePath() {
+		return true;
+	}
 
-    @Override
-    public void afterBefore() {
-        Paths.get(getPath().toString(), "receipt").toFile().mkdirs();
-    }
+	@Override
+	public void afterBefore() {
+		Paths.get(getPath().toString(), "receipt").toFile().mkdirs();
+	}
 
-    @Test
-    public void genData() throws IOException {
-    	cc.addParent(parent1);
-        Child c = cc.addChild(child1);
-        pc.addDeposit(c.getId(), new Deposit().setAmountInvoiced(95.00d).setDateReceived(toDate("2017-05-04")));
-        pc.addEnrollmentFee(c.getId(), new EnrollmentFee().setAmountInvoiced(50.00d).setDateReceived(toDate("2017-05-06")));
-        pc.addPaymentSchedule(c.getId(), new PaymentSchedule().setDateReceived(toDate("2017-07-18"))
-                .setBillingStartDate(toDate("2017-07-03")).setBillingEndDate(toDate("2017-07-16"))
-                .setAmountInvoiced(114.00d).setAmountReceived(114.00d).setBalanceDue(0.0d));
-        pc.addPaymentSchedule(c.getId(), new PaymentSchedule().setDateReceived(toDate("2017-07-31"))
-                .setBillingStartDate(toDate("2017-07-17")).setBillingEndDate(toDate("2017-07-30"))
-                .setAmountInvoiced(123.50d).setAmountReceived(133.00d).setBalanceDue(9.5d));
-        pc.addPaymentSchedule(c.getId(), new PaymentSchedule().setDateReceived(toDate("2017-08-15"))
-                .setBillingStartDate(toDate("2017-07-31")).setBillingEndDate(toDate("2017-08-13"))
-                .setCurrentBalance(9.5d).setAmountInvoiced(133.00d).setAmountReceived(133.00d).setBalanceDue(9.5d));
-    	cc.addParent(parent2);
-    	c = cc.addChild(child2);
-        pc.addDeposit(c.getId(), new Deposit().setAmountInvoiced(195.00d).setDateReceived(toDate("2017-06-04")));
-        pc.addEnrollmentFee(c.getId(), new EnrollmentFee().setAmountInvoiced(50.00d).setDateReceived(toDate("2017-06-06")));
-        pc.addPaymentSchedule(c.getId(), new PaymentSchedule().setDateReceived(toDate("2017-08-09"))
-                .setBillingStartDate(toDate("2017-07-17")).setBillingEndDate(toDate("2017-07-30"))
-                .setAmountInvoiced(31.96d).setAmountReceived(31.96d).setBalanceDue(0.0d));
-        pc.addPaymentSchedule(c.getId(), new PaymentSchedule().setDateReceived(toDate("2017-08-23"))
-                .setBillingStartDate(toDate("2017-07-31")).setBillingEndDate(toDate("2017-08-13"))
-                .setAmountInvoiced(31.96d).setAmountReceived(31.96d).setBalanceDue(0.0d));
-    }
+	@Test
+	public void genData() throws IOException {
+		cc.addParent(parent1);
+		Child c = cc.addChild(child1);
+		rc.issueReceipt(c.getId(), pc.addDeposit(c.getId(),
+				new Deposit().setAmountInvoiced(95.00d).setDateReceived(toDate("2017-05-04"))));
+		rc.issueReceipt(c.getId(), pc.addEnrollmentFee(c.getId(),
+				new EnrollmentFee().setAmountInvoiced(50.00d).setDateReceived(toDate("2017-05-06"))));
+		rc.issueReceipt(c.getId(),
+				pc.addPaymentSchedule(c.getId(),
+						new PaymentSchedule().setDateReceived(toDate("2017-07-18"))
+								.setBillingStartDate(toDate("2017-07-03")).setAmountInvoiced(114.00d)
+								.setAmountReceived(114.00d).setBalanceDue(0.0d)));
+		rc.issueReceipt(c.getId(),
+				pc.addPaymentSchedule(c.getId(),
+						new PaymentSchedule().setDateReceived(toDate("2017-07-31"))
+								.setBillingStartDate(toDate("2017-07-17")).setAmountInvoiced(123.50d)
+								.setAmountReceived(133.00d).setBalanceDue(9.5d)));
+		rc.issueReceipt(c.getId(),
+				pc.addPaymentSchedule(c.getId(),
+						new PaymentSchedule().setDateReceived(toDate("2017-08-15"))
+								.setBillingStartDate(toDate("2017-07-31")).setCurrentBalance(9.5d)
+								.setAmountInvoiced(133.00d).setAmountReceived(133.00d).setBalanceDue(9.5d)));
+		cc.addParent(parent2);
+		c = cc.addChild(child2);
+		pc.addDeposit(c.getId(), new Deposit().setAmountInvoiced(195.00d).setDateReceived(toDate("2017-06-04")));
+		pc.addEnrollmentFee(c.getId(),
+				new EnrollmentFee().setAmountInvoiced(50.00d).setDateReceived(toDate("2017-06-06")));
+		pc.addPaymentSchedule(c.getId(), new PaymentSchedule().setDateReceived(toDate("2017-08-09"))
+				.setBillingStartDate(toDate("2017-07-17")).setAmountInvoiced(31.96d).setAmountReceived(31.96d));
+		pc.addPaymentSchedule(c.getId(), new PaymentSchedule().setDateReceived(toDate("2017-08-23"))
+				.setBillingStartDate(toDate("2017-07-31")).setAmountInvoiced(31.96d).setAmountReceived(31.96d));
+	}
 
 }

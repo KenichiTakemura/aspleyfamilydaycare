@@ -65,7 +65,7 @@ public class PersistenceManager {
 			log.info("Loaded from {}", filename);
 			return data;
 		} catch (Exception e) {
-			log.warn("Cannot load. {}", e.getMessage());
+			log.warn("Cannot load from {} {}", filename, e.getMessage());
 		} finally {
 			if (in != null) {
 				try {

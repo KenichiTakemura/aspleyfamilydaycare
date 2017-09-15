@@ -38,7 +38,7 @@ public class PaymentControllerTest extends ArquillianUnitTest {
 	public void addPaymentSchedule() throws IOException {
 		cc.addParent(parent1);
 		Child c = cc.addChild(child1);
-		Payment p = pc.findPayment(c);
+		Payment p = pc.findPayment(c.getId());
 		assertNotNull(p);
 		pc.addDeposit(c.getId(), new Deposit().setAmountInvoiced(95.00d).setDateReceived(toDate("2017-05-04")));
 		pc.addEnrollmentFee(c.getId(),

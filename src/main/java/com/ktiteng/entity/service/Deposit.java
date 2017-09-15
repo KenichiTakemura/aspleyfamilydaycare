@@ -12,6 +12,10 @@ public class Deposit extends Payable<Deposit> {
 	private LocalDate dateRefunded;
 	private boolean refunded;
 
+	public Deposit() {
+		super();
+	}
+
 	public double getRefund() {
 		return refund;
 	}

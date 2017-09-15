@@ -1,0 +1,82 @@
+[
+  {
+    "taxInvoiceId": "AFDC-10001",
+    "name": "Deposit Receipt for cfirst1 clast1",
+    "payableId": "15055776-2904-43cb-aa13-9f446bfb0eff",
+    "location": "src/test/resources/data/receipt/Deposit_Receipt_cfirst1_clast1.pdf",
+    "issued": true,
+    "sent": false,
+    "type": "DEPOSIT",
+    "dateIssued": {
+      "year": 2017,
+      "month": 9,
+      "day": 14
+    },
+    "id": "4d1d5120-7c4e-4b94-ba26-f65cbe969a58",
+    "generatedAt": 0
+  },
+  {
+    "taxInvoiceId": "AFDC-10002",
+    "name": "Enrollment Fee Receipt for cfirst1 clast1",
+    "payableId": "be770004-face-459e-8bac-20d799076c01",
+    "location": "src/test/resources/data/receipt/EnrollmentFee_Receipt_cfirst1_clast1.pdf",
+    "issued": true,
+    "sent": false,
+    "type": "ENROLLMENT",
+    "dateIssued": {
+      "year": 2017,
+      "month": 9,
+      "day": 14
+    },
+    "id": "3255afc6-8ef8-4867-916a-6eb7bd1201a5",
+    "generatedAt": 0
+  },
+  {
+    "taxInvoiceId": "AFDC-10003",
+    "name": "Receipt for cfirst1 clast1(03/07/2017-16/07/2017)",
+    "payableId": "1053b020-696b-4f8a-98dc-aa8a6318a4a9",
+    "location": "src/test/resources/data/receipt/Receipt_cfirst1_clast1(03072017-16072017).pdf",
+    "issued": true,
+    "sent": false,
+    "type": "WEEKS",
+    "dateIssued": {
+      "year": 2017,
+      "month": 9,
+      "day": 14
+    },
+    "id": "ea5ba989-4797-46d7-8aee-0f2b4764d693",
+    "generatedAt": 0
+  },
+  {
+    "taxInvoiceId": "AFDC-10004",
+    "name": "Receipt for cfirst1 clast1(17/07/2017-30/07/2017)",
+    "payableId": "c474ae1b-9d38-480d-b0b8-3400ecabafed",
+    "location": "src/test/resources/data/receipt/Receipt_cfirst1_clast1(17072017-30072017).pdf",
+    "issued": true,
+    "sent": false,
+    "type": "WEEKS",
+    "dateIssued": {
+      "year": 2017,
+      "month": 9,
+      "day": 14
+    },
+    "id": "03f0bba7-a42a-4491-9d04-be492514e24c",
+    "generatedAt": 0
+  },
+  {
+    "taxInvoiceId": "AFDC-10005",
+    "name": "Receipt for cfirst1 clast1(31/07/2017-13/08/2017)",
+    "payableId": "9272e3e7-2248-4bce-a50b-0cb5826c383a",
+    "location": "src/test/resources/data/receipt/Receipt_cfirst1_clast1(31072017-13082017).pdf",
+    "issued": true,
+    "sent": false,
+    "type": "WEEKS",
+    "dateIssued": {
+      "year": 2017,
+      "month": 9,
+      "day": 14
+    },
+    "id": "8641d5c1-07d1-4ea4-affa-5964a91206cc",
+    "generatedAt": 0
+  }
+]

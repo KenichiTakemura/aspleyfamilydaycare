@@ -23,9 +23,9 @@ import org.apache.fop.apps.MimeConstants;
 import org.slf4j.Logger;
 import org.w3c.dom.Document;
 
+import com.ktiteng.afdc.InvoiceType;
 import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.service.PdfGenerator;
-import com.ktiteng.controller.service.ReceiptController.ReceiptType;
 import com.ktiteng.entity.service.Receipt;
 
 @Default
@@ -37,15 +37,13 @@ public class PdfGeneratorBean implements PdfGenerator {
 	private Logger log;
 
 	@Override
-	public Receipt generateReceipt(Document source, String pdfLocation, ReceiptType type) throws IOException {
-		if (type == ReceiptType.WEEKS) {
-		return this.generateReceipt(source, "/fop/weeksReceipt.xsl", pdfLocation);
-		} else if (type == ReceiptType.DEPOSIT) {
+	public Receipt generateReceipt(Document source, String pdfLocation, InvoiceType type) throws IOException {
+		if (type == InvoiceType.WEEKS) {
+			return this.generateReceipt(source, "/fop/weeksReceipt.xsl", pdfLocation);
+		} else if (type == InvoiceType.DEPOSIT) {
 			return this.generateReceipt(source, "/fop/depositReceipt.xsl", pdfLocation);
-		} else if (type == ReceiptType.ENROLLMENT) {
-			return this.generateReceipt(source, "/fop/enrollmentfeeReceipt.xsl", pdfLocation);
 		} else {
-			throw new IOException("Unknown ReceiptType " + type);
+			return this.generateReceipt(source, "/fop/enrollmentfeeReceipt.xsl", pdfLocation);
 		}
 	}
 

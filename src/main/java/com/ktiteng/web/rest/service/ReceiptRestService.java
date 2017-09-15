@@ -1,5 +1,7 @@
 package com.ktiteng.web.rest.service;
 
+import java.io.IOException;
+
 import javax.inject.Inject;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -12,10 +14,10 @@ import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
 
+import com.ktiteng.afdc.InvoiceType;
 import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.service.PaymentController;
 import com.ktiteng.controller.service.ReceiptController;
-import com.ktiteng.controller.service.ReceiptController.ReceiptType;
 
 @Path("/receipt")
 @Produces(MediaType.APPLICATION_JSON)
@@ -31,10 +33,19 @@ public class ReceiptRestService {
     @POST
     @Path("/issue")
     public Response issueReceipt(@QueryParam("t") final String type, @QueryParam("c") final String childId,
-                                 @QueryParam("ps") final String paymentScheduleId) {
-        log.info("issueReceipt for {} {} {}", type, childId, paymentScheduleId);
+                                 @QueryParam("ps") final String payableId) {
+        log.info("issueReceipt for {} {} {}", type, childId, payableId);
         try {
-            rc.issueReceipt(childId, paymentScheduleId, ReceiptType.get(type));
+        	if (InvoiceType.WEEKS ==InvoiceType.get(type)) {
+        		rc.issueReceipt(childId, pc.findPaymentSchedule(childId, payableId));
+        	} else if (InvoiceType.DEPOSIT ==InvoiceType.get(type)) {
+        		rc.issueReceipt(childId, pc.findDeposit(childId));
+        	} else if  (InvoiceType.DEPOSIT ==InvoiceType.get(type)) {
+        		rc.issueReceipt(childId, pc.findEnrollmentFee(childId));
+        	} else {
+        		log.error("Unknown InvoiceType {}" + type);
+        		return Response.serverError().build();
+        	}
         } catch (Exception e) {
             log.error("Something went wrong", e);
             return Response.serverError().build();
@@ -45,10 +56,10 @@ public class ReceiptRestService {
     @DELETE
     @Path("/issue")
     public Response deleteReceipt(@QueryParam("t") final String type, @QueryParam("c") final String childId,
-                                  @QueryParam("ps") final String paymentScheduleId) {
-        log.info("deleteReceipt for {} {} {}", type, childId, paymentScheduleId);
+                                  @QueryParam("r") final String receiptId) {
+        log.info("deleteReceipt for {} {} {}", type, childId, receiptId);
         try {
-            rc.deleteReceipt(childId, paymentScheduleId, ReceiptType.get(type));
+            rc.deleteReceipt(childId, receiptId);
         } catch (Exception e) {
             log.error("Something went wrong", e);
             return Response.serverError().build();

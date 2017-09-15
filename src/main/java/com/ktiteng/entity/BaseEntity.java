@@ -27,8 +27,9 @@ public abstract class BaseEntity implements Serializable {
 		return generatedAt;
 	}
 
-	public void setGeneratedAt() {
+	public BaseEntity setGeneratedAt() {
 		this.generatedAt = System.currentTimeMillis();
+		return this;
 	}
 
 }

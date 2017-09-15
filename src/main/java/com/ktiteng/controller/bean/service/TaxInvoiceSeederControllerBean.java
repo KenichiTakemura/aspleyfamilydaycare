@@ -30,8 +30,9 @@ public class TaxInvoiceSeederControllerBean extends BaseController implements Ta
 	}
 
 	@Override
-	public String generateNextId() throws IOException {
+	public synchronized String generateNextId() throws IOException {
 		try {
+			seeder.setGeneratedAt();
 			return seeder.nextVal();
 		} finally {
 			save(seeder);

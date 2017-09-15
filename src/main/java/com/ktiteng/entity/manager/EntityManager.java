@@ -115,6 +115,8 @@ public class EntityManager {
 			pm.persist(receipts, getReceiptType(), _receipts);
 		} else if (entity instanceof TaxInvoiceSeeder) {
 			pm.persist(taxInvoiceSeeder, taxInvoiceSeeder.getClass(), _taxinvoiceseeder);
+		} else {
+			throw new IOException("Unknown entity " + entity);
 		}
 	}
 
@@ -155,7 +157,10 @@ public class EntityManager {
 			return payment.isPresent() ? payment.get() : null;
 		} else if (entityClass.isAssignableFrom(Receipt.class)) {
 			Optional<Receipt> receipt = receipts.stream().filter(r -> r != null && r.getId().equals(ids[0])).findFirst();
-			return receipt.isPresent() ? receipt.get() : null;
+			if (!receipt.isPresent()) {
+				receipt = receipts.stream().filter(r -> r != null && r.getPayableId().equals(ids[0])).findFirst();
+			}
+			return receipt.isPresent()? receipt.get() : null;
 		}
 		return null;
 	}

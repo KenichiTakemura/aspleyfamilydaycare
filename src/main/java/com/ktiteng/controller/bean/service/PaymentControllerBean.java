@@ -16,6 +16,7 @@ import com.ktiteng.controller.service.PaymentController;
 import com.ktiteng.entity.service.Child;
 import com.ktiteng.entity.service.Deposit;
 import com.ktiteng.entity.service.EnrollmentFee;
+import com.ktiteng.entity.service.Payable;
 import com.ktiteng.entity.service.Payment;
 import com.ktiteng.entity.service.PaymentSchedule;
 
@@ -30,14 +31,34 @@ public class PaymentControllerBean extends BaseController implements PaymentCont
 	ChildController cc;
 
 	@Override
-	public Payment findPayment(Child child) throws IOException {
-		return this.findPayment(child.getId());
-	}
-
-	@Override
 	public Payment findPayment(String childId) throws IOException {
 		Payment p = (Payment) em.find(Payment.class, childId);
 		return p != null ? p : new Payment().setChildId(childId);
+	}
+
+	@Override
+	public Payable find(String childId, String payableId) throws IOException {
+		Payment p = findPayment(childId);
+		log.info("find by payableId {}", payableId);
+		if (p.getDeposit().getId().equals(payableId)) {
+			log.info("Return Deposit");
+			return p.getDeposit();
+		}
+		if (p.getEnrollmentFee().getId().equals(payableId)) {
+			log.info("Return getEnrollmentFee");
+			return p.getEnrollmentFee();
+		}
+		PaymentSchedule ps = p.getPaymentSchedule(payableId);
+		if (ps != null) {
+			log.info("Return PaymentSchedule");
+			return ps;
+		}
+		return null;
+	}
+
+	@Override
+	public void updatePayment(String childId) throws IOException {
+		save(findPayment(childId));
 	}
 
 	public Child findChild(String childId) throws IOException {

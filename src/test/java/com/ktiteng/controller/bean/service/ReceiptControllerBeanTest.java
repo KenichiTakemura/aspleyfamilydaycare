@@ -20,7 +20,6 @@ import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.service.ChildController;
 import com.ktiteng.controller.service.PaymentController;
 import com.ktiteng.controller.service.ReceiptController;
-import com.ktiteng.controller.service.ReceiptController.ReceiptType;
 import com.ktiteng.entity.service.Child;
 import com.ktiteng.entity.service.PaymentSchedule;
 import com.ktiteng.entity.service.Receipt;
@@ -46,9 +45,9 @@ public class ReceiptControllerBeanTest extends ArquillianUnitTest {
 		PaymentSchedule ps = pc.addPaymentSchedule(c.getId(), new PaymentSchedule().setDateReceived(toDate("2017-08-12"))
 				.setBillingStartDate(toDate("2017-07-16"))
 				.setAmountInvoiced(123.12d));
-		Receipt r = rc.issueReceipt(c.getId(), ps, ReceiptType.WEEKS);
+		Receipt r = rc.issueReceipt(c.getId(), ps);
 		assertTrue(Paths.get(r.getLocation()).toFile().exists());
-		rc.deleteReceipt(c.getId(), r.getId(), ReceiptType.WEEKS);
+		rc.deleteReceipt(c.getId(), r.getId());
 		assertFalse(Paths.get(r.getLocation()).toFile().exists());
 	}
 
@@ -59,7 +58,7 @@ public class ReceiptControllerBeanTest extends ArquillianUnitTest {
 		PaymentSchedule ps = pc.addPaymentSchedule(c.getId(), new PaymentSchedule().setDateReceived(toDate("2017-08-12"))
 				.setBillingStartDate(toDate("2017-07-16"))
 				.setAmountInvoiced(123.12d).setAmountReceived(133.23d).setBalanceDue(9.5d));
-		rc.deleteReceipt(c.getId(), ps.getId(), ReceiptType.WEEKS);
+		rc.deleteReceipt(c.getId(), ps.getReceiptId());
 	}
 
 	@Test

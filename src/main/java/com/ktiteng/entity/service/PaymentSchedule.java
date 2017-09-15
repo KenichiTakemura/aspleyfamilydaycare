@@ -15,7 +15,7 @@ public class PaymentSchedule extends Payable<PaymentSchedule> {
 	private LocalDate billingEndDate;
 
 	public PaymentSchedule() {
-		setId(Utils.getId());
+		super();
 	}
 
 	@Override

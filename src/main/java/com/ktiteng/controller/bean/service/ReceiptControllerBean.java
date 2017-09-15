@@ -4,7 +4,7 @@ import static com.ktiteng.util.Utils.toS;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
@@ -13,13 +13,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.jboss.resteasy.util.GetRestful;
 import org.slf4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
+import com.ktiteng.afdc.InvoiceType;
 import com.ktiteng.cdi.Config;
 import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.AfdcConfig;
@@ -30,12 +30,10 @@ import com.ktiteng.controller.service.PaymentController;
 import com.ktiteng.controller.service.PdfGenerator;
 import com.ktiteng.controller.service.ReceiptController;
 import com.ktiteng.controller.service.TaxInvoiceSeederController;
-import com.ktiteng.controller.service.ReceiptController.ReceiptType;
 import com.ktiteng.entity.manager.PersistenceManager;
 import com.ktiteng.entity.service.Child;
 import com.ktiteng.entity.service.Deposit;
 import com.ktiteng.entity.service.EnrollmentFee;
-import com.ktiteng.entity.service.Parent;
 import com.ktiteng.entity.service.Payable;
 import com.ktiteng.entity.service.PaymentSchedule;
 import com.ktiteng.entity.service.Receipt;
@@ -74,33 +72,36 @@ public class ReceiptControllerBean extends BaseController implements ReceiptCont
 		return (Receipt) em.find(Receipt.class, id);
 	}
 
-	private Child findChild(String childId) throws IOException {
-		Child child = cc.findChild(childId);
-		if (child == null) {
-			throw new IOException("Child not found by " + childId);
-		}
-		return child;
-	}
-
 	@Override
-	public Receipt issueReceipt(String childId, Payable payable, ReceiptType type) throws IOException {
+	public Receipt issueReceipt(String childId, Payable payable) throws IOException {
 		log.info("issueReceipt childId={}, payable={}", childId, payable);
-		if (payable.getReceiptId() != null) {
-			throw new IOException("Receipt already issued.");
+		String receiptId = payable.getReceiptId();
+		if (receiptId != null) {
+			if (findReceipt(receiptId) != null) {
+				throw new IOException("Receipt already issued.");
+			} else {
+				log.info("Receipt not found with {}", receiptId);
+			}
 		}
-		Child child = findChild(childId);
-		Document document = convertToDocument(child, payable);
-		Receipt receipt = createReceipt(child, payable);
-		pdfGen.generateReceipt(document, receipt.getLocation(), type);
-		receipt.setIssued(true);
-		receipt.setPayableId(payable.getId());
+		Receipt receipt = findReceipt(payable.getId());
+		if (receipt != null) {
+			log.info("Receipt found by {}", payable.getId());
+		} else {
+			Child child = findChild(childId);
+			Document document = convertToDocument(child, payable);
+			receipt = createReceipt(child, payable);
+			pdfGen.generateReceipt(document, receipt.getLocation(), receipt.getType());
+			receipt.setIssued(true);
+			receipt.setDateIssued(LocalDate.now());
+			receipt.setPayableId(payable.getId());
+			em.save(receipt);
+		}
 		payable.setReceiptId(receipt.getId());
-		em.save(receipt);
 		return receipt;
 	}
 
 	@Override
-	public void deleteReceipt(String childId, String receiptId, ReceiptType type) throws IOException {
+	public void deleteReceipt(String childId, String receiptId) throws IOException {
 		log.info("deleteReceipt childId={}, receiptId={}", childId, receiptId);
 		Receipt receipt = findReceipt(receiptId);
 		if (receipt == null) {
@@ -115,12 +116,13 @@ public class ReceiptControllerBean extends BaseController implements ReceiptCont
 		Paths.get(receipt.getLocation()).toFile().delete();
 		log.info("{} has been deleted.", receipt.getLocation());
 		receipt.setIssued(false);
+		receipt.setDateIssued(null);
 		String payableId = receipt.getPayableId();
 		receipt.setPayableId(null);
 		em.save(receipt);
-		if (type == ReceiptType.WEEKS) {
+		if (receipt.getType() == InvoiceType.WEEKS) {
 			pc.updatePaymentSchedule(childId, pc.findPaymentSchedule(childId, payableId).setReceiptId(null));
-		} else if (type == ReceiptType.DEPOSIT) {
+		} else if (receipt.getType() == InvoiceType.DEPOSIT) {
 			pc.updateDeposit(childId, pc.findDeposit(childId).setReceiptId(null));
 		} else {
 			pc.updateEnrollmentFee(childId, pc.findEnrollmentFee(childId).setReceiptId(null));
@@ -146,7 +148,7 @@ public class ReceiptControllerBean extends BaseController implements ReceiptCont
 			String cc = config.getKaAdminEmail();
 			gmailSender.sendEmail(to, cc, receipt.getName(), config.getEmailContents(), receipt.getLocation());
 			receipt.setSent(true);
-			receipt.setSentAt(LocalDateTime.now());
+			receipt.setDateSent(LocalDate.now());
 		} else {
 			log.info("Receipt was already sent");
 			return false;
@@ -165,16 +167,20 @@ public class ReceiptControllerBean extends BaseController implements ReceiptCont
 					child.getFirstName(), child.getLastName().trim(),
 					Utils.toS(paymentSchedule.getBillingStartDate()).replaceAll("/", ""),
 					Utils.toS(paymentSchedule.getBillingEndDate()).replaceAll("/", ""));
+			receipt.setType(InvoiceType.WEEKS);
 		} else if (payable instanceof Deposit) {
 			receipt.setName(String.format("Deposit Receipt for %s %s", child.getFirstName(), child.getLastName()));
 			location = String.format("%s/receipt/Deposit_Receipt_%s_%s.pdf", pm.getPath().toString(),
 					child.getFirstName(), child.getLastName().trim());
+			receipt.setType(InvoiceType.DEPOSIT);
 		} else if (payable instanceof EnrollmentFee) {
 			receipt.setName(
 					String.format("Enrollment Fee Receipt for %s %s", child.getFirstName(), child.getLastName()));
 			location = String.format("%s/receipt/EnrollmentFee_Receipt_%s_%s.pdf", pm.getPath().toString(),
 					child.getFirstName(), child.getLastName().trim());
+			receipt.setType(InvoiceType.ENROLLMENT);
 		}
+		receipt.setGeneratedAt();
 		receipt.setLocation(location);
 		return receipt;
 	}
@@ -228,6 +234,14 @@ public class ReceiptControllerBean extends BaseController implements ReceiptCont
 		Text elementText = parent.getOwnerDocument().createTextNode(textVal);
 		newElement.appendChild(elementText);
 		parent.appendChild(newElement);
+	}
+
+	private Child findChild(String childId) throws IOException {
+		Child child = cc.findChild(childId);
+		if (child == null) {
+			throw new IOException("Child not found by " + childId);
+		}
+		return child;
 	}
 
 }
