@@ -20,6 +20,7 @@ public class TaxInvoice extends BaseEntity {
 	private InvoiceType type;
 	private LocalDate dateIssued;
 	private LocalDate dateSent;
+	private String sentTo;
 
 	public TaxInvoice() {
 	}
@@ -84,6 +85,15 @@ public class TaxInvoice extends BaseEntity {
 
 	public TaxInvoice setDateSent(LocalDate dateSent) {
 		this.dateSent = dateSent;
+		return this;
+	}
+
+	public String getSentTo() {
+		return sentTo;
+	}
+
+	public TaxInvoice setSentTo(String sentTo) {
+		this.sentTo = sentTo;
 		return this;
 	}
 

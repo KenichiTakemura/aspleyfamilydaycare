@@ -12,6 +12,13 @@ public abstract class BaseEntity implements Serializable {
 	private long generatedAt;
 	public static double NIL_BALANCE = 0.0d;
 
+	public enum STATUS {
+		INCARE,
+		ABSENT,
+		AWAY,
+		EXCARE,
+	}
+	
 	protected BaseEntity() {
 	}
 

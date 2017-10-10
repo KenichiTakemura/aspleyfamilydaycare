@@ -17,7 +17,7 @@ import com.ktiteng.controller.AfdcConfig;
 
 public class AfdcConfigBean implements AfdcConfig {
 	@Inject
-	@Log	
+	@Log
 	private Logger log;
 
 	private Properties props;
@@ -27,8 +27,7 @@ public class AfdcConfigBean implements AfdcConfig {
 	public AfdcConfigBean(String configName) {
 		this.configName = configName;
 		props = new Properties();
-		File configFile = Paths.get(configPath.toString(), this.configName)
-				.toFile();
+		File configFile = Paths.get(configPath.toString(), this.configName).toFile();
 		try {
 			props.load(new FileInputStream(configFile));
 		} catch (IOException e) {
@@ -60,8 +59,8 @@ public class AfdcConfigBean implements AfdcConfig {
 	public String getEmailContents() {
 		int num = Integer.parseInt(props.getProperty("emailContentNum"));
 		String[] contents = new String[num];
-		for(int i=0; i<num; i++) {
-			contents[i] = props.getProperty("emailContent" + (i+1));
+		for (int i = 0; i < num; i++) {
+			contents[i] = props.getProperty("emailContent" + (i + 1));
 		}
 		return MessageFormat.format(props.getProperty("emailContent"), contents);
 	}

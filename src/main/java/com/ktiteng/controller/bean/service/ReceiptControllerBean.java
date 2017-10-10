@@ -148,6 +148,7 @@ public class ReceiptControllerBean extends BaseController implements ReceiptCont
 			String cc = config.getKaAdminEmail();
 			gmailSender.sendEmail(to, cc, receipt.getName(), config.getEmailContents(), receipt.getLocation());
 			receipt.setSent(true);
+			receipt.setSentTo(to);
 			receipt.setDateSent(LocalDate.now());
 		} else {
 			log.info("Receipt was already sent");

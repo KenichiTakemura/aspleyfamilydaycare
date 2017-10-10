@@ -22,7 +22,7 @@ public class InitTest extends ArquillianUnitTest {
 	@Inject
 	ChildController cc;
 	@Inject
-	private AfdcWorkflow wf;
+	protected AfdcWorkflow wf;
 
 	protected Path getPath() {
 		return Paths.get(System.getProperty("user.home"), ".afdc", "master");
@@ -37,7 +37,7 @@ public class InitTest extends ArquillianUnitTest {
 		Paths.get(getPath().toString(), "receipt").toFile().mkdirs();
 	}
 
-	private Child findChild(String... attrs) throws IOException {
+	protected Child findChild(String... attrs) throws IOException {
 		Child c = cc.findChild(attrs[0], attrs[1]);
 		if (c == null) {
 			throw new IOException("Cannot find child");
@@ -46,44 +46,10 @@ public class InitTest extends ArquillianUnitTest {
 		return c;
 	}
 
-	// @Test
-	public void channy() throws IOException {
-		Child c = findChild("Channy", "Youn");
-	}
-
-	//@Test
-	public void allan() throws IOException {
-		Child c = findChild("Allan", "Broadhurst");
-	}
-
-	//@Test
-	public void yuna() throws IOException {
-		Child c = findChild("Yuna", "Cho");
-	}
-
-	//@Test
-	public void ruby() throws IOException {
-		Child c = findChild("Ruby", "Hong");
-	}
-
-	//@Test
-	public void leon() throws IOException {
-		Child c = findChild("Leon", "Jeong");
-	}
-
-	//@Test
-	public void jason() throws IOException {
-		Child c = findChild("Jason", "Lee");
-	}
-
-	//@Test
-	public void ian() throws IOException {
-		Child c = findChild("Ian", "Kim");
-	}
-
 	@Test
-	public void louis() throws IOException {
-		Child c = findChild("Louis", "Oh");
+	public void sendNewsletter() throws IOException {
+		wf.sendNewsLetter("October", "October_2017_Editionx_QLD.pdf");
 	}
+
 
 }

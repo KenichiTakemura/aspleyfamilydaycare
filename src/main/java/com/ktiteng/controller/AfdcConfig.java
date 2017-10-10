@@ -11,4 +11,5 @@ public interface AfdcConfig {
 	char[] getGmailPassword();
 
 	String getEmailContents();
+
 }

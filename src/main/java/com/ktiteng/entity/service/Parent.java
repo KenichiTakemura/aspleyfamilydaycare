@@ -15,7 +15,8 @@ public class Parent extends BaseEntity {
 	private String phoneNumber;
 	private String emailAddress;
 	private BankDetail bankDetail;
-
+	private STATUS status;
+	
 	public Parent() {
 		setId(Utils.getId());
 	}
@@ -87,6 +88,15 @@ public class Parent extends BaseEntity {
 		}
 		Parent other = (Parent) obj;
 		return getName().equals(other.getName());
+	}
+
+	public STATUS getStatus() {
+		return status;
+	}
+
+	public Parent setStatus(STATUS status) {
+		this.status = status;
+		return this;
 	}
 
 }

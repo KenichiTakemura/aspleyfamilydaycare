@@ -57,10 +57,17 @@ public class GmailSender {
 
 		try {
 			log.info("Sending an email to {}", to);
+			File attachmentFile = new File(attachment);
+			if (!attachmentFile.exists()) {
+				log.error("Attachment does not exist " + attachment);
+				return;
+			}
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(config.getAfdcAdminEmail()));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-			message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(cc));
+			if (cc != null) {
+				message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(cc));
+			}
 			message.setSubject(subject);
 			BodyPart messageBodyPart = new MimeBodyPart();
 			messageBodyPart.setText(text);
@@ -72,10 +79,10 @@ public class GmailSender {
 
 			// Part two is attachment
 			messageBodyPart = new MimeBodyPart();
-			String filename = attachment;
-			DataSource source = new FileDataSource(filename);
+			
+			DataSource source = new FileDataSource(attachment);
 			messageBodyPart.setDataHandler(new DataHandler(source));
-			messageBodyPart.setFileName(new File(attachment).getName());
+			messageBodyPart.setFileName(attachmentFile.getName());
 			multipart.addBodyPart(messageBodyPart);
 
 			// Send the complete message parts

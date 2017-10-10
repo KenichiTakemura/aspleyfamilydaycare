@@ -40,11 +40,11 @@ public class PaymentControllerBean extends BaseController implements PaymentCont
 	public Payable find(String childId, String payableId) throws IOException {
 		Payment p = findPayment(childId);
 		log.info("find by payableId {}", payableId);
-		if (p.getDeposit().getId().equals(payableId)) {
+		if (p.getDeposit() != null && p.getDeposit().getId().equals(payableId)) {
 			log.info("Return Deposit");
 			return p.getDeposit();
 		}
-		if (p.getEnrollmentFee().getId().equals(payableId)) {
+		if (p.getEnrollmentFee() != null && p.getEnrollmentFee().getId().equals(payableId)) {
 			log.info("Return getEnrollmentFee");
 			return p.getEnrollmentFee();
 		}
