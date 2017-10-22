@@ -25,20 +25,20 @@ public class ChildControllerTest extends ArquillianUnitTest {
 	@Test
 	public void add() throws IOException {
 		Parent p1 = cc.addParent(parent1);
-		assertEquals("pfirst1", cc.findParent(p1.getId()).getFirstName());
+		assertEquals("pfirst1", cc.findParent(p1.id()).getFirstName());
 		Parent p2 = cc.addParent(parent2);
-		assertEquals("pfirst2", cc.findParent(p2.getId()).getFirstName());
+		assertEquals("pfirst2", cc.findParent(p2.id()).getFirstName());
 		assertEquals("pfirst2", cc.findParent(p2.getFirstName(), p2.getLastName()).getFirstName());
-		assertTrue(Paths.get(getPathStr(), "parent.json").toFile().exists());
+		assertTrue(Paths.get(getPathStr("service"), "parents.json").toFile().exists());
 		p1.setBankDetail(new BankDetail().setAccount("pfirst1"));
 		p1 = cc.updateParent(p1);
 		Child c1 = cc.addChild(child1);
-		assertEquals("cfirst1", cc.findChild(c1.getId()).getFirstName());
+		assertEquals("cfirst1", cc.findChild(c1.id()).getFirstName());
 		Child c2 = cc.addChild(child2);
 		assertEquals("cfirst2", cc.findChild(c2.getFirstName(), c2.getLastName()).getFirstName());
 		c1.setStartDate("2017-06-12");
 		cc.updateChild(c1);
-		assertTrue(Paths.get(getPathStr(), "child-" + c1.getId() + ".json").toFile().exists());
+		assertTrue(Paths.get(getPathStr("service"), "child-" + c1.id() + ".json").toFile().exists());
 	}
 
 	@Test(expected = IllegalArgumentException.class)

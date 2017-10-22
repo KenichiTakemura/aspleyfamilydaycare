@@ -42,12 +42,12 @@ public class ReceiptControllerBeanTest extends ArquillianUnitTest {
 	public void deleteReceipt() throws Exception {
 		cc.addParent(parent1);
 		Child c = cc.addChild(child1);
-		PaymentSchedule ps = pc.addPaymentSchedule(c.getId(), new PaymentSchedule().setDateReceived(toDate("2017-08-12"))
+		PaymentSchedule ps = pc.addPaymentSchedule(c.id(), new PaymentSchedule().setDateReceived(toDate("2017-08-12"))
 				.setBillingStartDate(toDate("2017-07-16"))
 				.setAmountInvoiced(123.12d));
-		Receipt r = rc.issueReceipt(c.getId(), ps);
+		Receipt r = rc.issueReceipt(c.id(), ps);
 		assertTrue(Paths.get(r.getLocation()).toFile().exists());
-		rc.deleteReceipt(c.getId(), r.getId());
+		rc.deleteReceipt(c.id(), r.id());
 		assertFalse(Paths.get(r.getLocation()).toFile().exists());
 	}
 
@@ -55,10 +55,10 @@ public class ReceiptControllerBeanTest extends ArquillianUnitTest {
 	public void deleteReceiptNotIssued() throws Exception {
 		cc.addParent(parent3);
 		Child c = cc.addChild(child3);
-		PaymentSchedule ps = pc.addPaymentSchedule(c.getId(), new PaymentSchedule().setDateReceived(toDate("2017-08-12"))
+		PaymentSchedule ps = pc.addPaymentSchedule(c.id(), new PaymentSchedule().setDateReceived(toDate("2017-08-12"))
 				.setBillingStartDate(toDate("2017-07-16"))
 				.setAmountInvoiced(123.12d).setAmountReceived(133.23d).setBalanceDue(9.5d));
-		rc.deleteReceipt(c.getId(), ps.getReceiptId());
+		rc.deleteReceipt(c.id(), ps.getReceiptId());
 	}
 
 	@Test

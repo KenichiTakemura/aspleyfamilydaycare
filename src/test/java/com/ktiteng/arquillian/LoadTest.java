@@ -64,7 +64,7 @@ public class LoadTest extends ArquillianUnitTest {
 	@Test
 	public void loadPayments() throws IOException {
 		Collection<Payment> payments = pc.getAllPayments();
-		payments.stream().forEach(p -> log.info("Payment " + p.getId()));
+		payments.stream().forEach(p -> log.info("Payment " + p.id()));
 		assertEquals(2, payments.size());
 		PaymentSchedule ps1 = payments.stream().findFirst().get().getPaymentSchedules().get(0);
 		PaymentSchedule ps2 = payments.stream().findFirst().get().getPaymentSchedules().get(1);

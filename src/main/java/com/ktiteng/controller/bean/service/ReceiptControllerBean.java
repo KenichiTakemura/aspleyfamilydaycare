@@ -13,7 +13,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.slf4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -21,7 +20,6 @@ import org.w3c.dom.Text;
 
 import com.ktiteng.afdc.InvoiceType;
 import com.ktiteng.cdi.Config;
-import com.ktiteng.cdi.Log;
 import com.ktiteng.controller.AfdcConfig;
 import com.ktiteng.controller.bean.BaseController;
 import com.ktiteng.controller.bean.GmailSender;
@@ -45,9 +43,6 @@ public class ReceiptControllerBean extends BaseController implements ReceiptCont
 	@Inject
 	PdfGenerator pdfGen;
 
-	@Inject
-	@Log
-	private Logger log;
 	@Inject
 	TaxInvoiceSeederController tcs;
 
@@ -83,9 +78,9 @@ public class ReceiptControllerBean extends BaseController implements ReceiptCont
 				log.info("Receipt not found with {}", receiptId);
 			}
 		}
-		Receipt receipt = findReceipt(payable.getId());
+		Receipt receipt = findReceipt(payable.id());
 		if (receipt != null) {
-			log.info("Receipt found by {}", payable.getId());
+			log.info("Receipt found by {}", payable.id());
 		} else {
 			Child child = findChild(childId);
 			Document document = convertToDocument(child, payable);
@@ -93,10 +88,10 @@ public class ReceiptControllerBean extends BaseController implements ReceiptCont
 			pdfGen.generateReceipt(document, receipt.getLocation(), receipt.getType());
 			receipt.setIssued(true);
 			receipt.setDateIssued(LocalDate.now());
-			receipt.setPayableId(payable.getId());
+			receipt.setPayableId(payable.id());
 			em.save(receipt);
 		}
-		payable.setReceiptId(receipt.getId());
+		payable.setReceiptId(receipt.id());
 		return receipt;
 	}
 
@@ -164,20 +159,20 @@ public class ReceiptControllerBean extends BaseController implements ReceiptCont
 			PaymentSchedule paymentSchedule = (PaymentSchedule) payable;
 			receipt.setName(String.format("Receipt for %s %s(%s-%s)", child.getFirstName(), child.getLastName(),
 					Utils.toS(paymentSchedule.getBillingStartDate()), Utils.toS(paymentSchedule.getBillingEndDate())));
-			location = String.format("%s/receipt/Receipt_%s_%s(%s-%s).pdf", pm.getPath().toString(),
+			location = String.format("%s/receipt/Receipt_%s_%s(%s-%s).pdf", pm.getServicePath().toString(),
 					child.getFirstName(), child.getLastName().trim(),
 					Utils.toS(paymentSchedule.getBillingStartDate()).replaceAll("/", ""),
 					Utils.toS(paymentSchedule.getBillingEndDate()).replaceAll("/", ""));
 			receipt.setType(InvoiceType.WEEKS);
 		} else if (payable instanceof Deposit) {
 			receipt.setName(String.format("Deposit Receipt for %s %s", child.getFirstName(), child.getLastName()));
-			location = String.format("%s/receipt/Deposit_Receipt_%s_%s.pdf", pm.getPath().toString(),
+			location = String.format("%s/receipt/Deposit_Receipt_%s_%s.pdf", pm.getServicePath().toString(),
 					child.getFirstName(), child.getLastName().trim());
 			receipt.setType(InvoiceType.DEPOSIT);
 		} else if (payable instanceof EnrollmentFee) {
 			receipt.setName(
 					String.format("Enrollment Fee Receipt for %s %s", child.getFirstName(), child.getLastName()));
-			location = String.format("%s/receipt/EnrollmentFee_Receipt_%s_%s.pdf", pm.getPath().toString(),
+			location = String.format("%s/receipt/EnrollmentFee_Receipt_%s_%s.pdf", pm.getServicePath().toString(),
 					child.getFirstName(), child.getLastName().trim());
 			receipt.setType(InvoiceType.ENROLLMENT);
 		}

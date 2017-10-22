@@ -12,21 +12,14 @@ public abstract class BaseEntity implements Serializable {
 	private long generatedAt;
 	public static double NIL_BALANCE = 0.0d;
 
-	public enum STATUS {
-		INCARE,
-		ABSENT,
-		AWAY,
-		EXCARE,
-	}
-	
 	protected BaseEntity() {
 	}
 
-	public String getId() {
+	public String id() {
 		return id;
 	}
 
-	protected void setId(String id) {
+	protected void id(String id) {
 		this.id = id;
 	}
 

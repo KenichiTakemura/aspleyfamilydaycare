@@ -23,7 +23,7 @@ public abstract class Payable<T> extends BaseEntity {
 	private String receiptId;
 
 	public Payable() {
-		setId(Utils.getId());
+		id(Utils.getId());
 	}
 
 	public double getBalanceDue() {

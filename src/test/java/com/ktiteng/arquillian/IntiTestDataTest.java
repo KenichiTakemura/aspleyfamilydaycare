@@ -49,33 +49,33 @@ public class IntiTestDataTest extends ArquillianUnitTest {
 	public void genData() throws IOException {
 		cc.addParent(parent1);
 		Child c = cc.addChild(child1);
-		rc.issueReceipt(c.getId(), pc.addDeposit(c.getId(),
+		rc.issueReceipt(c.id(), pc.addDeposit(c.id(),
 				new Deposit().setAmountInvoiced(95.00d).setDateReceived(toDate("2017-05-04"))));
-		rc.issueReceipt(c.getId(), pc.addEnrollmentFee(c.getId(),
+		rc.issueReceipt(c.id(), pc.addEnrollmentFee(c.id(),
 				new EnrollmentFee().setAmountInvoiced(50.00d).setDateReceived(toDate("2017-05-06"))));
-		rc.issueReceipt(c.getId(),
-				pc.addPaymentSchedule(c.getId(),
+		rc.issueReceipt(c.id(),
+				pc.addPaymentSchedule(c.id(),
 						new PaymentSchedule().setDateReceived(toDate("2017-07-18"))
 								.setBillingStartDate(toDate("2017-07-03")).setAmountInvoiced(114.00d)
 								.setAmountReceived(114.00d).setBalanceDue(0.0d)));
-		rc.issueReceipt(c.getId(),
-				pc.addPaymentSchedule(c.getId(),
+		rc.issueReceipt(c.id(),
+				pc.addPaymentSchedule(c.id(),
 						new PaymentSchedule().setDateReceived(toDate("2017-07-31"))
 								.setBillingStartDate(toDate("2017-07-17")).setAmountInvoiced(123.50d)
 								.setAmountReceived(133.00d).setBalanceDue(9.5d)));
-		rc.issueReceipt(c.getId(),
-				pc.addPaymentSchedule(c.getId(),
+		rc.issueReceipt(c.id(),
+				pc.addPaymentSchedule(c.id(),
 						new PaymentSchedule().setDateReceived(toDate("2017-08-15"))
 								.setBillingStartDate(toDate("2017-07-31")).setCurrentBalance(9.5d)
 								.setAmountInvoiced(133.00d).setAmountReceived(133.00d).setBalanceDue(9.5d)));
 		cc.addParent(parent2);
 		c = cc.addChild(child2);
-		pc.addDeposit(c.getId(), new Deposit().setAmountInvoiced(195.00d).setDateReceived(toDate("2017-06-04")));
-		pc.addEnrollmentFee(c.getId(),
+		pc.addDeposit(c.id(), new Deposit().setAmountInvoiced(195.00d).setDateReceived(toDate("2017-06-04")));
+		pc.addEnrollmentFee(c.id(),
 				new EnrollmentFee().setAmountInvoiced(50.00d).setDateReceived(toDate("2017-06-06")));
-		pc.addPaymentSchedule(c.getId(), new PaymentSchedule().setDateReceived(toDate("2017-08-09"))
+		pc.addPaymentSchedule(c.id(), new PaymentSchedule().setDateReceived(toDate("2017-08-09"))
 				.setBillingStartDate(toDate("2017-07-17")).setAmountInvoiced(31.96d).setAmountReceived(31.96d));
-		pc.addPaymentSchedule(c.getId(), new PaymentSchedule().setDateReceived(toDate("2017-08-23"))
+		pc.addPaymentSchedule(c.id(), new PaymentSchedule().setDateReceived(toDate("2017-08-23"))
 				.setBillingStartDate(toDate("2017-07-31")).setAmountInvoiced(31.96d).setAmountReceived(31.96d));
 	}
 

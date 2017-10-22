@@ -23,9 +23,6 @@ import com.ktiteng.entity.service.PaymentSchedule;
 @Default
 @ApplicationScoped
 public class PaymentControllerBean extends BaseController implements PaymentController {
-	@Inject
-	@Log
-	private Logger log;
 
 	@Inject
 	ChildController cc;
@@ -40,11 +37,11 @@ public class PaymentControllerBean extends BaseController implements PaymentCont
 	public Payable find(String childId, String payableId) throws IOException {
 		Payment p = findPayment(childId);
 		log.info("find by payableId {}", payableId);
-		if (p.getDeposit() != null && p.getDeposit().getId().equals(payableId)) {
+		if (p.getDeposit() != null && p.getDeposit().id().equals(payableId)) {
 			log.info("Return Deposit");
 			return p.getDeposit();
 		}
-		if (p.getEnrollmentFee() != null && p.getEnrollmentFee().getId().equals(payableId)) {
+		if (p.getEnrollmentFee() != null && p.getEnrollmentFee().id().equals(payableId)) {
 			log.info("Return getEnrollmentFee");
 			return p.getEnrollmentFee();
 		}
@@ -122,7 +119,7 @@ public class PaymentControllerBean extends BaseController implements PaymentCont
 	@Override
 	public PaymentSchedule addPaymentSchedule(String childId, PaymentSchedule paymentSchedule) throws IOException {
 		Payment payment = findPayment(childId);
-		if (payment.getPaymentSchedule(paymentSchedule.getId()) != null) {
+		if (payment.getPaymentSchedule(paymentSchedule.id()) != null) {
 			log.warn("Already exists. Use update.");
 			return paymentSchedule;
 		}
@@ -135,7 +132,7 @@ public class PaymentControllerBean extends BaseController implements PaymentCont
 	@Override
 	public PaymentSchedule updatePaymentSchedule(String childId, PaymentSchedule paymentSchedule) throws IOException {
 		Payment payment = findPayment(childId);
-		if (payment.getPaymentSchedule(paymentSchedule.getId()) == null) {
+		if (payment.getPaymentSchedule(paymentSchedule.id()) == null) {
 			log.warn("Not exists. Use add.");
 			return paymentSchedule;
 		}

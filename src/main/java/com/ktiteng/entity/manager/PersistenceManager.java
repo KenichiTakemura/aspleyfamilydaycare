@@ -32,14 +32,17 @@ public class PersistenceManager {
 			.create();
 	private static final String ext = "json";
 	private static final String join = ".";
+	public static final String DATA_PATH_PROP = "com.ktiteng.afdc.data.path";
 
 	private Path path;
 
 	@PostConstruct
 	public void init() {
-		path = Paths.get(System.getProperty("user.home"), ".afdc", "master");
+		path = System.getProperty(DATA_PATH_PROP) != null ?
+			Paths.get(System.getProperty(DATA_PATH_PROP)) :
+				Paths.get(System.getProperty("user.home"), ".afdc", "master");
 		path.toFile().mkdirs();
-		log.info("produced.");
+		log.info("produced. with path {}", path);
 	}
 
 	public void setPath(Path path) {
@@ -47,25 +50,25 @@ public class PersistenceManager {
 		log.info("path changed to {}.", path);
 	}
 
-	public Path getPath() {
-		return path;
+	public Path getServicePath() {
+		return path.resolve("service");
 	}
 
-	private String getFilePath(String fileName) {
-		return Paths.get(path.toString(), fileName).toString();
+	public Path getAccountPath() {
+		return path.resolve("bas");
 	}
-
-	protected Object load(Type entityType, String filename) {
+	
+	Object load(Type entityType, Path filePath, String filename) {
 		Reader in = null;
 		try {
-			String jsonFile = filename.endsWith(ext) ? filename : String.join(join, filename, ext);
-			in = new FileReader(new File(getPath().toString(), jsonFile));
+			String jsonFile = filename.endsWith(ext) ? filePath.toString() : String.join(join, filePath.toString(), filename, ext);
+			in = new FileReader(new File(jsonFile));
 			JsonReader reader = new JsonReader(in);
 			Object data = gson.fromJson(reader, entityType);
-			log.info("Loaded from {}", filename);
+			log.info("Loaded from {}", jsonFile);
 			return data;
 		} catch (Exception e) {
-			log.warn("Cannot load from {} {}", filename, e.getMessage());
+			log.warn("Cannot load from {} {}", filePath, e.getMessage());
 		} finally {
 			if (in != null) {
 				try {
@@ -78,8 +81,11 @@ public class PersistenceManager {
 		return null;
 	}
 
-	protected void persist(Object entity, Type entityType, String filename) throws IOException {
-		try (Writer writer = new FileWriter(getFilePath(String.join(join, filename, ext)))) {
+	void persist(Object entity, Type entityType, Path path, String filename) throws IOException {
+		if (!path.toFile().exists()) {
+			path.toFile().mkdirs();
+		}
+		try (Writer writer = new FileWriter(path.resolve(String.join(join, filename, ext)).toFile())) {
 			gson.toJson(entity, writer);
 		}
 	}

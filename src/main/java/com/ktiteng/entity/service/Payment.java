@@ -21,7 +21,7 @@ public class Payment extends BaseEntity {
 	private List<PaymentSchedule> paymentSchedules;
 
 	public Payment() {
-		setId(Utils.getId());
+		id(Utils.getId());
 		paymentSchedules = new ArrayList<>();
 	}
 
@@ -36,7 +36,7 @@ public class Payment extends BaseEntity {
 
 	public PaymentSchedule getPaymentSchedule(String paymentScheduleId) {
 		Optional<PaymentSchedule> ops = paymentSchedules.stream()
-				.filter(ps -> ps.getId().equals(paymentScheduleId)).findFirst();
+				.filter(ps -> ps.id().equals(paymentScheduleId)).findFirst();
 		return ops.isPresent() ? ops.get() : null;
 	}
 
@@ -61,7 +61,7 @@ public class Payment extends BaseEntity {
 		if (this.paymentSchedules == null) {
 			throw new IllegalStateException("Not exists. Use add.");
 		}
-		this.paymentSchedules.removeIf(p -> p!= null && p.getId().equals(paymentSchedule.getId()));
+		this.paymentSchedules.removeIf(p -> p!= null && p.id().equals(paymentSchedule.id()));
 		this.paymentSchedules.add(paymentSchedule);
 		return paymentSchedule;
 	}

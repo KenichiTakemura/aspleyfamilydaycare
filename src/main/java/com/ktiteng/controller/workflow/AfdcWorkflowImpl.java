@@ -64,14 +64,14 @@ public class AfdcWorkflowImpl implements AfdcWorkflow {
 		pc.addDeposit(childId, deposit);
 		rc.issueReceipt(childId, deposit);
 		pc.updatePayment(childId);
-		return deposit.getId();
+		return deposit.id();
 	}
 
 	@Override
 	public void sendReceipt(String childId, String payableId) throws IOException {
 		Payable payable = pc.find(childId, payableId);
 		if (payable != null) {
-			rc.sendReceipt(childId, payable.getId());
+			rc.sendReceipt(childId, payable.id());
 		} else {
 			throw new IOException("Not found.");
 		}
@@ -87,7 +87,7 @@ public class AfdcWorkflowImpl implements AfdcWorkflow {
 		pc.addPaymentSchedule(childId, paymentSchedule);
 		rc.issueReceipt(childId, paymentSchedule);
 		pc.updatePayment(childId);
-		return paymentSchedule.getId();
+		return paymentSchedule.id();
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class AfdcWorkflowImpl implements AfdcWorkflow {
 		pc.addEnrollmentFee(childId, enrollmentFee);
 		rc.issueReceipt(childId, enrollmentFee);
 		pc.updatePayment(childId);
-		return enrollmentFee.getId();
+		return enrollmentFee.id();
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class AfdcWorkflowImpl implements AfdcWorkflow {
 							+ "Aspley Family Day Care\n"
 							+ "OH IN KWON(ANN)\n"
 							+ "Email: aspleyfamilydaycare@gmail.com",
-					String.format("%s/newsletter/%s", pm.getPath().toString(), filename));
+					String.format("%s/newsletter/%s", pm.getServicePath().toString(), filename));
 		});
 	}
 

@@ -20,7 +20,7 @@ public class TimeCard extends BaseEntity {
 	private List<TimeCardEntry> timeCard;
 
 	public TimeCard() {
-		setId(Utils.getId());
+		id(Utils.getId());
 	}
 
 	public String getChildId() {

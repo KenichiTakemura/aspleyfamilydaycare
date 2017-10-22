@@ -17,7 +17,7 @@ public abstract class BaseController {
 
 	@Inject
 	@Log
-	private Logger log;
+	protected Logger log;
 
 	@Inject
 	protected EntityManager em;

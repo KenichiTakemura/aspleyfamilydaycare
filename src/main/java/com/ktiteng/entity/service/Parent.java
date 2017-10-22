@@ -15,10 +15,11 @@ public class Parent extends BaseEntity {
 	private String phoneNumber;
 	private String emailAddress;
 	private BankDetail bankDetail;
-	private STATUS status;
-	
+	private Status status;
+	private SubscriptionStatus subscriptionStatus;
+
 	public Parent() {
-		setId(Utils.getId());
+		id(Utils.getId());
 	}
 
 	public Parent(String firstName, String lastName, String phoneNumber, String emailAddress) {
@@ -27,6 +28,8 @@ public class Parent extends BaseEntity {
 		setLastName(lastName);
 		setPhoneNumber(phoneNumber);
 		setEmailAddress(emailAddress);
+		status = Status.INCARE;
+		subscriptionStatus = SubscriptionStatus.SUBSCRIBE;
 	}
 
 	public String getFirstName() {
@@ -90,13 +93,20 @@ public class Parent extends BaseEntity {
 		return getName().equals(other.getName());
 	}
 
-	public STATUS getStatus() {
+	public SubscriptionStatus getSubscriptionStatus() {
+		return subscriptionStatus;
+	}
+
+	public void setSubscriptionStatus(SubscriptionStatus subscriptionStatus) {
+		this.subscriptionStatus = subscriptionStatus;
+	}
+
+	public Status getStatus() {
 		return status;
 	}
 
-	public Parent setStatus(STATUS status) {
+	public void setStatus(Status status) {
 		this.status = status;
-		return this;
 	}
 
 }

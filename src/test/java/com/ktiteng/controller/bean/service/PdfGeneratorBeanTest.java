@@ -19,9 +19,7 @@ import com.ktiteng.entity.service.PaymentSchedule;
 import com.ktiteng.entity.service.TaxInvoiceSeeder;
 
 public class PdfGeneratorBeanTest extends ArquillianUnitTest {
-	@Inject
-	@Log
-	private Logger log;
+
 	@Inject
 	PdfGenerator pdfGen;
 	@Inject
@@ -38,7 +36,7 @@ public class PdfGeneratorBeanTest extends ArquillianUnitTest {
 				.setBillingStartDate(toDate("2017-07-16")).setBillingEndDate(toDate("2017-07-30"))
 				.setAmountInvoiced(123.12d).setAmountReceived(133.23d).setBalanceDue(9.5d);
 
-		pdfGen.generateReceipt(bean.convertToDocument(c, paymentSchedule), getPathStr() + "/weeks.pdf",
+		pdfGen.generateReceipt(bean.convertToDocument(c, paymentSchedule), getPathStr("service") + "/weeks.pdf",
 				InvoiceType.WEEKS);
 
 		bean = new ReceiptControllerBean();
@@ -46,9 +44,9 @@ public class PdfGeneratorBeanTest extends ArquillianUnitTest {
 		EnrollmentFee enrollmentFee = new EnrollmentFee().setDateReceived(toDate("2017-08-12"))
 				.setAmountInvoiced(123.12d);
 
-		pdfGen.generateReceipt(bean.convertToDocument(c, deposit), getPathStr() + "/deposit.pdf", InvoiceType.DEPOSIT);
+		pdfGen.generateReceipt(bean.convertToDocument(c, deposit), getPathStr("service") + "/deposit.pdf", InvoiceType.DEPOSIT);
 
-		pdfGen.generateReceipt(bean.convertToDocument(c, enrollmentFee), getPathStr() + "/enrollmentfee.pdf",
+		pdfGen.generateReceipt(bean.convertToDocument(c, enrollmentFee), getPathStr("service") + "/enrollmentfee.pdf",
 				InvoiceType.ENROLLMENT);
 
 	}

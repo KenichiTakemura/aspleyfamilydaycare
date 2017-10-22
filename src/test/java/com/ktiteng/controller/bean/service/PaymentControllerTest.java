@@ -26,9 +26,7 @@ import com.ktiteng.entity.service.PaymentSchedule;
 import com.ktiteng.util.Utils;
 
 public class PaymentControllerTest extends ArquillianUnitTest {
-	@Inject
-	@Log
-	private Logger log;
+
 	@Inject
 	ChildController cc;
 	@Inject
@@ -38,24 +36,24 @@ public class PaymentControllerTest extends ArquillianUnitTest {
 	public void addPaymentSchedule() throws IOException {
 		cc.addParent(parent1);
 		Child c = cc.addChild(child1);
-		Payment p = pc.findPayment(c.getId());
+		Payment p = pc.findPayment(c.id());
 		assertNotNull(p);
-		pc.addDeposit(c.getId(), new Deposit().setAmountInvoiced(95.00d).setDateReceived(toDate("2017-05-04")));
-		pc.addEnrollmentFee(c.getId(),
+		pc.addDeposit(c.id(), new Deposit().setAmountInvoiced(95.00d).setDateReceived(toDate("2017-05-04")));
+		pc.addEnrollmentFee(c.id(),
 				new EnrollmentFee().setAmountInvoiced(50.00d).setDateReceived(toDate("2017-05-06")));
 
-		PaymentSchedule ps = pc.addPaymentSchedule(c.getId(), new PaymentSchedule()
+		PaymentSchedule ps = pc.addPaymentSchedule(c.id(), new PaymentSchedule()
 				.setBillingStartDate(Utils.toDate("2017-08-01")).setBillingEndDate(Utils.toDate("2017-08-15")));
-		assertTrue(Paths.get(getPathStr(), "payment-" + p.getId() + ".json").toFile().exists());
-		log.info("ps {}", ps.getId());
-		assertEquals(ps.getId(), pc.addPaymentSchedule(c.getId(), ps).getId());
+		assertTrue(Paths.get(getPathStr("service"), "payment-" + p.id() + ".json").toFile().exists());
+		log.info("ps {}", ps.id());
+		assertEquals(ps.id(), pc.addPaymentSchedule(c.id(), ps).id());
 	}
 
 	@Test(expected = IOException.class)
 	public void updatePaymentSchedule() throws IOException {
 		cc.addParent(parent2);
 		Child c = cc.addChild(child2);
-		pc.updatePaymentSchedule(c.getId(), new PaymentSchedule().setBillingStartDate(Utils.toDate("2017-08-01"))
+		pc.updatePaymentSchedule(c.id(), new PaymentSchedule().setBillingStartDate(Utils.toDate("2017-08-01"))
 				.setBillingEndDate(Utils.toDate("2017-08-15")));
 	}
 
@@ -63,7 +61,7 @@ public class PaymentControllerTest extends ArquillianUnitTest {
 	public void Deposit() throws IOException {
 		cc.addParent(parent3);
 		Child c = cc.addChild(child3);
-		pc.addDeposit(c.getId(), new Deposit().setAmountInvoiced(95.00d).setDateReceived(toDate("2017-05-04")));
-		assertNull(pc.findPaymentSchedule(c.getId(), "123"));
+		pc.addDeposit(c.id(), new Deposit().setAmountInvoiced(95.00d).setDateReceived(toDate("2017-05-04")));
+		assertNull(pc.findPaymentSchedule(c.id(), "123"));
 	}
 }

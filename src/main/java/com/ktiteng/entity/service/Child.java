@@ -17,11 +17,12 @@ public class Child extends BaseEntity {
 	private String firstName;
 	private String lastName;
 	private String childNumber;
+	private Status status;
 	private LocalDate startDate;
 	private LocalDate lastDate;
 
 	public Child() {
-		setId(Utils.getId());
+		id(Utils.getId());
 	}
 
 	public Child(String firstName, String lastName, String childNumber, String parentId) {
@@ -30,6 +31,7 @@ public class Child extends BaseEntity {
 		setLastName(lastName);
 		setChildNumber(childNumber);
 		setParentId(parentId);
+		status = Status.INCARE;
 	}
 
 	public String getParentId() {
@@ -100,5 +102,13 @@ public class Child extends BaseEntity {
 	@Override
 	public String toString() {
 		return String.join(" ", getName(), getChildNumber());
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 }

@@ -28,7 +28,7 @@ public class ResourceRestServiceTest extends RestMockFramework {
 
 		invokePost("/resource/parent", toJson(parent1));
 
-		response = invokeGet(addQueryParam("/resource/parents", "p", parent1.getId()));
+		response = invokeGet(addQueryParam("/resource/parents", "p", parent1.id()));
 		log.info("{}", response.getContentAsString());
 
 		Parent parent = mapper.readValue(response.getContentAsString(), Parent.class);
@@ -49,7 +49,7 @@ public class ResourceRestServiceTest extends RestMockFramework {
 		invokePost("/resource/parent", toJson(parent2));
 		invokePost("/resource/child", toJson(child2));
 
-		response = invokeGet(addQueryParam("/resource/children", "c", child2.getId()));
+		response = invokeGet(addQueryParam("/resource/children", "c", child2.id()));
 		log.info("{}", response.getContentAsString());
 
 		Child child = mapper.readValue(response.getContentAsString(), Child.class);

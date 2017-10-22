@@ -18,9 +18,6 @@ import com.ktiteng.entity.service.TaxInvoiceSeeder;
 @ApplicationScoped
 public class TaxInvoiceSeederControllerBean extends BaseController implements TaxInvoiceSeederController {
 
-	@Inject
-	@Log
-	private Logger log;
 	private TaxInvoiceSeeder seeder;
 
 	@PostConstruct

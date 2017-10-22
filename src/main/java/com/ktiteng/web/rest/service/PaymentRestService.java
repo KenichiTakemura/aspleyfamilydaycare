@@ -48,7 +48,7 @@ public class PaymentRestService {
 	public Response updatePaymentSchedule(@QueryParam("c") final String childId,
 									   final PaymentSchedule paymentSchedule) throws IOException {
 		log.info("updatePaymentSchedule started. paymentSchedule={}", paymentSchedule);
-		if (paymentSchedule != null && paymentSchedule.getId() != null) {
+		if (paymentSchedule != null && paymentSchedule.id() != null) {
 			pc.updatePaymentSchedule(childId, paymentSchedule);
 			return Response.ok().build();
 		} else {

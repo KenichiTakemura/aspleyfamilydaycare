@@ -12,7 +12,7 @@ public class Receipt extends TaxInvoice {
 	private String name;
 
 	public Receipt() {
-		setId(Utils.getId());
+		id(Utils.getId());
 	}
 
 	public String getTaxInvoiceId() {

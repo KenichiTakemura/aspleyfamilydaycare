@@ -22,9 +22,6 @@ import com.ktiteng.util.Validator;
 @Default
 @ApplicationScoped
 public class ChildControllerBean extends BaseController implements ChildController {
-	@Inject
-	@Log
-	private Logger log;
 
 	@PostConstruct
 	public void init() {
